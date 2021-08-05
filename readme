@@ -1,0 +1,4 @@
+Start 05 August 2021:
+  Lightweight 3D engine using Vulkan
+  Planning on Windows and Linux application layer to develop on both OS.
+  Using clang for both OS's, and plan on using a lightweight Build System.
