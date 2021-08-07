@@ -3,7 +3,6 @@ REM Build Eri
 
 ECHO "Building Eri..."
 
-
 PUSHD engine
 CALL build.bat
 POPD
