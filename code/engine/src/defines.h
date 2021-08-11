@@ -92,7 +92,7 @@ STATIC_ASSERT(sizeof(f64) == 8, "Expected f64 to be 8 bytes.");
 // ----- END
 
 // ----- START Declspec definitions
-#ifdef KEXPORT
+#ifdef ERI_EXPORT
 // Exports
 #ifdef _MSC_VER
 #define ERI_API __declspec(dllexport)
