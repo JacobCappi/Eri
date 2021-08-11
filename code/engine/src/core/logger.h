@@ -2,7 +2,7 @@
 #include "defines.h"
 
 #define LOG_WARNING_ENABLED 1
-#define LOG_INFO_ENABLED 1
+#define ERI_LOG_INFO_ENABLED 1
 #define LOG_DEBUG_ENABLED 1
 #define LOG_TRACE_ENABLED 1
 
@@ -32,35 +32,35 @@ ERI_API void log_message(log_level level, const char *message, ...);
 
 
 // These are always enabled
-#ifndef LOG_FATAL
-    #define LOG_FATAL(message, ...) log_message(LOG_LEVEL_FATAL, message, ##__VA_ARGS__)
+#ifndef ERI_LOG_FATAL
+    #define ERI_LOG_FATAL(message, ...) log_message(LOG_LEVEL_FATAL, message, ##__VA_ARGS__)
 #endif
 
-#ifndef LOG_ERROR
-    #define LOG_ERROR(message, ...) log_message(LOG_LEVEL_ERROR, message, ##__VA_ARGS__)
+#ifndef ERI_LOG_ERROR
+    #define ERI_LOG_ERROR(message, ...) log_message(LOG_LEVEL_ERROR, message, ##__VA_ARGS__)
 #endif
 
 // KOHI's idea of not defining if not enabled. Apparently more effecient
 #if LOG_WARNING_ENABLED == 1
-    #define LOG_WARNING(message, ...) log_message(LOG_LEVEL_WARNING, message, ##__VA_ARGS__)
+    #define ERI_LOG_WARNING(message, ...) log_message(LOG_LEVEL_WARNING, message, ##__VA_ARGS__)
 #else
-    #define LOG_WARNING(message, ...) 
+    #define ERI_LOG_WARNING(message, ...) 
 #endif
 
-#if LOG_INFO_ENABLED == 1
-    #define LOG_INFO(message, ...) log_message(LOG_LEVEL_INFO, message, ##__VA_ARGS__)
+#if ERI_LOG_INFO_ENABLED == 1
+    #define ERI_LOG_INFO(message, ...) log_message(LOG_LEVEL_INFO, message, ##__VA_ARGS__)
 #else
-    #define LOG_INFO(message, ...) 
+    #define ERI_LOG_INFO(message, ...) 
 #endif
 
 #if LOG_DEBUG_ENABLED == 1
-    #define LOG_DEBUG(message, ...) log_message(LOG_LEVEL_DEBUG, message, ##__VA_ARGS__)
+    #define ERI_LOG_DEBUG(message, ...) log_message(LOG_LEVEL_DEBUG, message, ##__VA_ARGS__)
 #else
-    #define LOG_DEBUG(message, ...) 
+    #define ERI_LOG_DEBUG(message, ...) 
 #endif
 
 #if LOG_TRACE_ENABLED == 1
-    #define LOG_TRACE(message, ...) log_message(LOG_LEVEL_TRACE, message, ##__VA_ARGS__)
+    #define ERI_LOG_TRACE(message, ...) log_message(LOG_LEVEL_TRACE, message, ##__VA_ARGS__)
 #else
-    #define LOG_TRACE(message, ...) 
+    #define ERI_LOG_TRACE(message, ...) 
 #endif

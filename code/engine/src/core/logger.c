@@ -1,4 +1,5 @@
 #include "logger.h"
+#include "asserts.h"
 
 //TODO: Platform layor to fix this
 #include <stdio.h>
@@ -18,7 +19,7 @@ void shutdown_logging()
     // in one i/o. If shutdown, make sure all logs are sent
 }
 
-ERI_API void log_message(log_level level, const char *message, ...)
+void log_message(log_level level, const char *message, ...)
 {
     const char *logging_level[6] = {
         " FATAL | ",
@@ -46,4 +47,9 @@ ERI_API void log_message(log_level level, const char *message, ...)
     // TODO: application layor specific output 
     printf("%s", output_message);
 
+}
+
+void report_assertion_failure(const char* bool_expression, const char* message, const char* origin_file, i32 line_number)
+{
+    log_message(LOG_LEVEL_FATAL, "Failed Assertion: %s\n\tMessage: %s\n\tIn File: %s\n\t\tLine: %d\n", bool_expression, message, origin_file, line_number);
 }
