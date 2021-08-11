@@ -47,20 +47,20 @@ ERI_API void log_message(log_level level, const char *message, ...);
     #define LOG_WARNING(message, ...) 
 #endif
 
-#if LOG_INFO_ENABLE == 1
-    #define LOG_INFO(message, ...) log_message(LOG_LEVEL_WARNING, message, ##__VA_ARGS__)
+#if LOG_INFO_ENABLED == 1
+    #define LOG_INFO(message, ...) log_message(LOG_LEVEL_INFO, message, ##__VA_ARGS__)
 #else
     #define LOG_INFO(message, ...) 
 #endif
 
 #if LOG_DEBUG_ENABLED == 1
-    #define LOG_DEBUG(message, ...) log_message(LOG_LEVEL_WARNING, message, ##__VA_ARGS__)
+    #define LOG_DEBUG(message, ...) log_message(LOG_LEVEL_DEBUG, message, ##__VA_ARGS__)
 #else
     #define LOG_DEBUG(message, ...) 
 #endif
 
 #if LOG_TRACE_ENABLED == 1
-    #define LOG_TRACE(message, ...) log_message(LOG_LEVEL_WARNING, message, ##__VA_ARGS__)
+    #define LOG_TRACE(message, ...) log_message(LOG_LEVEL_TRACE, message, ##__VA_ARGS__)
 #else
     #define LOG_TRACE(message, ...) 
 #endif
