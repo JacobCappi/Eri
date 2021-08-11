@@ -21,12 +21,12 @@ void shutdown_logging()
 ERI_API void log_message(log_level level, const char *message, ...)
 {
     const char *logging_level[6] = {
-        "[  FATAL  ]: ",
-        "[  ERROR  ]: ",
-        "[ WARNING ]: ",
-        "[  INFO   ]: ",
-        "[  DEBUG  ]: ",
-        "[  TRACE  ]: "
+        " FATAL | ",
+        " ERROR | ",
+        " WARN  | ",
+        " INFO  | ",
+        " DEBUG | ",
+        " TRACE | "
     };
 
     // Input message is apparently not dynamic as it is 'slower'. Chose to put it on stack
