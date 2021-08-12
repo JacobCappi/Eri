@@ -3,8 +3,6 @@ Start 05 August 2021:
   Planning on Windows and Linux platform layer to develop on both OS.
   Using clang for both OS's, and plan on using a lightweight Build System.
   
-08 August Finishing up the logging and assertions with the help of Kohi Engine
+12 August: Finished up the logging and assertions with the help of Kohi Engine
 
-Goal: Windows Application layor by next week ( 15 August )
-  -> Side note: most of the complicated setup seems complete, so no need to rely on KOHI engine anymore
-  -> Windows application layor will be built myself using win32 api
+16 August: Start on the design of the Event system for UI event handling.
