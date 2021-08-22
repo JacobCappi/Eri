@@ -7,7 +7,7 @@ mkdir -p ../bin
 # Get a list of all the .c files.
 cFilenames=$(find . -type f -name "*.c")
 
-# echo "Files:" $cFilenames
+echo "Testbed Files:" $cFilenames
 
 assembly="testbed"
 compilerFlags="-g -fdeclspec -fPIC" 

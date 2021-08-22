@@ -22,12 +22,12 @@ void shutdown_logging()
 void log_message(log_level level, const char *message, ...)
 {
     const char *logging_level[6] = {
-        " FATAL | ",
-        " ERROR | ",
-        " WARN  | ",
-        " INFO  | ",
-        " DEBUG | ",
-        " TRACE | "
+        " [ FTL ] ",
+        " [ ERR ] ",
+        " [ WRN ] ",
+        " [ INF ] ",
+        " [ DBG ] ",
+        " [ TRC ] "
     };
 
     // Input message is apparently not dynamic as it is 'slower'. Chose to put it on stack

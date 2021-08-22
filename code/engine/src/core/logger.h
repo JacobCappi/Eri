@@ -11,10 +11,6 @@
 # define LOG_TRACE_ENABLE = 0
 #endif
 
-#define COLOR_ERROR "\x1b[31m"
-#define COLOR_WARNING "\x1b[33m"
-#define COLOR_RESET "\x1b[0m"
-
 typedef enum log_level{
     LOG_LEVEL_FATAL = 0,
     LOG_LEVEL_ERROR = 1,
