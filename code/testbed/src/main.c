@@ -9,7 +9,6 @@ int main(){
     ERI_LOG_DEBUG("Testing %s %s", "testing", "working");
     ERI_LOG_TRACE("Testing %s %s", "testing", "working");
 
-    ERI_ASSERT( 10 == 1 );
     ERI_ASSERT_MESSAGE( 10 == 1, "Testing a message");
     ERI_ASSERT_MESSAGE( 10 == 1, "Testing another message");
     
