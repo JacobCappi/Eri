@@ -5,6 +5,7 @@ Start 05 August 2021:
   
 12 August: Finished up the logging and assertions with the help of Kohi Engine
 
-20 August: Finish up windows platform layer
+Honestly, due to schooling and work, this project has come slowing down. Will work on when I have time.
 
-Goal: Start on the design of the Event system for UI event handling.
+I would like to have the platform layor done as fast as I can, so I don't have to actively use win32 libs. 
+-> I would prefer to just code on my linux machine through the platform layor to dev a multiplatform game engine.
