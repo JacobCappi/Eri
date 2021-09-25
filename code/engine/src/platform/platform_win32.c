@@ -1,18 +1,24 @@
 #include "platform/platform.h"
 
 // OS Check to compile proper implementation of interface
-#if ERI_PLATFORM_WIN32
+#if ERI_PLATFORM_WINDOWS
 
 #include <windows.h>
 #include <windowsx.h>
+
+typedef struct win32_state
+{
+
+} 
 
 b8 platform_startup(
     platform_state *state,
     const char *name,
     i32 x, i32 y,
     i32 width, i32 height
-){
-    return TRUE;
+)
+{
+    state->internal_state
 }
 
 void platform_shutdown(platform_state *state);

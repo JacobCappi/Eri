@@ -7,7 +7,7 @@
 // Pointer to the internal state
 typedef struct platform_state
 {
-    void *internal_state;
+    void *os_specific_state;
 } platform_state;
 
 b8 platform_startup(
