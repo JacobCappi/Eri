@@ -39,7 +39,8 @@ b8 platform_startup(
     const char *name,
     i32 x, i32 y,
     i32 width, i32 height
-){
+)
+{
     // TODO: Sort out allignment
     state->specified_state = platform_malloc(sizeof(specified_state), FALSE);
     specified_state *state = (specified_state *)state->specified_state;
