@@ -207,38 +207,11 @@ void platform_cerr(const char *text, u8 color)
 {
     HANDLE h_console = GetStdHandle(STD_ERROR_HANDLE);
 
-<<<<<<< HEAD
-void *platform_malloc(u64 size, b8 aligned)
-{
-    return malloc(size);
-}
-
-void platform_free(void *memory, b8 aligned)
-{
-    free(memory);
-}
-
-void *platform_memzero(void *memory, u64 size)
-{
-    return memset(memory, 0, size);
-}
-
-void *platform_memcpy(void *end, const void *start, u64 size)
-{
-    return memcpy(end, start, size);
-}
-
-void *platform_memset(void *memory, i32 value, u64 size)
-{
-    return memset(memory, value, size);
-}
-=======
     DWORD dwMode = 0;
     if (!GetConsoleMode(h_console, &dwMode))
     {
         ERI_LOG_WARNING("Failed to set Console Mode, output is without color");
     }
->>>>>>> main
 
     dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
     if (!SetConsoleMode(h_console, dwMode))

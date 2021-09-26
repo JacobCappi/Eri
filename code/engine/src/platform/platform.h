@@ -8,19 +8,14 @@
 // Pointer to the internal state
 typedef struct platform_state
 {
-<<<<<<< HEAD
-    void *specified_state;
-=======
     void *os_specific_state;
->>>>>>> main
 } platform_state;
 
 ERI_API b8 platform_startup(
     platform_state *state,
     const char *name,
     i32 x, i32 y,
-    i32 width, i32 height
-);
+    i32 width, i32 height);
 
 // ----- State Management
 ERI_API void platform_shutdown(platform_state *state);
