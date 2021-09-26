@@ -3,7 +3,7 @@
 #include "defines.h"
 
 // Interface for platform layer
-//  Currently exported functions should not be, they are only exported for testing..
+// Currently exported functions should not be, they are only exported for testing..
 
 // Pointer to the internal state
 typedef struct platform_state
@@ -22,7 +22,7 @@ ERI_API void platform_shutdown(platform_state *state);
 ERI_API b8 platform_message(platform_state *state);
 // ----- END
 
-// ----- Wrapper for Memory 
+// ----- Platform based Memory Management
 void *platform_malloc(u64 size, b8 aligned);
 void platform_free(void *memory, b8 aligned);
 void *platform_memzero(void *memory, u64 size);
