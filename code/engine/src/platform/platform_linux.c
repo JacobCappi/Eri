@@ -49,6 +49,7 @@ b8 platform_startup(
 void platform_shutdown(platform_state *state);
 b8 platform_message(platform_state *state);
 
+<<<<<<< HEAD
 void *platform_malloc(u64 size, b8 aligned)
 {
     return malloc(size);
@@ -73,6 +74,13 @@ void *platform_memset(void *memory, i32 value, u64 size)
 {
     return memset(memory, value, size);
 }
+=======
+void *platform_malloc(u64 size, b8 aligned);
+void platform_free(void *memory, b8 aligned);
+void *platform_memzero(void *memory, u64 size);
+void *platform_memcpy(void *end, const void *start, u64 size);
+void *platform_memset(void *memory, i32 value, u64 size);
+>>>>>>> main
 
 void platform_cout(const char *text, u8 color);
 void platform_cerr(const char *text, u8 color);
