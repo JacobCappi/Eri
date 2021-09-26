@@ -15,15 +15,14 @@ ERI_API b8 platform_startup(
     platform_state *state,
     const char *name,
     i32 x, i32 y,
-    i32 width, i32 height
-);
+    i32 width, i32 height);
 
 // ----- State Management
 ERI_API void platform_shutdown(platform_state *state);
 ERI_API b8 platform_message(platform_state *state);
 // ----- END
 
-// ----- Platform based Memory management
+// ----- Wrapper for Memory 
 void *platform_malloc(u64 size, b8 aligned);
 void platform_free(void *memory, b8 aligned);
 void *platform_memzero(void *memory, u64 size);
