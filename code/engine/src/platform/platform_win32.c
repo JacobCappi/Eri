@@ -1,19 +1,20 @@
 #include "platform/platform.h"
 
 // OS Check to compile proper implementation of interface
-#if ERI_PLATFORM_WIN32
+#if ERI_PLATFORM_WINDOWS
 
 #include "core/logger.h"
 
-#include <stdlib.h>
 #include <windows.h>
 #include <windowsx.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct win32_state
 {
     HINSTANCE h_instance;
     HWND h_wnd;
-} 
+}win32_state;
 
 
 // Clock
@@ -30,8 +31,8 @@ b8 platform_startup(
     i32 width, i32 height
 )
 {
-    state->os_specific_state = platform_malloc( sizeof(win32_state) );
-    win32_state *os_state = (win32_state)state->os_specific_state;
+    state->os_specific_state = platform_malloc( sizeof(win32_state), FALSE );
+    win32_state *os_state = (win32_state *)state->os_specific_state;
 
     os_state->h_instance = GetModuleHandleA(NULL);
     const char* window_class_name = "eri_window_class";
@@ -40,7 +41,7 @@ b8 platform_startup(
     WNDCLASSEXA wnd_class;
     platform_memzero(&wnd_class, sizeof(wnd_class));
     wnd_class.cbSize = sizeof(wnd_class);
-    wnd_class.style = CS_DBLCLICKS;
+    wnd_class.style = CS_DBLCLKS;
     wnd_class.lpfnWndProc = wnd_msg_handler; // LRESULT (CALLBACK* WNDPROC) (HWND, UINT, WPARAM, LPARAM); 
     wnd_class.cbClsExtra = 0;
     wnd_class.cbWndExtra = 0;
@@ -52,7 +53,7 @@ b8 platform_startup(
     wnd_class.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
     // Register that window class
-    if(!RegisterClassEx(&wndclass))
+    if(!RegisterClassEx(&wnd_class))
     {
         MessageBoxA(0, "[ Failed ] Window Class Register", "ERROR", MB_ICONEXCLAMATION | MB_OK);
         ERI_LOG_FATAL("Window Class did not register");
@@ -70,7 +71,6 @@ b8 platform_startup(
         My x,y,width,hieght is expected to be the client zone size.
     */
 
-    u32 client[4] = { x, y, width, height };
     u32 window[4] = { x, y, width, height };
 
     // Border and Button styling for Window: Styles are found in the MSDN
@@ -92,10 +92,9 @@ b8 platform_startup(
     window[3] += border.bottom - border.top;
 
     HWND window_handle = CreateWindowExA(
-        window_ex_style, window_class_name, window_style,
+        window_ex_style, window_class_name, name, window_style,
         window[0], window[1], window[2], window[3], // x, y, width, height
-        0, 0, os_state->h_instance, 0)
-    );
+        0, 0, os_state->h_instance, 0);
 
     if( !window_handle )
     {
@@ -129,7 +128,7 @@ b8 platform_startup(
 void platform_shutdown(platform_state *state)
 {
     // Simply cold-cast to the known type.
-    win32_state *os_state = (win32_state)state->os_specific_state;
+    win32_state *os_state = (win32_state *)state->os_specific_state;
 
     if (os_state->h_wnd) 
     {
@@ -170,7 +169,7 @@ void platform_free(void* memory, b8 aligned)
 
 void *platform_memzero(void *memory, u64 size)
 {
-    return memset(memory, 0, size)
+    return memset(memory, 0, size);
 }
 
 void *platform_memcpy(void *source, const void *destination, u64 size)
@@ -190,18 +189,18 @@ void platform_cout(const char *text, u8 color)
     DWORD dwMode = 0;
     if (!GetConsoleMode(h_console, &dwMode))
     {
-        ERI_LOG_WARNING("Failed to set Console Mode, output is without color")
+        ERI_LOG_WARNING("Failed to set Console Mode, output is without color");
     }
     dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 
     if (!SetConsoleMode(h_console, dwMode))
     {
-        ERI_LOG_WARNING("Failed to set Console Mode, output is without color")
+        ERI_LOG_WARNING("Failed to set Console Mode, output is without color");
     }
 
     // Fatal, Error, Warning, Info, Debug, Trace
-    const char* colour_strings[] = {"0;41", "1;31", "1;33", "1;32", "1;34", "1;30"};
-    printf("\033[%sm%s\033[0m", colour_strings[colour], message);
+    const char* color_strings[] = {"0;41", "1;31", "1;33", "1;32", "1;34", "1;30"};
+    printf("\033[%sm%s\033[0m", color_strings[color], text);
 }
 
 void platform_cerr(const char *text, u8 color)
@@ -211,18 +210,18 @@ void platform_cerr(const char *text, u8 color)
     DWORD dwMode = 0;
     if (!GetConsoleMode(h_console, &dwMode))
     {
-        ERI_LOG_WARNING("Failed to set Console Mode, output is without color")
+        ERI_LOG_WARNING("Failed to set Console Mode, output is without color");
     }
 
     dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
     if (!SetConsoleMode(h_console, dwMode))
     {
-        ERI_LOG_WARNING("Failed to set Console Mode, output is without color")
+        ERI_LOG_WARNING("Failed to set Console Mode, output is without color");
     }
 
     // Fatal, Error, Warning, Info, Debug, Trace
-    const char* colour_strings[] = {"0;41", "1;31", "1;33", "1;32", "1;34", "1;30"};
-    printf("\033[%sm%s\033[0m", colour_strings[colour], message);
+    const char* color_strings[] = {"0;41", "1;31", "1;33", "1;32", "1;34", "1;30"};
+    printf("\033[%sm%s\033[0m", color_strings[color], text);
 }
 
 f64 platform_time()
@@ -294,7 +293,7 @@ LRESULT CALLBACK wnd_msg_handler(HWND h_wnd, u32 message, WPARAM w_param, LPARAM
 
     // Default processing on any event that we are not supporting
     // ie, Windows will do it
-    return DefWindowProcA(hwnd, msg, w_param, l_param);
+    return DefWindowProcA(h_wnd, message, w_param, l_param);
 }
 
 #endif
