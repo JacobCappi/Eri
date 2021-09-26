@@ -3,14 +3,15 @@
 #include "defines.h"
 
 // Interface for platform layer
+//  Currently exported functions should not be, they are only exported for testing..
 
 // Pointer to the internal state
 typedef struct platform_state
 {
-    void *internal_state;
+    void *os_specific_state;
 } platform_state;
 
-b8 platform_startup(
+ERI_API b8 platform_startup(
     platform_state *state,
     const char *name,
     i32 x, i32 y,
@@ -18,15 +19,15 @@ b8 platform_startup(
 );
 
 // ----- State Management
-void platform_shutdown(platform_state *state);
-b8 platform_message(platform_state *state);
+ERI_API void platform_shutdown(platform_state *state);
+ERI_API b8 platform_message(platform_state *state);
 // ----- END
 
 // ----- Platform based Memory management
 void *platform_malloc(u64 size, b8 aligned);
-void platform_free(u64 size, b8 aligned);
+void platform_free(void *memory, b8 aligned);
 void *platform_memzero(void *memory, u64 size);
-void *platform_memcpy(void *end, const void *start, u64 size);
+void *platform_memcpy(void *source, const void *destination, u64 size);
 void *platform_memset(void *memory, i32 value, u64 size);
 // ----- END
 

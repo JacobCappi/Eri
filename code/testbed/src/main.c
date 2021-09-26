@@ -1,5 +1,6 @@
 #include <core/logger.h>
 #include <core/asserts.h>
+#include <platform/platform.h>
 
 int main(){
     ERI_LOG_FATAL("Testing %s %s", "testing", "working");
@@ -11,5 +12,15 @@ int main(){
 
     ERI_ASSERT_MESSAGE( 10 == 1, "Testing a message");
     ERI_ASSERT_MESSAGE( 10 == 1, "Testing another message");
-    
+
+    platform_state state;
+
+    if(platform_startup(&state, "ERI testbed", 100, 100, 800, 600))
+    {
+        while(TRUE)
+        {
+            platform_message(&state);
+        }
+    }
+    platform_shutdown(&state);
 }

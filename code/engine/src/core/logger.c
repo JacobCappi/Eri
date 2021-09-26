@@ -1,5 +1,6 @@
 #include "logger.h"
 #include "asserts.h"
+#include "platform/platform.h"
 
 //TODO: Platform layor to fix this
 #include <stdio.h>
@@ -44,8 +45,16 @@ void log_message(log_level level, const char *message, ...)
     va_end(arg_ptr);
 
     sprintf(output_message, "%s%s\n", logging_level[level], input_message);
-    // TODO: application layor specific output 
-    printf("%s", output_message);
+
+    // Fatals and Errors are given special treatment
+    if ( level < LOG_LEVEL_WARNING )
+    {
+        platform_cerr(output_message, level);
+    }
+    else
+    {
+        platform_cout(output_message, level);
+    }
 
 }
 
