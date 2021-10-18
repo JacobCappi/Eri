@@ -16,21 +16,24 @@ int main(void)
         return -1;
     }
 
-    if ( !(game_instance.initialize || game_instance.update || game_instance.render || game_instance.on_resize) )
+    if ( !(game_instance.init || game_instance.update || game_instance.render || game_instance.on_resize) )
     {
         ERI_LOG_FATAL("One or more missing game function pointers. Make sure all function pointers exist");
         return -2;
     }
 
-    app_configs config;
-    config.start_x = 100;
-    config.start_y = 100;
-    config.start_height = 720;
-    config.start_width = 1280;
-    config.app_name = "Eri Engine Testbed";
+    if ( !app_create(&game_instance) )
+    {
+        ERI_LOG_INFO("Eri failed to create game instance");
+        return 1;
+    }
 
-    app_create(&config);
-    app_run();
+    // The Game Loop
+    if( !app_run() )
+    {
+        ERI_LOG_INFO("Eri failed to shutdown gracefully ");
+        return 2;
+    }
 
     return 0;
 }

@@ -11,6 +11,7 @@ typedef struct app_state
     i16 current_height;
     f64 time;
 
+    game* game_instance;
     platform_state state;
 } app_state;
 
@@ -18,7 +19,7 @@ static app_state singleton_app_state;
 static b8 is_singleton_initialized = FALSE;
 
 // All inits will be done here (excluding game specific code)
-b8 app_create(app_configs* configs)
+b8 app_create(game* game_instance)
 {
     if ( is_singleton_initialized )
     {
@@ -26,6 +27,7 @@ b8 app_create(app_configs* configs)
         return FALSE;
     }
 
+    singleton_app_state.game_instance = game_instance;
 // ----- Init all Subsystems
     init_logging();
 // ----- END
@@ -42,11 +44,11 @@ b8 app_create(app_configs* configs)
     if ( 
         !platform_startup(
         &singleton_app_state.state,
-        configs->app_name,
-        configs->start_x,
-        configs->start_y,
-        configs->start_width,
-        configs->start_height
+        game_instance->configs.app_name,
+        game_instance->configs.start_x,
+        game_instance->configs.start_y,
+        game_instance->configs.start_width,
+        game_instance->configs.start_height
         ) 
     )
     {
@@ -54,10 +56,22 @@ b8 app_create(app_configs* configs)
         return FALSE;
     }
 
+    if ( !singleton_app_state.game_instance->initialize(&game_instance) )
+    {
+        ERI_LOG_FATAL("Game failed to initialize");
+        return FALSE;
+    }
+
+    // TODO: Hook up event handler for this
+    singleton_app_state.game_instance->on_resize(
+        singleton_app_state.game_instance,
+        singleton_app_state.current_width,
+        singleton_app_state.current_height);
+
+
     singleton_app_state.is_running = TRUE;
     singleton_app_state.is_suspended = FALSE;
     is_singleton_initialized = TRUE;
-
     return TRUE;
 }
 
@@ -68,6 +82,22 @@ b8 app_run(void)
         if ( !platform_message(&singleton_app_state.state))
         {
             singleton_app_state.is_running = FALSE;
+        }
+        
+        if ( !singleton_app_state.is_suspended )
+        {
+            if ( !singleton_app_state.game_instance->update(&singleton_app_state.game_instance, (f32)0))
+            {
+                ERI_LOG_FATAL("Game Failed to update state");
+                singleton_app_state.is_running = FALSE;
+                break;
+            }
+            if ( !singleton_app_state.game_instance->render(&singleton_app_state.game_instance, (f32)0))
+            {
+                ERI_LOG_FATAL("Game Failed to render");
+                singleton_app_state.is_running = FALSE;
+                break;
+            }
         }
     }
 

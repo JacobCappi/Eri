@@ -1,6 +1,7 @@
 #pragma once
 
 #include "defines.h"
+#include "entry.h"
 
 // Wrapper for config needed for window
 // see platform layor for specifics
@@ -14,5 +15,5 @@ typedef struct app_configs
 
 } app_configs;
 
-ERI_API b8 app_create(app_configs* configs);
+ERI_API b8 app_create(game* game_instance);
 ERI_API b8 app_run(void);
