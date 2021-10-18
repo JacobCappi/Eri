@@ -58,7 +58,10 @@ b8 platform_startup(
     // the one that is on when you startx, so it does
     // globally disable it. If I forget to turn this back on,
     // you have to reboot.
-    XAutoRepeatOff(os_state->display);
+
+    // NOTE: xset r $state is a command you can run if the close event never fired
+    // TODO: uncomment
+    // XAutoRepeatOff(os_state->display);
     os_state->connection = XGetXCBConnection(os_state->display);
 
     if (xcb_connection_has_error(os_state->connection))
@@ -181,7 +184,8 @@ b8 platform_startup(
 void platform_shutdown(platform_state *state)
 {
     linux_state *os_state = (linux_state *)state->os_specific_state;
-    XAutoRepeatOn(os_state->display);
+    // TODO: uncomment
+    //XAutoRepeatOn(os_state->display);
     xcb_destroy_window(os_state->connection ,os_state->window);
 }
 

@@ -11,15 +11,15 @@ typedef struct platform_state
     void *os_specific_state;
 } platform_state;
 
-ERI_API b8 platform_startup(
+b8 platform_startup(
     platform_state *state,
     const char *name,
     i32 x, i32 y,
     i32 width, i32 height);
 
 // ----- State Management
-ERI_API void platform_shutdown(platform_state *state);
-ERI_API b8 platform_message(platform_state *state);
+void platform_shutdown(platform_state *state);
+b8 platform_message(platform_state *state);
 // ----- END
 
 // ----- Platform based Memory Management

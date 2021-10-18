@@ -21,8 +21,8 @@ typedef enum log_level{
 } log_level;
 
 // ----- START function def
-b8 init_logging();
-void shutdown_logging();
+b8 init_logging(void);
+void shutdown_logging(void);
 ERI_API void log_message(log_level level, const char *message, ...);
 // ------ END
 
