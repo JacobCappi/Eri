@@ -1,6 +1,6 @@
 #pragma once
-#include "core/application.h"
 
+#include "core/application.h"
 
 typedef struct game
 {

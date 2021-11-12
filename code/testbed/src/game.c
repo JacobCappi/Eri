@@ -1,9 +1,10 @@
 #include "game.h"
-#include <logger.h>
+#include <core/logger.h>
 
 // Stubs
 b8 game_init(game* game_instance)
 {
+    ERI_LOG_DEBUG (" Game Successfully Init ");
     return TRUE;
 }
 

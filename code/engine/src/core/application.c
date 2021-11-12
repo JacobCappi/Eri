@@ -1,6 +1,7 @@
 #include "application.h"
 
 #include "logger.h"
+#include "game_types.h"
 #include "platform/platform.h"
 
 typedef struct app_state 
@@ -56,9 +57,9 @@ b8 app_create(game* game_instance)
         return FALSE;
     }
 
-    if ( !singleton_app_state.game_instance->initialize(&game_instance) )
+    if ( !singleton_app_state.game_instance->init(game_instance) )
     {
-        ERI_LOG_FATAL("Game failed to initialize");
+        ERI_LOG_FATAL("Game failed to init");
         return FALSE;
     }
 
@@ -72,6 +73,7 @@ b8 app_create(game* game_instance)
     singleton_app_state.is_running = TRUE;
     singleton_app_state.is_suspended = FALSE;
     is_singleton_initialized = TRUE;
+
     return TRUE;
 }
 
@@ -86,13 +88,13 @@ b8 app_run(void)
         
         if ( !singleton_app_state.is_suspended )
         {
-            if ( !singleton_app_state.game_instance->update(&singleton_app_state.game_instance, (f32)0))
+            if ( !singleton_app_state.game_instance->update(singleton_app_state.game_instance, (f32)0))
             {
                 ERI_LOG_FATAL("Game Failed to update state");
                 singleton_app_state.is_running = FALSE;
                 break;
             }
-            if ( !singleton_app_state.game_instance->render(&singleton_app_state.game_instance, (f32)0))
+            if ( !singleton_app_state.game_instance->render(singleton_app_state.game_instance, (f32)0))
             {
                 ERI_LOG_FATAL("Game Failed to render");
                 singleton_app_state.is_running = FALSE;

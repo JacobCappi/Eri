@@ -1,7 +1,9 @@
 #pragma once
 
 #include "defines.h"
-#include "entry.h"
+
+// Forward Declare struct
+struct game;
 
 // Wrapper for config needed for window
 // see platform layor for specifics
@@ -15,5 +17,5 @@ typedef struct app_configs
 
 } app_configs;
 
-ERI_API b8 app_create(game* game_instance);
+ERI_API b8 app_create(struct game* game_instance);
 ERI_API b8 app_run(void);

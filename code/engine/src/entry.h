@@ -1,3 +1,5 @@
+#pragma once
+
 #include "core/application.h"
 #include "core/logger.h"
 #include "game_types.h"
@@ -16,7 +18,7 @@ int main(void)
         return -1;
     }
 
-    if ( !(game_instance.init || game_instance.update || game_instance.render || game_instance.on_resize) )
+    if ( !game_instance.init || !game_instance.update || !game_instance.render || !game_instance.on_resize )
     {
         ERI_LOG_FATAL("One or more missing game function pointers. Make sure all function pointers exist");
         return -2;
