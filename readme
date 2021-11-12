@@ -1,12 +1,11 @@
 Start 05 August 2021:
   Lightweight 3D engine using Vulkan
   Planning on Windows and Linux platform layer to develop on both OS.
-  Using clang for both OS's, and plan on using a lightweight Build System.
+  Using clang for compiler
+  Using x11 libs for linux windows, win32 api for window's windows
   
-12 August: Finished up the logging and assertions with the help of Kohi Engine
+21.08.12: Finished up the logging and assertions with the help of Kohi Engine
 
-25 Septemeber: Finished platform layor
+21.09.25: Finished platform layer
 
-Bug with Windows layor, 'x' button not working.
-
-Entry Point and Event System needs to be worked on.
+21.11.11: Finished Application layer
