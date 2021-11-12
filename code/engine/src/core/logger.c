@@ -7,13 +7,13 @@
 #include <string.h>
 #include <stdarg.h>
 
-b8 init_logging()
+b8 init_logging(void)
 {
     // TODO: Implement
     return TRUE;
 }
 
-void shutdown_logging()
+void shutdown_logging(void)
 {
     //TODO: Implement
     // Idea is to store in query and push a lot of messages
