@@ -24,7 +24,7 @@ b8 platform_message(platform_state *state);
 
 // ----- Platform based Memory Management
 void *platform_malloc(u64 size, b8 aligned);
-void platform_free(void *memory, b8 aligned);
+void  platform_free(void *memory, b8 aligned);
 void *platform_memzero(void *memory, u64 size);
 void *platform_memcpy(void *source, const void *destination, u64 size);
 void *platform_memset(void *memory, i32 value, u64 size);
