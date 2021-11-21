@@ -1,9 +1,8 @@
 #include "game.h"
 
 #include <entry.h>
+#include <core/mem.h>
 
-// TODO: Integrate with platform layer. This is bad but needed.
-#include <stdlib.h>
 
 // Definition of extern function defined in entry.h
 b8 create_game(game* current_game)
@@ -19,7 +18,7 @@ b8 create_game(game* current_game)
     current_game->render  = game_render;
     current_game->on_resize = game_on_resize;
 
-    current_game->game_state = malloc( sizeof(game_state) );
+    current_game->game_state = eri_malloc( sizeof(game_state), MEM_GAME );
 
     return TRUE;
 }
