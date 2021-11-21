@@ -3,6 +3,7 @@
 #include "logger.h"
 #include "game_types.h"
 #include "platform/platform.h"
+#include "core/mem.h"
 
 typedef struct app_state 
 {
@@ -79,6 +80,9 @@ b8 app_create(game* game_instance)
 
 b8 app_run(void)
 {
+    // TODO: memory leak, but just testing : REMOVE
+    ERI_LOG_INFO(get_mem_status());
+
     while ( singleton_app_state.is_running )
     {
         if ( !platform_message(&singleton_app_state.state))
