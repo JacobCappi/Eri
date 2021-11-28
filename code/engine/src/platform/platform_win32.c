@@ -224,7 +224,7 @@ void platform_cerr(const char *text, u8 color)
     printf("\033[%sm%s\033[0m", color_strings[color], text);
 }
 
-f64 platform_time()
+f64 platform_time(void)
 {
     LARGE_INTEGER now_time;
     QueryPerformanceCounter(&now_time);

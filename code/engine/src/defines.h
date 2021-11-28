@@ -51,7 +51,7 @@ STATIC_ASSERT(sizeof(f32) == 4, "Expected f32 to be 4 bytes.");
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) 
 #define ERI_PLATFORM_WINDOWS 1
 #ifndef _WIN64
-#error "[ ERR ] Must be 64 bit Windows"
+#error "[ ERR ] 32 bit Windows not supported"
 #endif
 #elif defined(__linux__) || defined(__gnu_linux__)
 #define ERI_PLATFORM_LINUX 1
