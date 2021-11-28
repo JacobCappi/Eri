@@ -153,7 +153,7 @@ b8 platform_startup(
 
     // Replaces Reply and Delete callbacks (?)
     // With minimal documentation, Kohi also struggled
-    // throught his code
+    // throughout this code
     xcb_change_property(
         os_state->connection,
         XCB_PROP_MODE_REPLACE,
