@@ -17,5 +17,7 @@ typedef struct app_configs
 
 } app_configs;
 
+// ----- Main Loop Functions
 ERI_API b8 app_create(struct game* game_instance);
 ERI_API b8 app_run(void);
+// ----- END

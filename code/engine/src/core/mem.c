@@ -38,7 +38,6 @@ static const char* mem_tag_headers[MEM_MAX_TAGS] =
 
 static struct mem_stats stats;
 
-
 void init_memory(void)
 {
     platform_memzero(&stats, sizeof(stats));
@@ -50,6 +49,7 @@ void shutdown_memory(void)
     return;
 }
 
+// Debug function to output all malloc totals by tag
 char* get_mem_status(void)
 {
     const u64 GB = 1024 * 1024 * 1024;

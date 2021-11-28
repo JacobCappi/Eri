@@ -1,10 +1,10 @@
 #pragma once
 #include "defines.h"
 
-#define LOG_WARNING_ENABLED 1
-#define ERI_LOG_INFO_ENABLED 1
-#define LOG_DEBUG_ENABLED 1
-#define LOG_TRACE_ENABLED 1
+#define LOG_WARNING_ENABLED     1
+#define ERI_LOG_INFO_ENABLED    1
+#define LOG_DEBUG_ENABLED       1
+#define LOG_TRACE_ENABLED       1
 
 #if RELEASE == 1
 # define LOG_DEBUG_ENABLE = 0
@@ -12,21 +12,21 @@
 #endif
 
 typedef enum log_level{
-    LOG_LEVEL_FATAL = 0,
-    LOG_LEVEL_ERROR = 1,
-    LOG_LEVEL_WARNING = 2,
-    LOG_LEVEL_INFO = 3,
-    LOG_LEVEL_DEBUG = 4,
-    LOG_LEVEL_TRACE = 5
+    LOG_LEVEL_FATAL     = 0,
+    LOG_LEVEL_ERROR     = 1,
+    LOG_LEVEL_WARNING   = 2,
+    LOG_LEVEL_INFO      = 3,
+    LOG_LEVEL_DEBUG     = 4,
+    LOG_LEVEL_TRACE     = 5
 } log_level;
 
-// ----- START function def
+// ----- Subsystem Handling
 b8 init_logging(void);
 void shutdown_logging(void);
-
-ERI_API void log_message(log_level level, const char *message, ...);
 // ------ END
 
+
+ERI_API void log_message(log_level level, const char *message, ...);
 
 // These are always enabled
 #ifndef ERI_LOG_FATAL
@@ -37,7 +37,6 @@ ERI_API void log_message(log_level level, const char *message, ...);
     #define ERI_LOG_ERROR(message, ...) log_message(LOG_LEVEL_ERROR, message, ##__VA_ARGS__)
 #endif
 
-// KOHI's idea of not defining if not enabled. Apparently more effecient
 #if LOG_WARNING_ENABLED == 1
     #define ERI_LOG_WARNING(message, ...) log_message(LOG_LEVEL_WARNING, message, ##__VA_ARGS__)
 #else

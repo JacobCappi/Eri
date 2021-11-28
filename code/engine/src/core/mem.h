@@ -32,8 +32,11 @@ typedef enum mem_tag
     MEM_MAX_TAGS
 } mem_tag;
 
+// ----- Subsystem Handling
 void init_memory(void);
 void shutdown_memory(void);
+// ----- END
+
 
 // Returns char* of mem usage
 ERI_API char* get_mem_status(void);

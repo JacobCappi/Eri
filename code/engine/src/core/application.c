@@ -5,6 +5,7 @@
 #include "platform/platform.h"
 #include "core/mem.h"
 
+// Current state of Application
 typedef struct app_state 
 {
     b8 is_running;
@@ -18,6 +19,8 @@ typedef struct app_state
 } app_state;
 
 static app_state singleton_app_state;
+
+// Singleton being handled using this static boolean
 static b8 is_singleton_initialized = FALSE;
 
 // All inits will be done here (excluding game specific code)
@@ -35,12 +38,12 @@ b8 app_create(game* game_instance)
 // ----- END
 
 // TODO: Remove once done testing logger
-    ERI_LOG_FATAL("Testing %s %s", "testing", "working");
-    ERI_LOG_ERROR("Testing %s %s", "testing", "working");
-    ERI_LOG_WARNING("Testing %s %s", "testing", "working");
-    ERI_LOG_INFO("Testing %s %s", "testing", "working");
-    ERI_LOG_DEBUG("Testing %s %s", "testing", "working");
-    ERI_LOG_TRACE("Testing %s %s", "testing", "working");
+    ERI_LOG_FATAL("Testing %s %s %f", "testing", "Numbers: ", 1.68);
+    ERI_LOG_ERROR("Testing %s %s %f", "testing", "Numbers: ", 1.68);
+    ERI_LOG_WARNING("Testing %s %s %f", "testing", "Numbers: ", 1.68);
+    ERI_LOG_INFO("Testing %s %s %f", "testing", "Numbers: ", 1.68);
+    ERI_LOG_DEBUG("Testing %s %s %f", "testing", "Numbers: ", 1.68);
+    ERI_LOG_TRACE("Testing %s %s %f", "testing", "Numbers: ", 1.68);
 // ----- END
 
     if ( 
@@ -78,6 +81,7 @@ b8 app_create(game* game_instance)
     return TRUE;
 }
 
+// The Game loop
 b8 app_run(void)
 {
     // TODO: memory leak, but just testing : REMOVE
@@ -94,13 +98,13 @@ b8 app_run(void)
         {
             if ( !singleton_app_state.game_instance->update(singleton_app_state.game_instance, (f32)0))
             {
-                ERI_LOG_FATAL("Game Failed to update state");
+                ERI_LOG_FATAL("Game failed to update state");
                 singleton_app_state.is_running = FALSE;
                 break;
             }
             if ( !singleton_app_state.game_instance->render(singleton_app_state.game_instance, (f32)0))
             {
-                ERI_LOG_FATAL("Game Failed to render");
+                ERI_LOG_FATAL("Game failed to render");
                 singleton_app_state.is_running = FALSE;
                 break;
             }

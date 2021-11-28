@@ -36,6 +36,6 @@ void platform_cerr(const char *text, u8 color);
 // ----- END
 
 // ------ Platform based OS commands
-f64 platform_time();
+f64 platform_time(void);
 void platform_sleep(u64 ms);
 // ----- END

@@ -8,11 +8,13 @@
 extern b8 create_game(game *current_game);
 
 
-// Entry Point to Application
+// Entry Point to ERI
 int main(void)
 {
+    // Init memory done here because subsystem startups
     init_memory();
     game game_instance;
+
     if ( !create_game(&game_instance) )
     {
         ERI_LOG_FATAL("Eri could not create this game");
@@ -31,7 +33,7 @@ int main(void)
         return 1;
     }
 
-    // The Game Loop
+    // The Game Loop is app_run
     if( !app_run() )
     {
         ERI_LOG_INFO("Eri failed to shutdown gracefully ");
