@@ -1,7 +1,6 @@
 #pragma once
 // Note: Memory.h was taken, so mem.h
-
-#include <defines.h>
+#include "defines.h"
 
 typedef enum mem_tag
 {
@@ -46,5 +45,5 @@ ERI_API void  eri_free(void *memory, u64 size, mem_tag tag);
 ERI_API void *eri_malloc(u64 size, mem_tag tag);
 
 ERI_API void *eri_memset(void *memory, i32 value, u64 size);
-ERI_API void *eri_memcpy(void *source, const void *destination, u64 size);
+ERI_API void *eri_memcpy(void *destination, const void *source, u64 size);
 ERI_API void *eri_memzero(void *memory, u64 size);

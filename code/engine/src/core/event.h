@@ -43,13 +43,6 @@ typedef enum internal_system_event_codes {
     MAX_EVENT_CODE = 0xFF
 } internal_system_event_codes; 
 
-// GOAL
-/*
-    publisher, subscriber
-    raise event with event args, 
-    subscribe, unsub, 
-*/
-
 // ----- Subsystem handling
 b8 event_init(void);
 void event_shutdown(void);

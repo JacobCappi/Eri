@@ -1,9 +1,9 @@
-#include "application.h"
+#include "core/application.h"
 
-#include "logger.h"
-#include "game_types.h"
-#include "platform/platform.h"
+#include "core/logger.h"
 #include "core/mem.h"
+#include "platform/platform.h"
+#include "game_types.h"
 
 // Current state of Application
 typedef struct app_state 

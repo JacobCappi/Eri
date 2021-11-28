@@ -1,4 +1,4 @@
-#include "mem.h"
+#include "core/mem.h"
 
 #include "core/logger.h"
 #include "platform/platform.h"
@@ -130,9 +130,9 @@ void *eri_memset(void *memory, i32 value, u64 size)
     return platform_memset(memory, value, size);
 }
 
-void *eri_memcpy(void *source, const void *destination, u64 size)
+void *eri_memcpy(void *destination, const void *source, u64 size)
 {
-    return platform_memcpy(source, destination, size);
+    return platform_memcpy(destination, source, size);
 }
 
 void *eri_memzero(void *memory, u64 size)
