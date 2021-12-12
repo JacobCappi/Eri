@@ -66,6 +66,7 @@ void *_darray_insert(void *darray, u64 index, const void* value)
         ERI_LOG_ERROR("Index not in bounds, INDEX: %d SIZE: %d", index, size);
         return darray;
     }
+
     if (size >= capacity)
     {
         darray = _darray_auto_resize(darray);
@@ -75,9 +76,9 @@ void *_darray_insert(void *darray, u64 index, const void* value)
 
     if (index != (size-1))
     {
-        u64 bumped = starting_address + (index + 1 * stride);
-        u64 chunk = starting_address + (index * stride);
-        eri_memcpy(bumped, chunk, stride * (size - index));
+        u64 destination = starting_address + (index + 1 * stride);
+        u64 source = starting_address + (index * stride);
+        eri_memcpy( (void *)destination, (void *)source, stride * (size - index));
     }
     u64 index_location = starting_address + (index * stride);
     eri_memcpy((void *)index_location, value, stride);
@@ -86,7 +87,31 @@ void *_darray_insert(void *darray, u64 index, const void* value)
     return darray;
 }
 
-void *_darray_remove(void *darray, u64 index, void *removed_value);
+void *_darray_remove(void *darray, u64 index, void *removed_value)
+{
+    u64 size = darray_get_size(darray);
+    u64 stride = darray_get_stride(darray);
+    u64 capacity = darray_get_capacity(darray);
+
+    if (index >= size)
+    {
+        ERI_LOG_ERROR("Index not in bounds, INDEX: %d SIZE: %d", index, size);
+        return darray;
+    }
+
+    u64 starting_address = (u64)darray;
+    eri_memcpy(removed_value, (void *)(starting_address + (index * stride)), stride);
+
+    if (index != (size-1))
+    {
+        u64 destination = starting_address + (index * stride);
+        u64 source = starting_address + (index + 1 * stride);
+        eri_memcpy( (void *)destination, (void *)source, stride * (size - index));
+    }
+
+    _darray_set_setting(darray, DARRAY_SIZE, size - 1);
+    return darray;
+}
 
 void *_darray_push(void *darray, const void* value)
 {
@@ -116,6 +141,7 @@ void *_darray_pop(void *darray, void *popped_value)
     u64 end_address = (u64)darray;
     end_address += ( (size-1) *stride);
 
-    eri_memcpy(popped_value, end_address, stride);
+    eri_memcpy(popped_value, (void *)end_address, stride);
     _darray_set_setting(darray, DARRAY_SIZE, size - 1);
+    return darray;
 }

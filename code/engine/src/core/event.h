@@ -50,11 +50,8 @@ void event_shutdown(void);
 
 typedef b8 (*on_raised_event)(u16 event_code, void *publisher, void *subsciber_instance, event_args data);
 
-// ----- Event Hook ups
-
 // Hooks up / Removes subscriber to on raised event function pointer
-ERI_API b8 subscribe_event(u16 event_code, void *subscriber, on_raised_event);
-ERI_API b8 unsubscribe_event(u16 event_code, void *subscriber, on_raised_event);
-
+ERI_API b8 subscribe_event(u16 event_code, void *subscriber, on_raised_event callback);
+ERI_API b8 unsubscribe_event(u16 event_code, void *subscriber, on_raised_event callback);
 ERI_API b8 raise_event(u16 event_code, void *publisher, event_args data);
 // ----- END
