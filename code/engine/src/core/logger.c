@@ -1,5 +1,6 @@
-#include "logger.h"
-#include "asserts.h"
+#include "core/asserts.h"
+
+#include "core/logger.h"
 #include "platform/platform.h"
 
 //TODO: Platform layor to fix this

@@ -172,9 +172,9 @@ void *platform_memzero(void *memory, u64 size)
     return memset(memory, 0, size);
 }
 
-void *platform_memcpy(void *source, const void *destination, u64 size)
+void *platform_memcpy(void *destination, const void *source, u64 size)
 {
-    return memcpy(source, destination, size);
+    return memcpy(destination, source, size);
 }
 
 void *platform_memset(void *memory, i32 value, u64 size)
