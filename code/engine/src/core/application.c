@@ -1,5 +1,6 @@
 #include "core/application.h"
 
+#include "core/event.h"
 #include "core/logger.h"
 #include "core/mem.h"
 #include "platform/platform.h"
@@ -35,6 +36,11 @@ b8 app_create(game* game_instance)
     singleton_app_state.game_instance = game_instance;
 // ----- Init all Subsystems
     init_logging();
+    if ( !init_event() )
+    {
+        return FALSE;
+    }
+
 // ----- END
 
 // TODO: Remove once done testing logger
@@ -78,6 +84,7 @@ b8 app_create(game* game_instance)
     singleton_app_state.is_suspended = FALSE;
     is_singleton_initialized = TRUE;
 
+
     return TRUE;
 }
 
@@ -113,6 +120,8 @@ b8 app_run(void)
 
     // incase anything weird happened
     singleton_app_state.is_running = FALSE;
+    // TODO: refactor to have everything look the same
+    shutdown_event();
     platform_shutdown(&singleton_app_state.state);
 
     return TRUE;

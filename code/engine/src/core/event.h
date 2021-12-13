@@ -44,8 +44,8 @@ typedef enum internal_system_event_codes {
 } internal_system_event_codes; 
 
 // ----- Subsystem handling
-b8 event_init(void);
-void event_shutdown(void);
+b8 init_event(void);
+void shutdown_event(void);
 // ----- END
 
 typedef b8 (*on_raised_event)(u16 event_code, void *publisher, void *subsciber_instance, event_args data);
