@@ -5,7 +5,7 @@
 
 
 // Definition of extern function defined in entry.h
-b8 create_game(game* current_game)
+b8 create_game(struct game* current_game)
 {
     current_game->configs.start_x = 100;
     current_game->configs.start_y = 100;
@@ -18,7 +18,7 @@ b8 create_game(game* current_game)
     current_game->render  = game_render;
     current_game->on_resize = game_on_resize;
 
-    current_game->game_state = eri_malloc( sizeof(game_state), MEM_GAME );
+    current_game->game_state = eri_malloc( sizeof(struct game_state), MEM_GAME );
 
     return TRUE;
 }

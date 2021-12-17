@@ -2,7 +2,7 @@
 // Note: Memory.h was taken, so mem.h
 #include "defines.h"
 
-typedef enum mem_tag
+enum mem_tag
 {
     // Should only be temp use 
     MEM_UNKNOWN,
@@ -29,7 +29,7 @@ typedef enum mem_tag
     MEM_SCENE,
 
     MEM_MAX_TAGS
-} mem_tag;
+};
 
 // ----- Subsystem Handling
 void init_memory(void);
@@ -41,8 +41,8 @@ void shutdown_memory(void);
 ERI_API char* get_mem_status(void);
 
 // Note: Free contains size parameter for engine to update mem use
-ERI_API void  eri_free(void *memory, u64 size, mem_tag tag);
-ERI_API void *eri_malloc(u64 size, mem_tag tag);
+ERI_API void  eri_free(void *memory, u64 size, enum mem_tag tag);
+ERI_API void *eri_malloc(u64 size, enum mem_tag tag);
 
 ERI_API void *eri_memset(void *memory, i32 value, u64 size);
 ERI_API void *eri_memcpy(void *destination, const void *source, u64 size);

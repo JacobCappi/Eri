@@ -2,15 +2,16 @@
 
 #include "core/logger.h"
 #include "platform/platform.h"
+#include "core/mem.h"
 
 //TODO: Platform layor to fix this
 #include <stdio.h>
-#include <string.h>
 #include <stdarg.h>
 
 b8 init_logging(void)
 {
-    // TODO: Implement
+    // TODO: Implement (maybe file i/o?)
+    // TODO: Some kind of circular array for multiple logs
     return TRUE;
 }
 
@@ -21,8 +22,9 @@ void shutdown_logging(void)
     // in one i/o. If shutdown, make sure all logs are sent
 }
 
-void log_message(log_level level, const char *message, ...)
+void log_message(enum log_level level, const char *message, ...)
 {
+    u16 max_msg_sz = 32000;
     const char *logging_level[6] = {
         " [ FTL ] ",
         " [ ERR ] ",
@@ -32,11 +34,9 @@ void log_message(log_level level, const char *message, ...)
         " [ TRC ] "
     };
 
-    // Input message is apparently not dynamic as it is 'slower'. Chose to put it on stack
-    // Poses 32k char limit though (probably not a problem)
-    char input_message[32000];
-    char output_message[32000];
-    memset(input_message, 0, sizeof(input_message));
+    char input_message[max_msg_sz];
+    char output_message[max_msg_sz];
+    eri_memset(input_message, 0, sizeof(input_message));
 
     // apparently Microsoft and Clang don't agree on stuff, so this solves a bug
     // over the traditional va_list
@@ -45,10 +45,10 @@ void log_message(log_level level, const char *message, ...)
     vsnprintf(input_message, sizeof(input_message), message, arg_ptr);
     va_end(arg_ptr);
 
-    sprintf(output_message, "%s%s\n", logging_level[level], input_message);
+    snprintf(output_message, max_msg_sz, "%s%s\n", logging_level[level], input_message);
 
     // Fatals and Errors are given special treatment
-    if ( level < LOG_LEVEL_WARNING )
+    if (level < LOG_LEVEL_WARNING)
     {
         platform_cerr(output_message, level);
     }

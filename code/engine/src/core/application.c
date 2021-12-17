@@ -7,71 +7,65 @@
 #include "game_types.h"
 
 // Current state of Application
-typedef struct app_state 
+struct app_state 
 {
+    struct platform_state state;
+    struct game* game_instance;
+
     b8 is_running;
     b8 is_suspended;
     i16 current_width;
     i16 current_height;
     f64 time;
+};
 
-    game* game_instance;
-    platform_state state;
-} app_state;
-
-static app_state singleton_app_state;
+static struct app_state singleton_app_state;
 
 // Singleton being handled using this static boolean
-static b8 is_singleton_initialized = FALSE;
+static b8 is_singleton_init = FALSE;
 
 // All inits will be done here (excluding game specific code)
-b8 app_create(game* game_instance)
+b8 app_create(struct game* game_instance)
 {
-    if ( is_singleton_initialized )
-    {
-        ERI_LOG_ERROR("Application attempted to be created more than once");
-        return FALSE;
-    }
-
-    singleton_app_state.game_instance = game_instance;
 // ----- Init all Subsystems
+    ERI_LOG_INFO("Eri initializing all subsystems...");
+    init_memory();
     init_logging();
     if ( !init_event() )
     {
         return FALSE;
     }
 
-// ----- END
+    if ( is_singleton_init )
+    {
+        ERI_LOG_ERROR("Application attempted to be created more than once");
+        return FALSE;
+    }
 
-// TODO: Remove once done testing logger
-    ERI_LOG_FATAL("Testing %s %s %f", "testing", "Numbers: ", 1.68);
-    ERI_LOG_ERROR("Testing %s %s %f", "testing", "Numbers: ", 1.68);
-    ERI_LOG_WARNING("Testing %s %s %f", "testing", "Numbers: ", 1.68);
-    ERI_LOG_INFO("Testing %s %s %f", "testing", "Numbers: ", 1.68);
-    ERI_LOG_DEBUG("Testing %s %s %f", "testing", "Numbers: ", 1.68);
-    ERI_LOG_TRACE("Testing %s %s %f", "testing", "Numbers: ", 1.68);
-// ----- END
+    singleton_app_state.game_instance = game_instance;
 
-    if ( 
-        !platform_startup(
-        &singleton_app_state.state,
-        game_instance->configs.app_name,
-        game_instance->configs.start_x,
-        game_instance->configs.start_y,
-        game_instance->configs.start_width,
-        game_instance->configs.start_height
-        ) 
-    )
+
+    ERI_LOG_INFO("Eri initializing platform layer...");
+    if ( !init_platform(
+            &singleton_app_state.state,
+            game_instance->configs.app_name,
+            game_instance->configs.start_x,
+            game_instance->configs.start_y,
+            game_instance->configs.start_width,
+            game_instance->configs.start_height ) 
+        )
     {
         ERI_LOG_ERROR("Platform failed to start.");
         return FALSE;
     }
 
+    ERI_LOG_INFO("Eri initializing game...");
     if ( !singleton_app_state.game_instance->init(game_instance) )
     {
         ERI_LOG_FATAL("Game failed to init");
         return FALSE;
     }
+// ----- END
 
     // TODO: Hook up event handler for this
     singleton_app_state.game_instance->on_resize(
@@ -82,7 +76,7 @@ b8 app_create(game* game_instance)
 
     singleton_app_state.is_running = TRUE;
     singleton_app_state.is_suspended = FALSE;
-    is_singleton_initialized = TRUE;
+    is_singleton_init = TRUE;
 
 
     return TRUE;
@@ -120,9 +114,11 @@ b8 app_run(void)
 
     // incase anything weird happened
     singleton_app_state.is_running = FALSE;
-    // TODO: refactor to have everything look the same
+
     shutdown_event();
-    platform_shutdown(&singleton_app_state.state);
+    shutdown_platform(&singleton_app_state.state);
+    shutdown_logging();
+    shutdown_memory();
 
     return TRUE;
 }

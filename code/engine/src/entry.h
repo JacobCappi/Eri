@@ -5,15 +5,13 @@
 #include "core/mem.h"
 #include "game_types.h"
 
-extern b8 create_game(game *current_game);
+extern b8 create_game(struct game *current_game);
 
 
 // Entry Point to ERI
 int main(void)
 {
-    // Init memory done here because subsystem startups
-    init_memory();
-    game game_instance;
+    struct game game_instance;
 
     if ( !create_game(&game_instance) )
     {
@@ -40,6 +38,5 @@ int main(void)
         return 2;
     }
 
-    shutdown_memory();
     return 0;
 }

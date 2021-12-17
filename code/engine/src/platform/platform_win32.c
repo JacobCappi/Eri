@@ -1,6 +1,8 @@
 #include "platform/platform.h"
 
-// OS Check to compile proper implementation of interface
+// TODO: Refactor this. Can't without windows libs on my linux system
+// I don't think I should use mem.h, since mem.h just calls platform memory 
+// I am forfeiting memory tracking though
 #if ERI_PLATFORM_WINDOWS
 
 #include "core/logger.h"
@@ -10,29 +12,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct win32_state
+struct win32_state
 {
     HINSTANCE h_instance;
     HWND h_wnd;
-}win32_state;
+};
 
 
-// Clock
-// Kohi's solution to absolute Time
-static f64 clock_frequency; // Multiplier for clock cycles to get seconds
+static f64 clock_frequency;      // Multiplier for clock cycles to get seconds
 static LARGE_INTEGER start_time; // Starting time of the application
 
 LRESULT CALLBACK wnd_msg_handler(HWND h_wnd, u32 message, WPARAM w_param, LPARAM l_param);
 
-b8 platform_startup(
+b8 init_platform(
     platform_state *state,
     const char *name,
     i32 x, i32 y,
     i32 width, i32 height
 )
 {
-    state->os_specific_state = platform_malloc( sizeof(win32_state), FALSE );
-    win32_state *os_state = (win32_state *)state->os_specific_state;
+    state->os_specific_state = platform_malloc(sizeof(win32_state), FALSE);
+    struct win32_state *os_state = (win32_state *)state->os_specific_state;
 
     os_state->h_instance = GetModuleHandleA(NULL);
     const char* window_class_name = "eri_window_class";

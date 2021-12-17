@@ -1,6 +1,5 @@
 #include "platform/platform.h"
 
-// OS Check to compile proper implementation of interface
 #if ERI_PLATFORM_LINUX 
 
 #include "core/logger.h"
@@ -14,7 +13,6 @@
 #include <X11/Xlib-xcb.h> 
 #include <sys/time.h>
 
-// Some distros use different libs
 // nanosleep vs usleep
 #if _POSIX_C_SOURCE >= 199309L
     #include <time.h>
@@ -28,10 +26,10 @@
 
 // xlib and xcb concept from KOHI
 // Honestly, linux has too many choices, and the
-// documentation is even worse than msdn's win32, so 
+// documentation is pretty bad.
 // I'll go with what the professional did with
 // linux platform layer
-typedef struct linux_state 
+struct linux_state 
 {
     Display *display; // xLib portion
     xcb_connection_t *connection;
@@ -39,17 +37,18 @@ typedef struct linux_state
     xcb_screen_t *screen;
     xcb_atom_t wm_protocols;
     xcb_atom_t wm_delete_window;
-} linux_state;
+};
 
-b8 platform_startup(
-    platform_state *state,
+b8 init_platform(
+    struct platform_state *state,
     const char *name,
     i32 x, i32 y,
     i32 width, i32 height
 )
 {
-    state->os_specific_state = platform_malloc(sizeof(linux_state), FALSE);
-    linux_state *os_state = (linux_state *)state->os_specific_state;
+    ERI_LOG_INFO("Eri initializing Linux platform layer...");
+    state->os_specific_state = platform_malloc(sizeof(struct linux_state), FALSE);
+    struct linux_state *os_state = (struct linux_state *)state->os_specific_state;
 
     // Connect to the X Server ( the only xlib call)
     os_state->display = XOpenDisplay(NULL);
@@ -75,6 +74,7 @@ b8 platform_startup(
 
     // Then we *have* to iteratate through available screens to be able to set the screen
     xcb_screen_iterator_t screen_iterator = xcb_setup_roots_iterator(xcb_setup);
+    // TODO: this makes 0 sense... what is this?
     int screen_p = 0;
     for (i32 s = screen_p; s > 0; s--) {
         xcb_screen_next(&screen_iterator);
@@ -87,7 +87,6 @@ b8 platform_startup(
     // just enabled all of the ones we'll be needing right here.
 
     // Register event types.
-    // XCB_CW_BACK_PIXEL = filling then window bg with a single colour
     // XCB_CW_EVENT_MASK is required.
     u32 event_mask = XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
 
@@ -101,7 +100,7 @@ b8 platform_startup(
     // In this case, (black it out, and enable all these events)
     u32 value_list[] = {os_state->screen->black_pixel, event_values};
 
-    // Window creation returns a 'cookie', and it is what it is.
+    // Window creation returns a 'cookie', and it is what it is....
     xcb_void_cookie_t cookie = xcb_create_window(
         os_state->connection,
         XCB_COPY_FROM_PARENT, // depth?
@@ -178,25 +177,27 @@ b8 platform_startup(
         return FALSE;
     }
 
+    ERI_LOG_INFO("Eri successfully initialized linux playform layer...");
     return TRUE;
 }
 
-void platform_shutdown(platform_state *state)
+void shutdown_platform(struct platform_state *state)
 {
-    linux_state *os_state = (linux_state *)state->os_specific_state;
+    ERI_LOG_INFO("Eri shutting down linux platform layer...");
+    struct linux_state *os_state = (struct linux_state *)state->os_specific_state;
     // TODO: uncomment
     //XAutoRepeatOn(os_state->display);
     xcb_destroy_window(os_state->connection ,os_state->window);
 }
 
-b8 platform_message(platform_state *state)
+b8 platform_message(struct platform_state *state)
 {
     // similiar to win32 platform message pumping
-    linux_state *os_state = (linux_state *)state->os_specific_state;
+    struct linux_state *os_state = (struct linux_state *)state->os_specific_state;
     xcb_generic_event_t* event;
 
-    xcb_client_message_event_t* c_message;
-    b8 quit_flagged = FALSE;
+    xcb_client_message_event_t* client_message;
+    b8 exit_flagged = FALSE;
 
     // Poll for events until null is returned.
     while (event != 0) {
@@ -224,12 +225,11 @@ b8 platform_message(platform_state *state)
             case XCB_CONFIGURE_NOTIFY: {
                 // TODO: Resizing
             } break;
-
             case XCB_CLIENT_MESSAGE: {
-                c_message = (xcb_client_message_event_t*)event;
+                client_message = (xcb_client_message_event_t*)event;
                 // Window close
-                if (c_message->data.data32[0] == os_state->wm_delete_window) {
-                    quit_flagged = TRUE;
+                if (client_message->data.data32[0] == os_state->wm_delete_window) {
+                    exit_flagged = TRUE;
                 }
             } break;
             default:
@@ -240,7 +240,7 @@ b8 platform_message(platform_state *state)
         // The thing is dynamic
         free(event);
     }
-    return !quit_flagged;
+    return !exit_flagged;
 }
 
 // TODO: Memory systems: currently temp use of stdlib

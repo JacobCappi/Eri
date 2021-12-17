@@ -12,14 +12,14 @@
     [0] void* DATA [really 3]
 */
 
-typedef enum
+ enum darray_settings
 {
     DARRAY_CAPACITY,
     DARRAY_SIZE,
     DARRAY_STRIDE,
 
     SETTINGS_SIZE 
-} darray_settings;
+};
 
 // ----- Init Functions
 ERI_API void *_darray_create(u64 capacity, u64 stride);
@@ -27,8 +27,8 @@ ERI_API void _darray_destroy(void *darray);
 // ----- END
 
 // ----- 
-ERI_API u64 _darray_get_setting(void *darray, darray_settings setting);
-ERI_API void _darray_set_setting(void *darray, darray_settings setting, u64 value);
+ERI_API u64 _darray_get_setting(void *darray, enum darray_settings setting);
+ERI_API void _darray_set_setting(void *darray, enum darray_settings setting, u64 value);
 
 // Will just double array size for minimal performance use
 ERI_API void *_darray_auto_resize(void *darray);
@@ -46,7 +46,7 @@ ERI_API void *_darray_pop(void *darray, void *popped_value);
 #define darray_create_default(type)                        \
     _darray_create(DARRAY_DEFAULT_CAPACITY, sizeof(type))
 
-#define darray_create(type, capacity)                 \
+#define darray_create(type, capacity)                      \
     _darray_create(capacity, sizeof(type))
 
 #define darray_destroy(darray)                             \
