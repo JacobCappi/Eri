@@ -2,10 +2,10 @@
 
 #include "defines.h"
 
-typedef struct event_args
+struct event_args
 {
     // Max of 128 bits for event args 
-    union 
+    union
     {
         i64 i64[2];
         i32 i32[4];
@@ -21,11 +21,11 @@ typedef struct event_args
         f32 f32[4];
 
         char str[16];
-    } data;
-} event_args;
+    };
+};
 
 // KOHI design concept: 0-255 internal, 255+ application
-typedef enum internal_system_event_codes {
+enum internal_system_event_codes {
 
     // Shuts the application down on the next frame.
     EVENT_APPLICATION_QUIT = 0x01,
@@ -41,17 +41,17 @@ typedef enum internal_system_event_codes {
     EVENT_WINDOW_RESIZE = 0x08,
 
     MAX_EVENT_CODE = 0xFF
-} internal_system_event_codes; 
+}; 
 
 // ----- Subsystem handling
 b8 init_event(void);
 void shutdown_event(void);
 // ----- END
 
-typedef b8 (*on_raised_event)(u16 event_code, void *publisher, void *subsciber_instance, event_args data);
+typedef b8 (*on_raised_event)(u16 event_code, void *publisher, void *subsciber_instance, struct event_args data);
 
 // Hooks up / Removes subscriber to on raised event function pointer
 ERI_API b8 subscribe_event(u16 event_code, void *subscriber, on_raised_event callback);
 ERI_API b8 unsubscribe_event(u16 event_code, void *subscriber, on_raised_event callback);
-ERI_API b8 raise_event(u16 event_code, void *publisher, event_args data);
+ERI_API b8 raise_event(u16 event_code, void *publisher, struct event_args data);
 // ----- END

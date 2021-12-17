@@ -40,18 +40,21 @@ static struct mem_stats stats;
 
 void init_memory(void)
 {
+    ERI_LOG_INFO("Eri initialized memory subsystem...");
     platform_memzero(&stats, sizeof(stats));
 }
 
 void shutdown_memory(void)
 {
     // TODO: Assign shutdown if I ever have something to cleanup
+    ERI_LOG_INFO("Eri shutdown memory subsystem...");
     return;
 }
 
 // Debug function to output all malloc totals by tag
 char* get_mem_status(void)
 {
+    ERI_LOG_INFO("Debug function \"get_mem_status\" called");
     const u64 GB = 1024 * 1024 * 1024;
     const u64 MB = 1024 * 1024;
     const u64 KB = 1024;
@@ -95,7 +98,7 @@ char* get_mem_status(void)
     return ret_value;
 }
 
-void *eri_malloc(u64 size, mem_tag tag)
+void *eri_malloc(u64 size, enum mem_tag tag)
 {
     if (tag == MEM_UNKNOWN)
     {
@@ -112,7 +115,7 @@ void *eri_malloc(u64 size, mem_tag tag)
     return memory;
 }
 
-void  eri_free(void *memory, u64 size, mem_tag tag)
+void  eri_free(void *memory, u64 size, enum mem_tag tag)
 {
     if (tag == MEM_UNKNOWN)
     {

@@ -26,13 +26,13 @@ void _darray_destroy(void *darray)
     eri_free(full_array, full_size, MEM_DARRAY);
 }
 
-u64 _darray_get_setting(void *darray, darray_settings setting)
+u64 _darray_get_setting(void *darray, enum darray_settings setting)
 {
     u64 *full_array = darray - SETTINGS_SIZE;
     return full_array[setting];
 }
 
-void _darray_set_setting(void *darray, darray_settings setting, u64 value)
+void _darray_set_setting(void *darray, enum darray_settings setting, u64 value)
 {
     u64 *full_array = darray - SETTINGS_SIZE;
     full_array[setting] = value;

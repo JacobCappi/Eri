@@ -5,7 +5,7 @@
 
 #define ERI_ASSERTIONS_ENABLED
 
-#ifdef ERI_ASSERTIONS_ENABLED
+#ifdef  ERI_ASSERTIONS_ENABLED
 // Also from KOHI, addressed bug with different naming schemes
 #if _MSC_VER
     #include <intrin.h>
