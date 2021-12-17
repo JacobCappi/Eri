@@ -27,15 +27,8 @@ static b8 is_singleton_init = FALSE;
 // All inits will be done here (excluding game specific code)
 b8 app_create(struct game* game_instance)
 {
-// ----- Init all Subsystems
-    ERI_LOG_INFO("Eri initializing all subsystems...");
-    init_memory();
-    init_logging();
-    if ( !init_event() )
-    {
-        return FALSE;
-    }
-
+    ERI_LOG_INFO("Eri creating application");
+// ----- Init Remaining Systems
     if ( is_singleton_init )
     {
         ERI_LOG_ERROR("Application attempted to be created more than once");
@@ -86,6 +79,7 @@ b8 app_create(struct game* game_instance)
 b8 app_run(void)
 {
     // TODO: memory leak, but just testing : REMOVE
+    ERI_LOG_INFO("Eri starting application game loop...");
     ERI_LOG_INFO(get_mem_status());
 
     while ( singleton_app_state.is_running )
@@ -115,6 +109,7 @@ b8 app_run(void)
     // incase anything weird happened
     singleton_app_state.is_running = FALSE;
 
+    ERI_LOG_INFO("Eri shutting down...");
     shutdown_event();
     shutdown_platform(&singleton_app_state.state);
     shutdown_logging();

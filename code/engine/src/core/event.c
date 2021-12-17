@@ -44,7 +44,7 @@ b8 init_event(void)
 
 void shutdown_event() 
 {
-    ERI_LOG_INFO("Eri shutting odnw event subsystem");
+    ERI_LOG_INFO("Eri shutting down event subsystem");
     // Free the events arrays. And objects pointed to should be destroyed on their own.
     for(u16 i = 0; i < MAX_EVENT_CODES; ++i){
         if(event_system.all_events[i].subscribers != 0) {

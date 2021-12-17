@@ -12,6 +12,7 @@ b8 init_logging(void)
 {
     // TODO: Implement (maybe file i/o?)
     // TODO: Some kind of circular array for multiple logs
+    ERI_LOG_INFO("Eri initialized logging subsystem...");
     return TRUE;
 }
 

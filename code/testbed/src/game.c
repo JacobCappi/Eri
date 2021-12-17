@@ -4,7 +4,7 @@
 // Stubs
 b8 game_init(struct game* game_instance)
 {
-    ERI_LOG_DEBUG (" Game Successfully Init ");
+    ERI_LOG_INFO("Eri successfully initialized game ");
     return TRUE;
 }
 
