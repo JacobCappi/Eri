@@ -46,7 +46,7 @@ b8 init_platform(
     i32 width, i32 height
 )
 {
-    ERI_LOG_INFO("Eri initializing Linux platform layer...");
+    ERI_LOG_INFO("Initializing Subsystem: Platform Type [ Linux ]");
     state->os_specific_state = platform_malloc(sizeof(struct linux_state), FALSE);
     struct linux_state *os_state = (struct linux_state *)state->os_specific_state;
 
@@ -177,13 +177,12 @@ b8 init_platform(
         return FALSE;
     }
 
-    ERI_LOG_INFO("Eri successfully initialized linux playform layer...");
     return TRUE;
 }
 
 void shutdown_platform(struct platform_state *state)
 {
-    ERI_LOG_INFO("Eri shutting down linux platform layer...");
+    ERI_LOG_INFO("Shutting Down Subsystem: Platform Layer [ Linux ]");
     struct linux_state *os_state = (struct linux_state *)state->os_specific_state;
     // TODO: uncomment
     //XAutoRepeatOn(os_state->display);

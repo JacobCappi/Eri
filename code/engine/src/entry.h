@@ -14,9 +14,7 @@ int main(void)
 {
     // TODO: Move this to a systems handler
     init_logging();
-    ERI_LOG_INFO("Eri initializing all subsystems...");
     init_memory();
-
     if ( !init_event() )
     {
         return FALSE;

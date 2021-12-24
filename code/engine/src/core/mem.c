@@ -40,14 +40,14 @@ static struct mem_stats stats;
 
 void init_memory(void)
 {
-    ERI_LOG_INFO("Eri initialized memory subsystem...");
+    ERI_LOG_INFO("Initializing Subsystem: [ Memory ]");
     platform_memzero(&stats, sizeof(stats));
 }
 
 void shutdown_memory(void)
 {
     // TODO: Assign shutdown if I ever have something to cleanup
-    ERI_LOG_INFO("Eri shutdown memory subsystem...");
+    ERI_LOG_INFO("Shutting Down Subsystem [ Memory ]");
     return;
 }
 

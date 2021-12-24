@@ -29,10 +29,11 @@ static struct event_handler event_system;
 
 b8 init_event(void)
 {
-    ERI_LOG_INFO("Eri initializing event subsystem...");
+    ERI_LOG_INFO("Initializing Subsystem: [ Events ]");
+
     if (is_init == TRUE)
     {
-        ERI_LOG_WARNING("Event system is already init");
+        ERI_LOG_WARNING("Event subsystem is already initialized");
         return FALSE;
     }
 
@@ -44,7 +45,7 @@ b8 init_event(void)
 
 void shutdown_event() 
 {
-    ERI_LOG_INFO("Eri shutting down event subsystem");
+    ERI_LOG_INFO("Shutting Down Subsystem: [ Events ]");
     // Free the events arrays. And objects pointed to should be destroyed on their own.
     for(u16 i = 0; i < MAX_EVENT_CODES; ++i){
         if(event_system.all_events[i].subscribers != 0) {

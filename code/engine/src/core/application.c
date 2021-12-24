@@ -24,11 +24,9 @@ static struct app_state singleton_app_state;
 // Singleton being handled using this static boolean
 static b8 is_singleton_init = FALSE;
 
-// All inits will be done here (excluding game specific code)
 b8 app_create(struct game* game_instance)
 {
-    ERI_LOG_INFO("Eri creating application");
-// ----- Init Remaining Systems
+    ERI_LOG_INFO("Eri starting up...");
     if ( is_singleton_init )
     {
         ERI_LOG_ERROR("Application attempted to be created more than once");
@@ -37,8 +35,6 @@ b8 app_create(struct game* game_instance)
 
     singleton_app_state.game_instance = game_instance;
 
-
-    ERI_LOG_INFO("Eri initializing platform layer...");
     if ( !init_platform(
             &singleton_app_state.state,
             game_instance->configs.app_name,
@@ -52,10 +48,10 @@ b8 app_create(struct game* game_instance)
         return FALSE;
     }
 
-    ERI_LOG_INFO("Eri initializing game...");
+    ERI_LOG_INFO("Initializing: [ Game ]");
     if ( !singleton_app_state.game_instance->init(game_instance) )
     {
-        ERI_LOG_FATAL("Game failed to init");
+        ERI_LOG_FATAL("Failed to initialize [ Game ]");
         return FALSE;
     }
 // ----- END
@@ -79,7 +75,6 @@ b8 app_create(struct game* game_instance)
 b8 app_run(void)
 {
     // TODO: memory leak, but just testing : REMOVE
-    ERI_LOG_INFO("Eri starting application game loop...");
     ERI_LOG_INFO(get_mem_status());
 
     while ( singleton_app_state.is_running )
