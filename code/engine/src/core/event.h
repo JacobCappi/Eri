@@ -30,17 +30,17 @@ enum internal_system_event_codes {
     // Shuts the application down on the next frame.
     EVENT_APPLICATION_QUIT = 0x01,
 
-    EVENT_KEY_PRESSED = 0x02,
-    EVENT_KEY_RELEASED = 0x03,
+    EVENT_KEY_PRESSED      = 0x02,
+    EVENT_KEY_RELEASED     = 0x03,
 
-    EVENT_MOUSE_PRESSED = 0x04,
-    EVENT_MOUSE_RELEASE = 0x05,
-    EVENT_MOUSE_MOVED = 0x06,
-    EVENT_MOUSE_WHEEL = 0x07,
+    EVENT_MOUSE_PRESSED    = 0x04,
+    EVENT_MOUSE_RELEASED   = 0x05,
+    EVENT_MOUSE_MOVED      = 0x06,
+    EVENT_MOUSE_WHEEL      = 0x07,
 
-    EVENT_WINDOW_RESIZE = 0x08,
+    EVENT_WINDOW_RESIZE    = 0x08,
 
-    MAX_EVENT_CODE = 0xFF
+    MAX_EVENT_CODE         = 0xFF
 }; 
 
 // ----- Subsystem handling

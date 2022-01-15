@@ -2,6 +2,7 @@
 
 #include "core/application.h"
 #include "core/event.h"
+#include "core/input.h"
 #include "core/logger.h"
 #include "core/mem.h"
 #include "game_types.h"
@@ -19,6 +20,7 @@ int main(void)
     {
         return FALSE;
     }
+    init_input();
 
     struct game game_instance;
 

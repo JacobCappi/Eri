@@ -1,6 +1,7 @@
 #include "core/application.h"
 
 #include "core/event.h"
+#include "core/input.h"
 #include "core/logger.h"
 #include "core/mem.h"
 #include "platform/platform.h"
@@ -98,6 +99,8 @@ b8 app_run(void)
                 singleton_app_state.is_running = FALSE;
                 break;
             }
+
+            update_input(0);
         }
     }
 
@@ -106,6 +109,8 @@ b8 app_run(void)
 
     ERI_LOG_INFO("Eri shutting down...");
     shutdown_event();
+    shutdown_input();
+
     shutdown_platform(&singleton_app_state.state);
     shutdown_logging();
     shutdown_memory();

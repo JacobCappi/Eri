@@ -10,12 +10,12 @@
 struct mem_stats
 {
     u64 total_allocated;
-    u64 mem_by_tag[MEM_MAX_TAGS];
+    u64 mem_by_tag[MAX_MEM_TAGS];
 };
 
 // TODO: more robust solution
 // Should be one to one with the enum
-static const char* mem_tag_headers[MEM_MAX_TAGS] = 
+static const char* mem_tag_headers[MAX_MEM_TAGS] = 
 {
     "UNKNOWN     ",
     "ARRAY       ",
@@ -36,12 +36,23 @@ static const char* mem_tag_headers[MEM_MAX_TAGS] =
     "SCENE       "
 };
 
+static b8 is_init = FALSE;
 static struct mem_stats stats;
 
-void init_memory(void)
+b8 init_memory(void)
 {
     ERI_LOG_INFO("Initializing Subsystem: [ Memory ]");
-    platform_memzero(&stats, sizeof(stats));
+
+    if (is_init == TRUE)
+    {
+        ERI_LOG_WARNING("Memory is already initialized");
+        return FALSE;
+    }
+
+    eri_memzero(&stats, sizeof(struct mem_stats));
+    is_init = TRUE;
+
+    return TRUE;
 }
 
 void shutdown_memory(void)
@@ -62,7 +73,7 @@ char* get_mem_status(void)
     char status[5000] = "ENGINE MEMORY USAGE:\n";
     u64 offset = strlen(status);
 
-    for (u32 i = 0; i < MEM_MAX_TAGS; ++i)
+    for (u32 i = 0; i < MAX_MEM_TAGS; ++i)
     {
         char unit[3] = "XB";
         float amount = 1.0f;

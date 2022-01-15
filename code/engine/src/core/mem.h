@@ -28,11 +28,11 @@ enum mem_tag
     MEM_ENTITY_NODE,
     MEM_SCENE,
 
-    MEM_MAX_TAGS
+    MAX_MEM_TAGS 
 };
 
 // ----- Subsystem Handling
-void init_memory(void);
+b8 init_memory(void);
 void shutdown_memory(void);
 // ----- END
 
