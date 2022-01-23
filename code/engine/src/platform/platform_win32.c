@@ -6,6 +6,7 @@
 #if ERI_PLATFORM_WINDOWS
 
 #include "core/logger.h"
+#include "core/input.h"
 
 #include <windows.h>
 #include <windowsx.h>
@@ -23,6 +24,7 @@ static f64 clock_frequency;      // Multiplier for clock cycles to get seconds
 static LARGE_INTEGER start_time; // Starting time of the application
 
 LRESULT CALLBACK wnd_msg_handler(HWND h_wnd, u32 message, WPARAM w_param, LPARAM l_param);
+enum keyboard translate_key(u16 keys);
 
 b8 init_platform(
     platform_state *state,
@@ -241,8 +243,6 @@ void platform_sleep(u64 ms)
 
 LRESULT CALLBACK wnd_msg_handler(HWND h_wnd, u32 message, WPARAM w_param, LPARAM l_param)
 {
-    // Big case switch based on the events the messages from the window
-    // These messages are all that are going to be handled by this engine
     switch(message)
     {
         case WM_ERASEBKGND:
@@ -261,24 +261,34 @@ LRESULT CALLBACK wnd_msg_handler(HWND h_wnd, u32 message, WPARAM w_param, LPARAM
         case WM_SIZE:
         {
             // TODO: Renderer will handle resize
-        }break;
+        } break;
 
         case WM_KEYDOWN:
         case WM_SYSKEYDOWN:
         case WM_KEYUP:
-        case WM_SYSKEYUP: {
-            // Key pressed/released
-            //b8 pressed = (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN);
-            // TODO: input processing
-        
-        }break;
+        case WM_SYSKEYUP: 
+        {
+            b8 is_pressed = (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN);
+            u16 win_key = (u16) w_param;
+            enum keyboard key = translate_key(keys);
+            
+            input_handle_keyboard(key, is_pressed);
+        } break;
 
         case WM_MOUSEMOVE: {
-            // TODO: input processing.
+            i32 mouse_x = GET_X_PARAM(l_param);
+            i32 mouse_y = GET_X_PARAM(l_param);
+
+            input_handle_mouse_xy(mouse_x, mouse_y);
         } break;
 
         case WM_MOUSEWHEEL: {
-            // TODO: input processing.
+            i32 z_delta = GET_WHEEL_DELTA_WPARAM(w_param);
+            if (z_delta != 0) {
+                // Flatten the input to an OS-independent (-1, 1)
+                z_delta = (z_delta < 0) ? -1 : 1;
+                input_handle_mouse_wheel(z_delta);
+            }
         } break;
 
         case WM_LBUTTONDOWN:
@@ -287,13 +297,39 @@ LRESULT CALLBACK wnd_msg_handler(HWND h_wnd, u32 message, WPARAM w_param, LPARAM
         case WM_LBUTTONUP:
         case WM_MBUTTONUP:
         case WM_RBUTTONUP: {
-            // TODO: input processing.
+            b8 is_pressed = (message == WM_LBUTTONDOWN || message == WM_MBUTTONDOWN || message == WM_RBUTTONDOWN);
+            enum mouse button = MAX_MOUSE_BUTTON;
+            switch (message) 
+            {
+                case WM_LBUTTONDOWN:
+                case WM_LBUTTONUP:
+                    button = MOUSE_LEFT;
+                    break;
+                case WM_MBUTTONDOWN:
+                case WM_MBUTTONUP:
+                    button = MOUSE_MIDDLE;
+                    break;
+                case WM_RBUTTONDOWN:
+                case WM_RBUTTONUP:
+                    button = MOUSE_RIGHT;
+                    break;
+            }
+            if (button != MAX_MOUSE_BUTTON)
+            {
+                input_handle_mouse(button);
+            }
+
         } break;
     }
 
     // Default processing on any event that we are not supporting
     // ie, Windows will do it
     return DefWindowProcA(h_wnd, message, w_param, l_param);
+}
+
+enum keyboard translate_key(u16 keys)
+{
+    // TODO: do this once I get on a windows system
 }
 
 #endif

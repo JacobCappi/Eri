@@ -58,7 +58,7 @@ b8 init_memory(void)
 void shutdown_memory(void)
 {
     // TODO: Assign shutdown if I ever have something to cleanup
-    ERI_LOG_INFO("Shutting Down Subsystem [ Memory ]");
+    ERI_LOG_INFO("Shutting Down Subsystem: [ Memory ]");
     return;
 }
 
@@ -111,6 +111,7 @@ char* get_mem_status(void)
 
 void *eri_malloc(u64 size, enum mem_tag tag)
 {
+    ERI_LOG_DEBUG("Malloc called for %ld bytes", size);
     if (tag == MEM_UNKNOWN)
     {
         ERI_LOG_WARNING("MALLOC called with unknown tag, update the allocation");

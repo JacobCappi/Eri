@@ -46,13 +46,13 @@ enum keyboard
     KEY_LALT      = 0x17,
     KEY_RALT      = 0x18,
 
-    KEY_LWIN      = 0x19,
-    KEY_RWIN      = 0x1A,
+    KEY_SUPER     = 0x19,
+    KEY_RSUPER    = 0x1A,
     KEY_ESCAPE    = 0x1B,
 
-    KEY_LMENU     = 0x1C,
+    KEY_MENU      = 0x1C,
     KEY_RMENU     = 0x1D,
-    KEY_LLANG     = 0x1E,
+    KEY_LANG      = 0x1E,
     KEY_RLANG     = 0x1F,
 
     KEY_SPACE     = 0x20,
@@ -145,7 +145,7 @@ enum keyboard
     KEY_F20       = 0x83,
     KEY_F21       = 0x84,
     KEY_F22       = 0x85,
-    KEY_F23       = 0x86,
+    KEY_F23       = 0X86,
     KEY_F24       = 0x87,
 
     KEY_LEFT      = 0xA0,
