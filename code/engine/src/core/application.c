@@ -37,9 +37,9 @@ b8 app_create(struct game* game_instance)
         return FALSE;
     }
 
-    subscribe_event(EVENT_APPLICATION_QUIT, 0, callback_on_event);
-    subscribe_event(EVENT_KEY_PRESSED, 0, callback_on_keypress);
-    subscribe_event(EVENT_KEY_RELEASED, 0, callback_on_keypress);
+    event_subscribe(EVENT_APPLICATION_QUIT, 0, callback_on_event);
+    event_subscribe(EVENT_KEY_PRESSED, 0, callback_on_keypress);
+    event_subscribe(EVENT_KEY_RELEASED, 0, callback_on_keypress);
 
     singleton_app_state.game_instance = game_instance;
 
@@ -83,7 +83,7 @@ b8 app_create(struct game* game_instance)
 b8 app_run(void)
 {
     // TODO: memory leak, but just testing : REMOVE
-    ERI_LOG_INFO(get_mem_status());
+    ERI_LOG_INFO(mem_get_status());
 
     while ( singleton_app_state.is_running )
     {
@@ -109,7 +109,7 @@ b8 app_run(void)
 
 
             // Should be the last thing done every frame
-            update_input(0);
+            input_update(0);
         }
     }
 
@@ -119,9 +119,9 @@ b8 app_run(void)
         singleton_app_state.is_running = FALSE;
     }
 
-    unsubscribe_event(EVENT_APPLICATION_QUIT, 0, callback_on_event);
-    unsubscribe_event(EVENT_KEY_PRESSED, 0, callback_on_keypress);
-    unsubscribe_event(EVENT_KEY_RELEASED, 0, callback_on_keypress);
+    event_unsubscribe(EVENT_APPLICATION_QUIT, 0, callback_on_event);
+    event_unsubscribe(EVENT_KEY_PRESSED, 0, callback_on_keypress);
+    event_unsubscribe(EVENT_KEY_RELEASED, 0, callback_on_keypress);
 
     shutdown_event();
     shutdown_input();
@@ -153,7 +153,7 @@ b8 callback_on_keypress(u16 event_code, void *publisher, void *subsciber_instanc
         {
             // TODO: Remove; This will close application on escape for debug reasons
             struct event_args data = {0};
-            raise_event(EVENT_APPLICATION_QUIT, 0, data);
+            event_raise(EVENT_APPLICATION_QUIT, 0, data);
             return TRUE;
         }
         else if (key == KEY_F)

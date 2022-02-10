@@ -185,7 +185,7 @@ enum keyboard
 
 b8 init_input();
 void shutdown_input();
-void update_input(f64 delta_time);
+void input_update(f64 delta_time);
 
 ERI_API b8 input_is_key_down(enum keyboard key);
 ERI_API b8 input_was_key_down(enum keyboard key);

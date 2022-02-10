@@ -59,7 +59,7 @@ void shutdown_event()
 
 
 
-b8 subscribe_event(u16 event_code, void *subscriber, on_raised_event callback)
+b8 event_subscribe(u16 event_code, void *subscriber, on_raised_event callback)
 {
     if (is_init == FALSE)
     {
@@ -89,7 +89,7 @@ b8 subscribe_event(u16 event_code, void *subscriber, on_raised_event callback)
     return TRUE;
 }
 
-b8 unsubscribe_event(u16 event_code, void *subscriber, on_raised_event callback)
+b8 event_unsubscribe(u16 event_code, void *subscriber, on_raised_event callback)
 {
     if ( is_init == FALSE )
     {
@@ -117,7 +117,7 @@ b8 unsubscribe_event(u16 event_code, void *subscriber, on_raised_event callback)
     return FALSE;
 }
 
-ERI_API b8 raise_event(u16 event_code, void *publisher, struct event_args data)
+ERI_API b8  event_raise(u16 event_code, void *publisher, struct event_args data)
 {
     if ( is_init == FALSE )
     {

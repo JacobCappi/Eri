@@ -49,7 +49,7 @@ void shutdown_input()
     is_init = FALSE;
 }
 
-void update_input(f64 delta_time)
+void input_update(f64 delta_time)
 {
     if (is_init == FALSE)
     {
@@ -173,7 +173,7 @@ void input_handle_keyboard(enum keyboard key, b8 pressed)
 
         struct event_args event_data;
         event_data.u16[0] = key;
-        raise_event(pressed ? EVENT_KEY_PRESSED : EVENT_KEY_RELEASED, 0, event_data);
+        event_raise(pressed ? EVENT_KEY_PRESSED : EVENT_KEY_RELEASED, 0, event_data);
     }
 }
 
@@ -186,7 +186,7 @@ void input_handle_mouse(enum mouse button, b8 pressed)
 
         struct event_args event_data;
         event_data.u16[0] = button;
-        raise_event(pressed ? EVENT_MOUSE_PRESSED : EVENT_MOUSE_RELEASED, 0, event_data);
+        event_raise(pressed ? EVENT_MOUSE_PRESSED : EVENT_MOUSE_RELEASED, 0, event_data);
     }
 }
 
@@ -201,7 +201,7 @@ void input_handle_mouse_xy(i16 x, i16 y)
         struct event_args event_data;
         event_data.u16[0] = x;
         event_data.u16[0] = y;
-        raise_event(EVENT_MOUSE_MOVED, 0, event_data);
+        event_raise(EVENT_MOUSE_MOVED, 0, event_data);
     }
 }
 
@@ -209,5 +209,5 @@ void input_handle_mouse_wheel(i8 z_delta)
 {
     struct event_args event_data;
     event_data.u8[0] = z_delta;
-    raise_event(EVENT_MOUSE_WHEEL, 0, event_data);
+    event_raise(EVENT_MOUSE_WHEEL, 0, event_data);
 }

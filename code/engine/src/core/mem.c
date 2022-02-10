@@ -63,9 +63,9 @@ void shutdown_memory(void)
 }
 
 // Debug function to output all malloc totals by tag
-char* get_mem_status(void)
+char* mem_get_status(void)
 {
-    ERI_LOG_INFO("Debug function \"get_mem_status\" called");
+    ERI_LOG_INFO("Debug function \"mem_get_status\" called");
     const u64 GB = 1024 * 1024 * 1024;
     const u64 MB = 1024 * 1024;
     const u64 KB = 1024;
@@ -127,7 +127,7 @@ void *eri_malloc(u64 size, enum mem_tag tag)
     return memory;
 }
 
-void  eri_free(void *memory, u64 size, enum mem_tag tag)
+void eri_free(void *memory, u64 size, enum mem_tag tag)
 {
     if (tag == MEM_UNKNOWN)
     {

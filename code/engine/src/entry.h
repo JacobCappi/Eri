@@ -7,7 +7,7 @@
 #include "core/mem.h"
 #include "game_types.h"
 
-extern b8 create_game(struct game *current_game);
+extern b8 game_create(struct game *current_game);
 
 
 // Entry Point to ERI
@@ -24,7 +24,7 @@ int main(void)
 
     struct game game_instance;
 
-    if ( !create_game(&game_instance) )
+    if ( !game_create(&game_instance) )
     {
         ERI_LOG_FATAL("Eri could not create this game");
         return -1;
