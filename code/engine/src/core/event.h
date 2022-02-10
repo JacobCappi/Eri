@@ -53,5 +53,5 @@ typedef b8 (*on_raised_event)(u16 event_code, void *publisher, void *subsciber_i
 // Hooks up / Removes subscriber to on raised event function pointer
 ERI_API b8 event_subscribe(u16 event_code, void *subscriber, on_raised_event callback);
 ERI_API b8 event_unsubscribe(u16 event_code, void *subscriber, on_raised_event callback);
-ERI_API b8  event_raise(u16 event_code, void *publisher, struct event_args data);
+ERI_API b8 event_raise(u16 event_code, void *publisher, struct event_args data);
 // ----- END

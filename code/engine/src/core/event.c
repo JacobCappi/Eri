@@ -117,7 +117,7 @@ b8 event_unsubscribe(u16 event_code, void *subscriber, on_raised_event callback)
     return FALSE;
 }
 
-ERI_API b8  event_raise(u16 event_code, void *publisher, struct event_args data)
+ERI_API b8 event_raise(u16 event_code, void *publisher, struct event_args data)
 {
     if ( is_init == FALSE )
     {
