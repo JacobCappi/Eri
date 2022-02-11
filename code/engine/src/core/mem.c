@@ -105,7 +105,14 @@ char* mem_get_status(void)
 
     // Bump stack char array into heap
     // Bit of performance hit, but this function is a debug function
+
+    // TODO: Fix this with custom stuff....
+#if ERI_PLATFORM_WINDOWS
+    char *ret_value = _strdup(status);
+#else
     char *ret_value = strdup(status);
+#endif
+
     return ret_value;
 }
 

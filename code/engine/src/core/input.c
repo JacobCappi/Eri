@@ -59,7 +59,7 @@ void input_update(f64 delta_time)
     eri_memcpy(&input_system.mouse_old, &input_system.mouse_new, sizeof(struct mouse_state));
 }
 
-ERI_API b8 input_is_key_down(enum keyboard key)
+b8 input_is_key_down(enum keyboard key)
 {
     if (is_init == FALSE)
     {
@@ -69,7 +69,7 @@ ERI_API b8 input_is_key_down(enum keyboard key)
     return input_system.keyboard_new.keys[key] == TRUE;
 }
 
-ERI_API b8 input_was_key_down(enum keyboard key)
+b8 input_was_key_down(enum keyboard key)
 {
     if (is_init == FALSE)
     {
@@ -79,7 +79,7 @@ ERI_API b8 input_was_key_down(enum keyboard key)
     return input_system.keyboard_old.keys[key] == TRUE;
 }
 
-ERI_API b8 input_is_key_up(enum keyboard key)
+b8 input_is_key_up(enum keyboard key)
 {
     if (is_init == FALSE)
     {
@@ -89,7 +89,7 @@ ERI_API b8 input_is_key_up(enum keyboard key)
     return input_system.keyboard_new.keys[key] == FALSE;
 }
 
-ERI_API b8 input_was_key_up(enum keyboard key)
+b8 input_was_key_up(enum keyboard key)
 {
     if (is_init == FALSE)
     {
@@ -99,7 +99,7 @@ ERI_API b8 input_was_key_up(enum keyboard key)
     return input_system.keyboard_old.keys[key] == FALSE;
 }
 
-ERI_API b8 input_is_button_down(enum mouse button)
+b8 input_is_button_down(enum mouse button)
 {
     if (is_init == FALSE)
     {
@@ -109,7 +109,7 @@ ERI_API b8 input_is_button_down(enum mouse button)
     return input_system.mouse_new.buttons[button] == TRUE;
 }
 
-ERI_API b8 input_was_button_down(enum mouse button)
+b8 input_was_button_down(enum mouse button)
 {
     if (is_init == FALSE)
     {
@@ -119,7 +119,7 @@ ERI_API b8 input_was_button_down(enum mouse button)
     return input_system.mouse_old.buttons[button] == TRUE;
 }
 
-ERI_API b8 input_is_button_up(enum mouse button)
+b8 input_is_button_up(enum mouse button)
 {
     if (is_init == FALSE)
     {
@@ -130,7 +130,7 @@ ERI_API b8 input_is_button_up(enum mouse button)
 
 }
 
-ERI_API b8 input_was_button_up(enum mouse button)
+b8 input_was_button_up(enum mouse button)
 {
     if (is_init == FALSE)
     {
@@ -140,7 +140,7 @@ ERI_API b8 input_was_button_up(enum mouse button)
     return input_system.mouse_old.buttons[button] == FALSE;
 }
 
-ERI_API void input_new_mouse_xy(i32 *x, i32 *y)
+void input_new_mouse_xy(i32 *x, i32 *y)
 {
     if (is_init == FALSE)
     {
@@ -152,7 +152,7 @@ ERI_API void input_new_mouse_xy(i32 *x, i32 *y)
     *y = input_system.mouse_new.y;
 }
 
-ERI_API void input_old_mouse_xy(i32* x, i32* y)
+void input_old_mouse_xy(i32* x, i32* y)
 {
     if (is_init == FALSE)
     {
