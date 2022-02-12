@@ -91,7 +91,6 @@ void *_darray_remove(void *darray, u64 index, void *removed_value)
 {
     u64 size = darray_get_size(darray);
     u64 stride = darray_get_stride(darray);
-    u64 capacity = darray_get_capacity(darray);
 
     if (index >= size)
     {

@@ -13,14 +13,6 @@ extern b8 game_create(struct game *current_game);
 // Entry Point to ERI
 int main(void)
 {
-    // TODO: Move this to a systems handler
-    init_logging();
-    init_memory();
-    if ( !init_event() )
-    {
-        return FALSE;
-    }
-    init_input();
 
     struct game game_instance;
 

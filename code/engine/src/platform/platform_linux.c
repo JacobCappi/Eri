@@ -358,6 +358,7 @@ enum keyboard translate_key(u32 keys)
     // This took an hour.... respect it
     switch (keys)
     {
+        // TODO: Change this.. handle each key, not shift-key ... causes bugs
         case XK_space:
             return KEY_SPACE;
         case XK_quotedbl:

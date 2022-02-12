@@ -37,6 +37,14 @@ b8 app_create(struct game* game_instance)
         return FALSE;
     }
 
+    init_logging();
+    init_memory();
+    if ( !init_event() )
+    {
+        return FALSE;
+    }
+    init_input();
+
     event_subscribe(EVENT_APPLICATION_QUIT, 0, callback_on_event);
     event_subscribe(EVENT_KEY_PRESSED, 0, callback_on_keypress);
     event_subscribe(EVENT_KEY_RELEASED, 0, callback_on_keypress);
