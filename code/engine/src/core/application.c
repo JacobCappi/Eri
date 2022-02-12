@@ -164,14 +164,8 @@ b8 callback_on_keypress(u16 event_code, void *publisher, void *subsciber_instanc
             event_raise(EVENT_APPLICATION_QUIT, 0, data);
             return TRUE;
         }
-        else if (key == KEY_F)
-        {
-            ERI_LOG_DEBUG("F key has been pressed");
-            return TRUE;
-        }
         else
         {
-            ERI_LOG_DEBUG("'%c' key has been pressed", data.u16[0]);
             return TRUE;
         }
 
@@ -181,14 +175,6 @@ b8 callback_on_keypress(u16 event_code, void *publisher, void *subsciber_instanc
     else if (event_code == EVENT_KEY_RELEASED)
     {
         u16 key = data.u16[0];
-        if (key == KEY_A)
-        {
-            ERI_LOG_DEBUG("A key has been released");
-        }
-        else
-        {
-            ERI_LOG_DEBUG("'%c' key has been released", data.u16[0]);
-        }
         return FALSE;
 
     }

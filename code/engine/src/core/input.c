@@ -179,7 +179,6 @@ void input_handle_keyboard(enum keyboard key, b8 pressed)
 
 void input_handle_mouse(enum mouse button, b8 pressed)
 {
-    ERI_LOG_DEBUG("Mouse Button %d pressed", button);
     if (input_system.mouse_new.buttons[button] != pressed)
     {
         input_system.mouse_new.buttons[button] = pressed;
@@ -192,7 +191,6 @@ void input_handle_mouse(enum mouse button, b8 pressed)
 
 void input_handle_mouse_xy(i16 x, i16 y)
 {
-    ERI_LOG_DEBUG("Mouse x: %d, y: %d", x, y);
     if (input_system.mouse_new.x != x || input_system.mouse_new.y != y)
     {
         input_system.mouse_new.x = x;

@@ -362,52 +362,68 @@ enum keyboard translate_key(u32 keys)
         case XK_space:
             return KEY_SPACE;
         case XK_quotedbl:
+            return KEY_DBLQT;
         case XK_apostrophe:
             return KEY_QUOTE;
         case XK_plus:
+            return KEY_ADD;
         case XK_equal:
-            return KEY_EQUAL;
+            return KEY_EQ;
         case XK_comma:
-        case XK_less:
             return KEY_COMMA;
+        case XK_less:
+            return KEY_LT;
         case XK_minus:
-        case XK_underscore:
             return KEY_MINUS;
+        case XK_underscore:
+            return KEY_UNDERSCR;
         case XK_period:
-        case XK_greater:
             return KEY_PERIOD;
+        case XK_greater:
+            return KEY_GT;
         case XK_question:
+            return KEY_QUESTION;
         case XK_slash:
             return KEY_FSLASH;
 
         case XK_parenright:
+            return KEY_RPAREN;
         case XK_0:
             return KEY_0;
         case XK_exclam:
+            return KEY_EXCLAM;
         case XK_1:
             return KEY_1;
         case XK_at:
+            return KEY_AT;
         case XK_2:
             return KEY_2;
         case XK_numbersign:
+            return KEY_POUND;
         case XK_3:
             return KEY_3;
         case XK_dollar:
+            return KEY_MNYSN;
         case XK_4:
             return KEY_4;
         case XK_percent:
+            return KEY_PERCENT;
         case XK_5:
             return KEY_5;
         case XK_asciicircum:
+            return KEY_CARROT;
         case XK_6:
             return KEY_6;
         case XK_ampersand:
+            return KEY_AMPERSAN;
         case XK_7:
             return KEY_7;
         case XK_multiply:
+            return KEY_MULT;
         case XK_8:
             return KEY_8;
         case XK_parenleft:
+            return KEY_LPAREN;
         case XK_9:
             return KEY_9;
         case XK_A:
@@ -489,12 +505,15 @@ enum keyboard translate_key(u32 keys)
         case XK_z:
             return KEY_Z;
         case XK_braceleft:
+            return KEY_LBRACE;
         case XK_bracketleft:
             return KEY_LBRACKET;
         case XK_braceright:
+            return KEY_RBRACE;
         case XK_bracketright:
             return KEY_RBRACKET;
         case XK_asciitilde:
+            return KEY_TILD;
         case XK_grave:
             return KEY_GRAVE;
         
@@ -628,8 +647,9 @@ enum keyboard translate_key(u32 keys)
         case XK_Alt_R:
             return KEY_ALT;
         case XK_Super_L:
+            return KEY_LSUPER;
         case XK_Super_R:
-            return KEY_SUPER;
+            return KEY_LSUPER;
         case XK_Delete:
             return KEY_DELETE;
 
