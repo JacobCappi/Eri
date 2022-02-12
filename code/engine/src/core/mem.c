@@ -10,12 +10,12 @@
 struct mem_stats
 {
     u64 total_allocated;
-    u64 mem_by_tag[MEM_MAX_TAGS];
+    u64 mem_by_tag[MAX_MEM_TAGS];
 };
 
 // TODO: more robust solution
 // Should be one to one with the enum
-static const char* mem_tag_headers[MEM_MAX_TAGS] = 
+static const char* mem_tag_headers[MAX_MEM_TAGS] = 
 {
     "UNKNOWN     ",
     "ARRAY       ",
@@ -36,25 +36,36 @@ static const char* mem_tag_headers[MEM_MAX_TAGS] =
     "SCENE       "
 };
 
+static b8 is_init = FALSE;
 static struct mem_stats stats;
 
-void init_memory(void)
+b8 init_memory(void)
 {
-    ERI_LOG_INFO("Eri initialized memory subsystem...");
-    platform_memzero(&stats, sizeof(stats));
+    ERI_LOG_INFO("Initializing Subsystem: [ Memory ]");
+
+    if (is_init == TRUE)
+    {
+        ERI_LOG_WARNING("Memory is already initialized");
+        return FALSE;
+    }
+
+    eri_memzero(&stats, sizeof(struct mem_stats));
+    is_init = TRUE;
+
+    return TRUE;
 }
 
 void shutdown_memory(void)
 {
     // TODO: Assign shutdown if I ever have something to cleanup
-    ERI_LOG_INFO("Eri shutdown memory subsystem...");
+    ERI_LOG_INFO("Shutting Down Subsystem: [ Memory ]");
     return;
 }
 
 // Debug function to output all malloc totals by tag
-char* get_mem_status(void)
+char* mem_get_status(void)
 {
-    ERI_LOG_INFO("Debug function \"get_mem_status\" called");
+    ERI_LOG_INFO("Debug function \"mem_get_status\" called");
     const u64 GB = 1024 * 1024 * 1024;
     const u64 MB = 1024 * 1024;
     const u64 KB = 1024;
@@ -62,7 +73,7 @@ char* get_mem_status(void)
     char status[5000] = "ENGINE MEMORY USAGE:\n";
     u64 offset = strlen(status);
 
-    for (u32 i = 0; i < MEM_MAX_TAGS; ++i)
+    for (u32 i = 0; i < MAX_MEM_TAGS; ++i)
     {
         char unit[3] = "XB";
         float amount = 1.0f;
@@ -94,12 +105,20 @@ char* get_mem_status(void)
 
     // Bump stack char array into heap
     // Bit of performance hit, but this function is a debug function
+
+    // TODO: Fix this with custom stuff....
+#if ERI_PLATFORM_WINDOWS
+    char *ret_value = _strdup(status);
+#else
     char *ret_value = strdup(status);
+#endif
+
     return ret_value;
 }
 
 void *eri_malloc(u64 size, enum mem_tag tag)
 {
+    ERI_LOG_DEBUG("Malloc called for %ld bytes", size);
     if (tag == MEM_UNKNOWN)
     {
         ERI_LOG_WARNING("MALLOC called with unknown tag, update the allocation");
@@ -115,7 +134,7 @@ void *eri_malloc(u64 size, enum mem_tag tag)
     return memory;
 }
 
-void  eri_free(void *memory, u64 size, enum mem_tag tag)
+void eri_free(void *memory, u64 size, enum mem_tag tag)
 {
     if (tag == MEM_UNKNOWN)
     {

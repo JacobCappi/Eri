@@ -2,29 +2,21 @@
 
 #include "core/application.h"
 #include "core/event.h"
+#include "core/input.h"
 #include "core/logger.h"
 #include "core/mem.h"
 #include "game_types.h"
 
-extern b8 create_game(struct game *current_game);
+extern b8 game_create(struct game *current_game);
 
 
 // Entry Point to ERI
 int main(void)
 {
-    // TODO: Move this to a systems handler
-    init_logging();
-    ERI_LOG_INFO("Eri initializing all subsystems...");
-    init_memory();
-
-    if ( !init_event() )
-    {
-        return FALSE;
-    }
 
     struct game game_instance;
 
-    if ( !create_game(&game_instance) )
+    if ( !game_create(&game_instance) )
     {
         ERI_LOG_FATAL("Eri could not create this game");
         return -1;

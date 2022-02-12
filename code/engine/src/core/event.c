@@ -29,10 +29,11 @@ static struct event_handler event_system;
 
 b8 init_event(void)
 {
-    ERI_LOG_INFO("Eri initializing event subsystem...");
+    ERI_LOG_INFO("Initializing Subsystem: [ Events ]");
+
     if (is_init == TRUE)
     {
-        ERI_LOG_WARNING("Event system is already init");
+        ERI_LOG_WARNING("Event subsystem is already initialized");
         return FALSE;
     }
 
@@ -44,10 +45,12 @@ b8 init_event(void)
 
 void shutdown_event() 
 {
-    ERI_LOG_INFO("Eri shutting down event subsystem");
+    ERI_LOG_INFO("Shutting Down Subsystem: [ Events ]");
     // Free the events arrays. And objects pointed to should be destroyed on their own.
-    for(u16 i = 0; i < MAX_EVENT_CODES; ++i){
-        if(event_system.all_events[i].subscribers != 0) {
+    for(u16 i = 0; i < MAX_EVENT_CODES; ++i)
+    {
+        if(event_system.all_events[i].subscribers != 0) 
+        {
             darray_destroy(event_system.all_events[i].subscribers);
             event_system.all_events[i].subscribers = 0;
         }
@@ -56,38 +59,37 @@ void shutdown_event()
 
 
 
-b8 subscribe_event(u16 event_code, void *subscriber, on_raised_event callback)
+b8 event_subscribe(u16 event_code, void *subscriber, on_raised_event callback)
 {
     if (is_init == FALSE)
     {
         return FALSE;
     }
-    else
+    
+    if (event_system.all_events[event_code].subscribers == 0)
     {
-        if (event_system.all_events[event_code].subscribers == 0)
-        {
-            event_system.all_events[event_code].subscribers = darray_create_default(struct event_code_subscriber);
-        }
-        u64 subscriber_count = darray_get_size(event_system.all_events[event_code].subscribers);
-
-        for (u64 i = 0; i < subscriber_count; i++)
-        {
-            if (event_system.all_events[event_code].subscribers[i].subscriber == subscriber)
-            {
-                ERI_LOG_WARNING("Subscriber subscribed to the same event twice");
-                return FALSE;
-            }
-        }
-        struct event_code_subscriber event;
-        event.subscriber = subscriber;
-        event.callback = callback;
-
-        darray_push(event_system.all_events[event_code].subscribers, event);
-        return TRUE;
+        event_system.all_events[event_code].subscribers = darray_create_default(struct event_code_subscriber);
     }
+    u64 subscriber_count = darray_get_size(event_system.all_events[event_code].subscribers);
+
+    for (u64 i = 0; i < subscriber_count; i++)
+    {
+        if (event_system.all_events[event_code].subscribers[i].subscriber == subscriber)
+        {
+            ERI_LOG_WARNING("Subscriber subscribed to the same event twice");
+            return FALSE;
+        }
+    }
+    struct event_code_subscriber event;
+    event.subscriber = subscriber;
+    event.callback = callback;
+
+    darray_push(event_system.all_events[event_code].subscribers, event);
+
+    return TRUE;
 }
 
-b8 unsubscribe_event(u16 event_code, void *subscriber, on_raised_event callback)
+b8 event_unsubscribe(u16 event_code, void *subscriber, on_raised_event callback)
 {
     if ( is_init == FALSE )
     {
@@ -115,7 +117,7 @@ b8 unsubscribe_event(u16 event_code, void *subscriber, on_raised_event callback)
     return FALSE;
 }
 
-ERI_API b8 raise_event(u16 event_code, void *publisher, struct event_args data)
+ERI_API b8 event_raise(u16 event_code, void *publisher, struct event_args data)
 {
     if ( is_init == FALSE )
     {
@@ -124,13 +126,12 @@ ERI_API b8 raise_event(u16 event_code, void *publisher, struct event_args data)
 
     if (event_system.all_events[event_code].subscribers == 0)
     {
-        ERI_LOG_WARNING("Event ignored, no subscribers.");
         return FALSE;
     }
 
     u64 subscriber_count = darray_get_size(event_system.all_events[event_code].subscribers);
 
-    for (u64 i; i < subscriber_count; i++)
+    for (u64 i = 0; i < subscriber_count; i++)
     {
         struct event_code_subscriber e = event_system.all_events[event_code].subscribers[i];
         if (e.callback(event_code, publisher, e.subscriber, data))
