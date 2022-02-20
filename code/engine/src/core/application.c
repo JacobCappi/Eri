@@ -1,10 +1,12 @@
 #include "core/application.h"
 
+#include "core/clock.h"
 #include "core/event.h"
 #include "core/input.h"
 #include "core/logger.h"
 #include "core/mem.h"
 #include "platform/platform.h"
+
 #include "game_types.h"
 
 // Current state of Application
@@ -12,6 +14,7 @@ struct app_state
 {
     struct platform_state state;
     struct game* game_instance;
+    struct clock internal_clock;
 
     b8 is_running;
     b8 is_suspended;
@@ -90,6 +93,15 @@ b8 app_create(struct game* game_instance)
 // The Game loop
 b8 app_run(void)
 {
+    clock_start(&singleton_app_state.internal_clock);
+    clock_update(&singleton_app_state.internal_clock);
+    singleton_app_state.time = singleton_app_state.internal_clock.elapsed;
+
+    // TODO: refactor these names
+    f64 runtime = 0;
+    u8 frame_count = 0;
+    f64 target_frame_out = 1.0f / 60;
+
     // TODO: memory leak, but just testing : REMOVE
     ERI_LOG_INFO(mem_get_status());
 
@@ -102,13 +114,19 @@ b8 app_run(void)
         
         if ( !singleton_app_state.is_suspended )
         {
-            if ( !singleton_app_state.game_instance->update(singleton_app_state.game_instance, (f32)0))
+            // Update clock and get delta time.
+            clock_update(&singleton_app_state.internal_clock);
+            f64 current_time = singleton_app_state.internal_clock.elapsed;
+            f64 delta = (current_time - singleton_app_state.time);
+            f64 frame_start_time = platform_time();
+
+            if ( !singleton_app_state.game_instance->update(singleton_app_state.game_instance, delta))
             {
                 ERI_LOG_FATAL("Game failed to update state");
                 singleton_app_state.is_running = FALSE;
                 break;
             }
-            if ( !singleton_app_state.game_instance->render(singleton_app_state.game_instance, (f32)0))
+            if ( !singleton_app_state.game_instance->render(singleton_app_state.game_instance, delta))
             {
                 ERI_LOG_FATAL("Game failed to render");
                 singleton_app_state.is_running = FALSE;
@@ -116,8 +134,27 @@ b8 app_run(void)
             }
 
 
+            // Figure out how long the frame took and, if below
+            f64 frame_end_time = platform_time();
+            f64 frame_elapsed_time = frame_end_time - frame_start_time;
+            runtime += frame_elapsed_time;
+            f64 remaining_seconds = target_frame_out - frame_elapsed_time;
+
+            if (remaining_seconds > 0) {
+                u64 remaining_ms = (remaining_seconds * 1000);
+
+                // If there is time left, give it back to the OS.
+                b8 limit_frames = FALSE;
+                if (remaining_ms > 0 && limit_frames) {
+                    platform_sleep(remaining_ms - 1);
+                }
+
+                frame_count++;
+            }
+
+            singleton_app_state.time = current_time;
             // Should be the last thing done every frame
-            input_update(0);
+            input_update(delta);
         }
     }
 

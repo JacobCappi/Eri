@@ -136,6 +136,7 @@ void *eri_malloc(u64 size, enum mem_tag tag)
 
 void eri_free(void *memory, u64 size, enum mem_tag tag)
 {
+    ERI_LOG_DEBUG("Free called for %ld bytes", size);
     if (tag == MEM_UNKNOWN)
     {
         ERI_LOG_WARNING("FREE called with unknown tag, update the allocation");
