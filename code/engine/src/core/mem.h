@@ -28,17 +28,17 @@ enum mem_tag
     MEM_ENTITY_NODE,
     MEM_SCENE,
 
-    MEM_MAX_TAGS
+    MAX_MEM_TAGS 
 };
 
 // ----- Subsystem Handling
-void init_memory(void);
+b8 init_memory(void);
 void shutdown_memory(void);
 // ----- END
 
 
 // Returns char* of mem usage
-ERI_API char* get_mem_status(void);
+ERI_API char* mem_get_status(void);
 
 // Note: Free contains size parameter for engine to update mem use
 ERI_API void  eri_free(void *memory, u64 size, enum mem_tag tag);

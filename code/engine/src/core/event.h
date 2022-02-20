@@ -30,17 +30,17 @@ enum internal_system_event_codes {
     // Shuts the application down on the next frame.
     EVENT_APPLICATION_QUIT = 0x01,
 
-    EVENT_KEY_PRESSED = 0x02,
-    EVENT_KEY_RELEASED = 0x03,
+    EVENT_KEY_PRESSED      = 0x02,
+    EVENT_KEY_RELEASED     = 0x03,
 
-    EVENT_MOUSE_PRESSED = 0x04,
-    EVENT_MOUSE_RELEASE = 0x05,
-    EVENT_MOUSE_MOVED = 0x06,
-    EVENT_MOUSE_WHEEL = 0x07,
+    EVENT_MOUSE_PRESSED    = 0x04,
+    EVENT_MOUSE_RELEASED   = 0x05,
+    EVENT_MOUSE_MOVED      = 0x06,
+    EVENT_MOUSE_WHEEL      = 0x07,
 
-    EVENT_WINDOW_RESIZE = 0x08,
+    EVENT_WINDOW_RESIZE    = 0x08,
 
-    MAX_EVENT_CODE = 0xFF
+    MAX_EVENT_CODE         = 0xFF
 }; 
 
 // ----- Subsystem handling
@@ -51,7 +51,7 @@ void shutdown_event(void);
 typedef b8 (*on_raised_event)(u16 event_code, void *publisher, void *subsciber_instance, struct event_args data);
 
 // Hooks up / Removes subscriber to on raised event function pointer
-ERI_API b8 subscribe_event(u16 event_code, void *subscriber, on_raised_event callback);
-ERI_API b8 unsubscribe_event(u16 event_code, void *subscriber, on_raised_event callback);
-ERI_API b8 raise_event(u16 event_code, void *publisher, struct event_args data);
+ERI_API b8 event_subscribe(u16 event_code, void *subscriber, on_raised_event callback);
+ERI_API b8 event_unsubscribe(u16 event_code, void *subscriber, on_raised_event callback);
+ERI_API b8 event_raise(u16 event_code, void *publisher, struct event_args data);
 // ----- END

@@ -20,7 +20,7 @@ void *_darray_create(u64 size, u64 stride)
 
 void _darray_destroy(void *darray)
 {
-    u64 *full_array = darray - SETTINGS_SIZE;
+    u64 *full_array = (u64 *)darray - SETTINGS_SIZE;
     u64 settings_size = SETTINGS_SIZE * sizeof(u64);
     u64 full_size = settings_size + ( full_array[DARRAY_CAPACITY] * full_array[DARRAY_STRIDE] );
     eri_free(full_array, full_size, MEM_DARRAY);
@@ -28,13 +28,13 @@ void _darray_destroy(void *darray)
 
 u64 _darray_get_setting(void *darray, enum darray_settings setting)
 {
-    u64 *full_array = darray - SETTINGS_SIZE;
+    u64 *full_array = (u64 *)darray - SETTINGS_SIZE;
     return full_array[setting];
 }
 
 void _darray_set_setting(void *darray, enum darray_settings setting, u64 value)
 {
-    u64 *full_array = darray - SETTINGS_SIZE;
+    u64 *full_array = (u64 *)darray - SETTINGS_SIZE;
     full_array[setting] = value;
 }
 
@@ -91,7 +91,6 @@ void *_darray_remove(void *darray, u64 index, void *removed_value)
 {
     u64 size = darray_get_size(darray);
     u64 stride = darray_get_stride(darray);
-    u64 capacity = darray_get_capacity(darray);
 
     if (index >= size)
     {

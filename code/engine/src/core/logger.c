@@ -12,12 +12,15 @@ b8 init_logging(void)
 {
     // TODO: Implement (maybe file i/o?)
     // TODO: Some kind of circular array for multiple logs
-    ERI_LOG_INFO("Eri initialized logging subsystem...");
+
+    // Assuming Init's completion before this log...
+    ERI_LOG_INFO("Initializing Subsystem: [ Logger ]");
     return TRUE;
 }
 
 void shutdown_logging(void)
 {
+    ERI_LOG_INFO("Shutting Down Subsystem: [ Logger ]");
     //TODO: Implement
     // Idea is to store in query and push a lot of messages
     // in one i/o. If shutdown, make sure all logs are sent

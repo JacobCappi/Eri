@@ -5,7 +5,7 @@
 
 
 // Definition of extern function defined in entry.h
-b8 create_game(struct game* current_game)
+b8 game_create(struct game* current_game)
 {
     current_game->configs.start_x = 100;
     current_game->configs.start_y = 100;
