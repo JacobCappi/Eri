@@ -20,8 +20,12 @@ Start 05 August 2021:
 
 22.02.20: Finished up Clock
 
-# ----- Completed Kohi engine subsystem tutorial, planning on making personal 
-# -----   modifications to the code and start vulkan rendering on my own.
-
 # -----> Current plan, write eri_string.h lib, data struct, init system, and 
 # ----->  migrating the subsystem handling to init system instead of application.
+
+# Plan for init system
+# -----> Modern Kohi engine does something similiar, but this plan originates from how Atmel Studio does it 
+# -----> Subsystems with a global static pointer to structs and the init system instantiating the structs
+# -----> init lib functions will just update this pointer with the struct that is passed in.
+# This should allow for the init system to check and make sure every subsystem is online and keep tabs, while also
+# having a central location to do the logging and reporting.
