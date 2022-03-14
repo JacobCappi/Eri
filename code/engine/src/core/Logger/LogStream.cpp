@@ -1,4 +1,8 @@
 #include "LogStream.h"
+
+// TODO: figure out streams ...
+// Custom string lib sounded duable in C...
+// This stream manip stuff --- how portable is it?
 #include <iostream>
 
 namespace ERI
@@ -13,7 +17,7 @@ namespace ERI
 
     LogStream::~LogStream()
     {
-        std::cout << get_level(internal_level) << stream->str() << std::endl;
+        std::cout << get_level(internal_level) << stream->str() << "\033[0m" << std::endl;
         delete stream;
     }
 
@@ -22,17 +26,17 @@ namespace ERI
         switch (level)
         {
             case LOG_LEVEL_FATAL:
-                return " [ FTL ] ";
+                return "\033[0;41m [ FTL ] ";
             case LOG_LEVEL_ERROR:
-                return " [ ERR ] ";
+                return "\033[1;31m [ ERR ] ";
             case LOG_LEVEL_WARN:
-                return " [ WRN ] ";
+                return "\033[1;33m [ WRN ] ";
             case LOG_LEVEL_INFO:
-                return " [ INF ] ";
+                return "\033[1;32m [ INF ] ";
             case LOG_LEVEL_DEBUG:
-                return " [ DBG ] ";
+                return "\033[1;34m [ DBG ] ";
             case LOG_LEVEL_TRACE:
-                return " [ TRC ] ";
+                return "\033[1:30m [ TRC ] ";
             default:
                 return " [ N/A ] ";
                 break;
