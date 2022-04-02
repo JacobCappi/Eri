@@ -17,7 +17,7 @@ typedef signed char         i8;
 typedef double             f64;
 typedef float              f32;
 
-/* Boolean types */
+/* b8ean types */
 typedef int                b32; 
 typedef char                b8;
 

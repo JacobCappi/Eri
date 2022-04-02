@@ -1,8 +1,9 @@
 add_library(engine SHARED 
+    src/core/Application.cpp
     src/core/Logger/Logger.cpp
     src/core/Logger/LogStream.cpp
-    src/Platform/Platform_Linux.cpp
-    src/Platform/Platform_Windows.cpp
+    src/core/Subsystems/Platform_Windows.cpp
+    src/core/Subsystems/Platform_Linux.cpp
 )
 
 target_compile_options(engine PRIVATE -g -fdeclspec -fPIC )

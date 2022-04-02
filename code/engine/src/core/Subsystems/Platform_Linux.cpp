@@ -1,6 +1,6 @@
-#include "Platform/Platform.h"
+#include "core/Subsystems/Platform.h"
 
-#if ERI_PLATFORM_LINUX 
+#if ERI_PLATFORM_LINUX
 
 #include "core/Logger/Logger.h"
 
@@ -38,13 +38,15 @@ namespace ERI
         xcb_atom_t wm_delete_window;
     };
 
-    Platform::Platform(Logger logger)
+    b8 Platform::init(Logger *logger)
     {
-        abstract_wnd_state = malloc(sizeof(struct linux_windowing), FALSE);
-        log = &logger;
+        log = logger;
+        set_subsystem_name("Platform Linux");
+
+        return (log == nullptr) ? FALSE : TRUE;
     }
 
-    Platform::~Platform()
+    void Platform::shutdown()
     {
         if (abstract_wnd_state)
         {
@@ -54,9 +56,20 @@ namespace ERI
         }
     }
 
-    bool Platform::init_windowing(const char *wnd_name, i32 x, i32 y, i32 width, i32 height)
+    void Platform::set_subsystem_name(const std::string name)
     {
-        if (abstract_wnd_state == nullptr || !log)
+        subsystem_name = name;
+    }
+
+    const std::string Platform::get_name(void)
+    {
+        return subsystem_name;
+    }
+
+    b8 Platform::init_windowing(const char *wnd_name, i32 x, i32 y, i32 width, i32 height)
+    {
+        abstract_wnd_state = malloc(sizeof(struct linux_windowing), FALSE);
+        if (!log)
         {
             // Logger should destruct here right?
             // Find better solution if constructor not called?
@@ -318,13 +331,6 @@ namespace ERI
             free(event, FALSE);
         }
         return !exit_flagged;
-    }
-
-    f64 Platform::current_time(void)
-    {
-        struct timespec now;
-        clock_gettime(CLOCK_MONOTONIC, &now);
-        return now.tv_sec + now.tv_nsec * 0.000000001;
     }
 
     void Platform::sleep(u64 ms)
