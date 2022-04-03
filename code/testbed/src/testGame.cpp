@@ -1,4 +1,5 @@
 #include "testGame.h"
+#include <cstring>
 
 i16 testGame::get_init_x(void)
 {
@@ -20,20 +21,24 @@ i16 testGame::get_init_h(void)
     return starting_h;
 }
 
-std::string testGame::get_init_name(void)
+b8 testGame::get_init_name(char *buff, u16 size)
 {
-    return game_name;
+    b8 success = (std::strlen(game_name) < size);
+    if (success)
+    {
+        std::strcpy(buff, game_name);
+    }
+    return success;
 }
 
 // TODO: These a placeholder stubs
 b8 testGame::init(void)
 {
-    return init_game("Testing Eri Game", 100, 100, 1280, 720);
+    return init_size(100, 100, 1280, 720);
 }
 
-b8 testGame::init_game(std::string name, i16 x, i16 y, i16 w, i16 h)
+b8 testGame::init_size(i16 x, i16 y, i16 w, i16 h)
 {
-    game_name = name;
     starting_x = x;
     starting_y = y;
     starting_w = w;

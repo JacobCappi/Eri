@@ -22,8 +22,6 @@ using namespace ERI
     b8 Platform::init(Logger *logger)
     {
         log = logger;
-        set_subsystem_name("Platform Windows");
-
         return (log == nullptr) ? FALSE : TRUE;
     }
 
@@ -37,15 +35,11 @@ using namespace ERI
         }
     }
 
-    void Platform::set_subsystem_name(const std::string name)
+    void Platform::print_name(std::ostream& str) const
     {
-        subsystem_name = name;
+        str << "Windows Platform";
     }
 
-    const std::string Platform::get_name(void)
-    {
-        return subsystem_name;
-    }
 
     b8 Platform::init_windowing(const char *wnd_name, i32 x, i32 y, u32 width, u32 height)
     {

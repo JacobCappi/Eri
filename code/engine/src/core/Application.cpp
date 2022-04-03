@@ -23,13 +23,19 @@ namespace ERI
         }
     }
 
-    b8 Application::start(IGame *game_instance)
+// TODO: fix with string lib
+    b8 Application::start(IGame *game)
     {
         platform.init(&log);
+        game_instance = game;
+        char buff[100] = {0};
+
         game_instance->init();
+        game_instance->get_init_name(buff, 100);
+
 
         platform.init_windowing(
-            game_instance->get_init_name().c_str(),
+            buff,
             game_instance->get_init_x(),
             game_instance->get_init_y(),
             game_instance->get_init_w(),
@@ -63,14 +69,14 @@ namespace ERI
 
             if (!app_configs.get_is_suspended())
             {
-                if (game_instance->update((f32)0))
+                if (!game_instance->update((f32)0))
                 {
                     log.log_warn() << "Game instance failed to update state.";
                     app_configs.set_is_running(FALSE);
                     break;
                 }
 
-                if (game_instance->render((f32)0))
+                if (!game_instance->render((f32)0))
                 {
                     log.log_warn() << "Game instance failed to render";
                     app_configs.set_is_running(FALSE);
@@ -81,7 +87,8 @@ namespace ERI
         }
 
         platform.shutdown();
-        app_configs.set_is_running(FALSE); ///< This should already be false, but just in case
+        app_configs.set_is_running(FALSE);
+        log.log_warn() << "Failed to shutdown gracefully";
         return TRUE;
     }
 

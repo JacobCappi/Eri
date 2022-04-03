@@ -42,9 +42,6 @@ namespace ERI
     b8 Platform::init(Logger *logger)
     {
         log = logger;
-        const std::string name = "Platform Linux";
-        set_subsystem_name(name);
-
         return (log == nullptr) ? FALSE : TRUE;
     }
 
@@ -58,14 +55,9 @@ namespace ERI
         }
     }
 
-    void Platform::set_subsystem_name(const std::string name)
+    void Platform::print_name(std::ostream& str) const
     {
-        subsystem_name = name;
-    }
-
-    const std::string Platform::get_name(void)
-    {
-        return subsystem_name;
+        str << "Linux Platform";
     }
 
     b8 Platform::init_windowing(const char *wnd_name, i32 x, i32 y, i32 width, i32 height)

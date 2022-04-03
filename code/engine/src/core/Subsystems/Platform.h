@@ -3,9 +3,6 @@
 #include "core/Logger/Logger.h"
 #include "core/Subsystems/ISubsystem.h"
 
-//TODO: let get_name return custom string lib
-#include <string>
-
 
 namespace ERI
 {
@@ -13,12 +10,12 @@ namespace ERI
     {
 
     private:
-        std::string subsystem_name = "Unknown";
+        char *subsystem_name;
         void *abstract_wnd_state = nullptr;
         Logger *log = nullptr;
 
     protected:
-        void set_subsystem_name(const std::string name);
+        void print_name(std::ostream& str) const;
 
     public:
         Platform() = default;
@@ -27,7 +24,6 @@ namespace ERI
     //TODO: consider shared pointers?
         b8 init(Logger *log);
         void shutdown(void);
-        const std::string get_name(void);
 
         b8 init_windowing(const char *wnd_name, i32 x, i32 y, i32 width, i32 height);
         

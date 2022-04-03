@@ -5,7 +5,6 @@
 extern ERI::IGame* create_game(void)
 {
     testGame *game_instance;
-    game_instance = static_cast<testGame*>(malloc(sizeof(testGame)));
-
+    game_instance = new testGame();
     return game_instance;
 }

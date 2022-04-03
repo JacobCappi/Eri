@@ -6,14 +6,15 @@ class testGame : public ERI::IGame
 {
 
 private:
-    std::string game_name;
+//TODO: string lib refactor
+    char *game_name = "Test Eri Engine";
     i16 starting_x;
     i16 starting_y;
     i16 starting_w;
     i16 starting_h;
 
 public:
-    testGame();
+    testGame() = default;
     ~testGame() = default;
 
 public:
@@ -21,9 +22,9 @@ public:
     i16 get_init_y(void);
     i16 get_init_w(void);
     i16 get_init_h(void);
-    std::string get_init_name(void);
+    b8 get_init_name(char *buff, u16 size);
 
-    b8 init_game(std::string name, i16 x, i16 y, i16 w, i16 h);
+    b8 init_size(i16 x, i16 y, i16 w, i16 h);
 
     b8 init(void);
     b8 update(f32 delta_time);
