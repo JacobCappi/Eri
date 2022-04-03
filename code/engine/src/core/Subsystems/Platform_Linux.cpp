@@ -22,6 +22,7 @@
 
 // TODO: move these out once we build these systems
 #include <stdlib.h>
+#include <string>
 #include <cstring>
 
 
@@ -41,7 +42,8 @@ namespace ERI
     b8 Platform::init(Logger *logger)
     {
         log = logger;
-        set_subsystem_name("Platform Linux");
+        const std::string name = "Platform Linux";
+        set_subsystem_name(name);
 
         return (log == nullptr) ? FALSE : TRUE;
     }

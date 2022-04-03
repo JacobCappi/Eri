@@ -1,4 +1,6 @@
 add_library(engine SHARED 
+    src/entry.h
+    src/core/AppState.cpp
     src/core/Application.cpp
     src/core/Logger/Logger.cpp
     src/core/Logger/LogStream.cpp

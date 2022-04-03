@@ -1,6 +1,11 @@
 #pragma once
 #include "defines.h"
 
+#include "IGame.h"
+#include "core/AppState.h"
+#include "core/Subsystems/Platform.h"
+#include "core/Logger/Logger.h"
+
 
 namespace ERI
 {
@@ -8,20 +13,19 @@ namespace ERI
     {
 
     private:
-        i32 start_x;
-        i32 start_y;
-        i32 start_width;
-        i32 start_height;
-        char *app_name;
-        Application singleton_app;
-
-        Application();
+        Logger log;
+        AppState app_configs;
+        Platform platform;
+        Application *singleton_app;
+        IGame *game_instance;
+        Application() = default;
 
     public:
-        Application get_instance(void);
+        Application *get_instance(void);
         ~Application();
 
-
+        b8 start(IGame *game_instance);
+        b8 run(void);
     };
 
 }
