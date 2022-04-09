@@ -23,7 +23,10 @@ C Development
 
 22.02.20: Finished up Clock
 
-C++ Development
+# C++ Development Migration....
 
-# -----> Convinced myself the C++ will be the better option...
-# Migration
+22.03.12 Logger C++
+
+22.03.15 Platform Layer C++
+
+22.03.22 Application Layer C++
