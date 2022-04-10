@@ -1,5 +1,7 @@
-#include "Platform/Platform.h"
+#include "core/Subsystems/Platform.h"
 
+//TODO: Consider interfacing? Problem is, preprocessor might be neccassary
+// b/c windows sdk can't be compiled on any other OS
 #if ERI_PLATFORM_WINDOWS
 
 #include <windows.h>
@@ -17,12 +19,13 @@ using namespace ERI
     // Find the 'C++' way to do this? where do I register callbacks in C++ other than in my namespace
     LRESULT CALLBACK wnd_msg_handler(HWND h_wnd, u32 message, WPARAM w_param, LPARAM l_param);
 
-    Platform::Windowing()
+    b8 Platform::init(Logger *logger)
     {
-        abstract_wnd_state = malloc(sizeof(struct win32_windowing), FALSE);
+        log = logger;
+        return (log == nullptr) ? FALSE : TRUE;
     }
 
-    Platform::~Windowing()
+    void Platform::shutdown()
     {
         struct win32_windowing *state = (struct win32_windowing *)abstract_wnd_state;
         if (state)
@@ -32,12 +35,15 @@ using namespace ERI
         }
     }
 
-    bool Platform::init_windowing(const char *wnd_name, i32 x, i32 y, u32 width, u32 height)
+    void Platform::print_name(std::ostream& str) const
     {
-        if (!abstract_wnd_state)
-        {
-            std::cout << "Use the constructor...";
-        }
+        str << "Windows Platform";
+    }
+
+
+    b8 Platform::init_windowing(const char *wnd_name, i32 x, i32 y, u32 width, u32 height)
+    {
+        abstract_wnd_state = malloc(sizeof(struct win32_windowing), FALSE);
         struct win32_windowing *state = (struct win32_windowing *)abstract_wnd_state;
 
         state->instance = GetModuleHandleA(NULL);
@@ -153,17 +159,10 @@ using namespace ERI
         return std::memset(memory, value, sz);
     }
 
-    f64 Platform::current_time(void)
-    {
-        // TODO: figure out time...
-        return 0;
-    }
-
     void Platform::sleep(u64 ms)
     {
         Sleep(ms);
     }
-
 
     LRESULT CALLBACK wnd_msg_handler(HWND h_wnd, u32 message, WPARAM w_param, LPARAM l_param)
     {
@@ -260,8 +259,5 @@ using namespace ERI
     }
 
 }
-
-
-
 
 #endif

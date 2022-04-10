@@ -1,28 +1,32 @@
 #pragma once
 #include "defines.h"
 #include "core/Logger/Logger.h"
+#include "core/Subsystems/ISubsystem.h"
 
 
-// TODO: Subject to change(?)
-// What migrates and what doesn't in cpp xserver
 namespace ERI
 {
-
-    class Platform
+    class Platform : public ISubsystem
     {
 
-    public:
-    // Testing dependency injection :/
-        Platform(Logger logger);
-        ~Platform();
-
     private:
-        Logger *log;
+        char *subsystem_name;
         void *abstract_wnd_state = nullptr;
+        Logger *log = nullptr;
 
+    protected:
+        void print_name(std::ostream& str) const;
 
     public:
-        bool init_windowing(const char *wnd_name, i32 x, i32 y, i32 width, i32 height);
+        Platform() = default;
+        ~Platform() = default;
+
+    //TODO: consider shared pointers?
+        b8 init(Logger *log);
+        void shutdown(void);
+
+        b8 init_windowing(const char *wnd_name, i32 x, i32 y, i32 width, i32 height);
+        
         b8 pump_message();
 
         void *malloc(u64 sz, b8 alligned);
@@ -31,7 +35,6 @@ namespace ERI
         void *memzero(void *memory, u64 sz);
         void *memset(void *memory, i32 value, u64 sz);
 
-        f64 current_time(void);
         void sleep(u64 ms);
 
         // TODO: input layer
