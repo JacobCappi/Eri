@@ -18,17 +18,19 @@ namespace ERI
         String(char c);
         String(const char *c);
 
-        String(const String &s); ///< Copy Constructor (Deep)
+        String(const String &s); ///< Copy Constructor
         ~String();
 
-        char String::operator[] (u32 i) const;
-        char& String::operator[] (u32 i);
+        u32 length(void) const;
+
+        char operator[] (u32 i) const;
+        char& operator[] (u32 i);
 
         friend std::ostream& operator<<(std::ostream& os, const String& s);
-        String& operator= (const String& s);
 
-        b8 is_equal(String s1, String s2);
-        b8 is_equal_i(String s1, String s2);
-        u32 length(void) const;
+        b8 is_equal(String s);
+        b8 is_equal_i(String s);
+
+        void copy(const String &s);
     };
 }

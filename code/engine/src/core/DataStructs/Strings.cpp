@@ -19,6 +19,12 @@ namespace ERI
 
     String::String(const char *c)
     {
+        if (!c)
+        {
+            sz = 0;
+            return;
+        }
+
         sz = strlen(c);
         internal_string = new char[sz];
         strncpy(internal_string, c, sz);
@@ -26,9 +32,13 @@ namespace ERI
 
     String::String(const String &s)
     {
-        sz = s->length();
+        sz = s.length();
+        internal_string = new char[sz];
+        for (u32 i = 0; i < sz; ++i)
+        {
+            internal_string[i] = s[i];
+        }
     }
-
 
     char String::operator[] (u32 i) const 
     {
@@ -45,35 +55,78 @@ namespace ERI
         return internal_string[i];
     }
 
-
     String::~String()
     {
         delete[] internal_string;
     }
 
-    std::ostream& operator<<(std::ostream& os, const String& s)
+    std::ostream& operator<<(std::ostream& o, const String& s)
     {
+        if (s.length() <= 0)
+        {
+            o << "";
+            return o;
+        }
 
+        // TODO: check if this is effecient?
+        for (u32 i=0, size = s.length(); i < size; ++i)
+        {
+            o << s[i];
+        }
+        return o;
     }
 
-    String& operator= (const String& s)
+    b8 String::is_equal(String s)
     {
+        if (s.length() != sz)
+        {
+            return FALSE;
+        }
 
+        for (u32 i = 0, size = s.length(); i < size; ++i)
+        {
+            if (internal_string[i] != s[i])
+            {
+                return FALSE;
+            }
+        }
+
+        return TRUE;
     }
 
-    b8 String::is_equal(String s1, String s2)
+    b8 String::is_equal_i(String s)
     {
+        if (s.length() != sz)
+        {
+            return FALSE;
+        }
 
-    }
+        for (u32 i = 0, size = s.length(); i < size; i++)
+        {
+            if (tolower(s[i]) != tolower(internal_string[i]))
+            {
+                return FALSE;
+            }
+        }
 
-    b8 String::is_equal_i(String s1, String s2)
-    {
-
+        return TRUE;
     }
 
     u32 String::length(void) const
     {
+        return sz;
+    }
 
+    void String::copy(const String &s)
+    {
+        delete[] internal_string;
+        sz = s.length();
+        internal_string = new char[sz];
+        for (u32 i = 0, size = s.length(); i < size; ++i)
+        {
+            internal_string[i] = s[i];
+        }
+        return;
     }
 
 }
