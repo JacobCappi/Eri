@@ -1,7 +1,9 @@
+#pragma once
+#include "defines.h"
+
 #include <cstring>
 #include <ostream>
 
-#include "defines.h"
 
 namespace ERI
 {
@@ -26,11 +28,14 @@ namespace ERI
         char operator[] (u32 i) const;
         char& operator[] (u32 i);
 
+        String& operator= (const char *c);
+
         friend std::ostream& operator<<(std::ostream& os, const String& s);
 
         b8 is_equal(String s);
         b8 is_equal_i(String s);
 
         void copy(const String &s);
+        const char *toCharPointer();
     };
 }

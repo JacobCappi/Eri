@@ -41,6 +41,7 @@ namespace ERI
 
     b8 Platform::init(Logger *logger)
     {
+        subsystem_name = new String("[ Linux Subsystem ] ");
         log = logger;
         return (log == nullptr) ? FALSE : TRUE;
     }
@@ -53,25 +54,20 @@ namespace ERI
             // XAutoRepeatOn(state->display);
             xcb_destroy_window(state->connection, state->window);
         }
+        if (subsystem_name)
+        {
+            delete subsystem_name;
+        }
     }
 
-    void Platform::print_name(std::ostream& str) const
+    String Platform::get_name(void)
     {
-        str << "Linux Platform";
+        return *subsystem_name;
     }
 
     b8 Platform::init_windowing(const char *wnd_name, i32 x, i32 y, i32 width, i32 height)
     {
         abstract_wnd_state = malloc(sizeof(struct linux_windowing), FALSE);
-        if (!log)
-        {
-            // Logger should destruct here right?
-            // Find better solution if constructor not called?
-            // or can I assume constructor is called in cpp?
-            Logger tmp_logger;
-            tmp_logger.log_fatal() << "Failed to init window. Constructor not called";
-            return FALSE;
-        }
         struct linux_windowing *state = (struct linux_windowing *)abstract_wnd_state;
 
         // Inits for the abstract_wnd_state to send to rendering system
@@ -83,7 +79,7 @@ namespace ERI
 
         if (xcb_connection_has_error(state->connection))
         {
-            log->log_fatal() << "XCB failed to connect to X11 server";
+            log->log_fatal() << subsystem_name << "XCB failed to connect to X11 server";
             return FALSE;
         }
 
@@ -182,7 +178,7 @@ namespace ERI
 
         // <= 0 is failure, so locked. Log fatal
         if (stream_result <= 0) {
-            log->log_fatal() << "Failed to flush stream: " << stream_result;
+            log->log_fatal() << subsystem_name << "Failed to flush stream: " << stream_result;
             return FALSE;
         }
 
@@ -220,11 +216,10 @@ namespace ERI
     
     b8 Platform::pump_message()
     {
-        if (!abstract_wnd_state || !log)
+        if (!abstract_wnd_state)
         {
             // See init_windowing's note
-            Logger tmp_logger;
-            tmp_logger.log_fatal() << "Failed to init window. Constructor not called";
+            log->log_fatal() << subsystem_name << "Failed to init window. Constructor not called";
             return FALSE;
         }
         struct linux_windowing *state = (struct linux_windowing *)abstract_wnd_state;

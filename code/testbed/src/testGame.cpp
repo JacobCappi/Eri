@@ -1,6 +1,15 @@
 #include "testGame.h"
 #include <cstring>
 
+
+testGame::~testGame()
+{
+    if (game_name)
+    {
+        delete game_name;
+    }
+}
+
 i16 testGame::get_init_x(void)
 {
     return starting_x;
@@ -21,19 +30,15 @@ i16 testGame::get_init_h(void)
     return starting_h;
 }
 
-b8 testGame::get_init_name(char *buff, u16 size)
+ERI::String testGame::get_init_name()
 {
-    b8 success = (std::strlen(game_name) < size);
-    if (success)
-    {
-        std::strcpy(buff, game_name);
-    }
-    return success;
+    return *game_name;
 }
 
-// TODO: These a placeholder stubs
 b8 testGame::init(void)
 {
+    game_name = new ERI::String("Test Game");
+// TODO: These are placeholder stubs
     return init_size(100, 100, 1280, 720);
 }
 

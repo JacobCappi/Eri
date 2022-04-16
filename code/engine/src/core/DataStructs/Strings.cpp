@@ -55,6 +55,29 @@ namespace ERI
         return internal_string[i];
     }
 
+    // This most likely doesn't leak right?
+    String& String::operator= (const char *c)
+    {
+        if (internal_string)
+        {
+            delete[] internal_string;
+        }
+
+        if (!c)
+        {
+            sz = 0;
+            return *this;
+        }
+
+        sz = strlen(c);
+        internal_string = new char[sz];
+        for (u32 i = 0; i < sz; ++i)
+        {
+            internal_string[i] = c[i];
+        }
+        return *this;
+    }
+
     String::~String()
     {
         delete[] internal_string;
@@ -127,6 +150,11 @@ namespace ERI
             internal_string[i] = s[i];
         }
         return;
+    }
+
+    const char* String::toCharPointer()
+    {
+        return internal_string;
     }
 
 }
