@@ -17,7 +17,7 @@ typedef signed char         i8;
 typedef double             f64;
 typedef float              f32;
 
-/* Boolean types */
+/* b8ean types */
 typedef int                b32; 
 typedef char                b8;
 
@@ -49,50 +49,49 @@ STATIC_ASSERT(sizeof(f32) == 4, "Expected f32 to be 4 bytes.");
 
 // ----- Start Platform Detection
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) 
-#define ERI_PLATFORM_WINDOWS 1
-#ifndef _WIN64
-#error "[ ERR ] 32 bit Windows not supported"
-#endif
+    #define ERI_PLATFORM_WINDOWS 1
+    #ifndef _WIN64
+    #error "[ ERR ] 32 bit Windows not supported"
+    #endif
 #elif defined(__linux__) || defined(__gnu_linux__)
-#define ERI_PLATFORM_LINUX 1
-#if defined(__ANDROID__)
-#define ERI_PLATFORM_ANDROID 1
-#endif
+    #define ERI_PLATFORM_LINUX 1
+    #if defined(__ANDROID__)
+    #define ERI_PLATFORM_ANDROID 1
+    #endif
 #elif defined(__unix__)
-#define ERI_PLATFORM_UNIX 1
+    #define ERI_PLATFORM_UNIX 1
 #elif defined(_POSIX_VERSION)
-#define ERI_PLATFORM_POSIX 1
+    #define ERI_PLATFORM_POSIX 1
 #elif __APPLE__
-#define ERI_PLATFORM_APPLE 1
-#include <TargetConditionals.h>
-#if TARGET_IPHONE_SIMULATOR
-#define ERI_PLATFORM_IOS 1
-#define ERI_PLATFORM_IOS_SIMULATOR 1
-#elif TARGET_OS_IPHONE
-#define ERI_PLATFORM_IOS 1
-#elif TARGET_OS_MAC
-#else
-#error "Unknown Apple platform"
+    #define ERI_PLATFORM_APPLE 1
+    #include <TargetConditionals.h>
+    #if TARGET_IPHONE_SIMULATOR
+    #define ERI_PLATFORM_IOS 1
+    #define ERI_PLATFORM_IOS_SIMULATOR 1
+    #elif TARGET_OS_IPHONE
+    #define ERI_PLATFORM_IOS 1
+    #elif TARGET_OS_MAC
+    #else
+    #error "Unknown Apple platform"
 #endif
 #else
-#error "Unknown platform!"
+    #error "Unknown platform!"
 #endif
 // ----- END
 
 // ----- Start Declspec definitions
+// ----- Windows functionality
 #ifdef ERI_EXPORT
+    #ifdef _MSC_VER
+    #define ERI_API __declspec(dllexport)
+    #else
+    #define ERI_API __attribute__((visibility("default")))
+    #endif
+#else
 #ifdef _MSC_VER
-#define ERI_API __declspec(dllexport)
-#else
-#define ERI_API __attribute__((visibility("default")))
-#endif
-#else
-#ifdef _MSC_VER
-#define ERI_API __declspec(dllimport)
-#else
-#define ERI_API
-#endif
+    #define ERI_API __declspec(dllimport)
+    #else
+    #define ERI_API
+    #endif
 #endif
 // ----- END
-
-

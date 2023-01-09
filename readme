@@ -1,9 +1,12 @@
-Start 05 August 2021:
+2021 August 5th:
   Lightweight 3D engine using Vulkan
   Planning on Windows and Linux platform layer to develop on both OS.
   Using clang for compiler
   Using x11 libs for linux windows, win32 api for window's windows
+2022 March 12th:
+  Decided to Migrate the entire project in CPP OOP.
   
+C Development
 21.08.12: Finished up the logging and assertions with the help of Kohi Engine
 
 21.09.25: Finished platform layer
@@ -20,15 +23,10 @@ Start 05 August 2021:
 
 22.02.20: Finished up Clock
 
-# -----> Convinced myself the C++ will be the better option...
-# Migration
+# C++ Development Migration....
 
-# -----> Current plan, write eri_string.h lib, data struct, init system, and 
-# ----->  migrating the subsystem handling to init system instead of application.
+22.03.12 Logger C++
 
-# Plan for init system
-# -----> Modern Kohi engine does something similiar, but this plan originates from how Atmel Studio does it 
-# -----> Subsystems with a global static pointer to structs and the init system instantiating the structs
-# -----> init lib functions will just update this pointer with the struct that is passed in.
-# This should allow for the init system to check and make sure every subsystem is online and keep tabs, while also
-# having a central location to do the logging and reporting.
+22.03.15 Platform Layer C++
+
+22.03.22 Application Layer C++

@@ -1,44 +1,31 @@
 #pragma once
+#include "defines.h"
+#include "IGame.h"
+#include "core/Logger/Logger.h"
+#include "core/Application.h"
 
-#include "core/application.h"
-#include "core/event.h"
-#include "core/input.h"
-#include "core/logger.h"
-#include "core/mem.h"
-#include "game_types.h"
+// TODO: More than likely a more C++ way to do this
+extern ERI::IGame* create_game(void);
 
-extern b8 game_create(struct game *current_game);
-
-
-// Entry Point to ERI
 int main(void)
 {
+    ERI::Application *app;
+    ERI::IGame *game;
+    ERI::Logger log;
 
-    struct game game_instance;
+    app = app->get_instance();
+    game = create_game(); ///< TODO: find a more C++ way to do this
 
-    if ( !game_create(&game_instance) )
+    if (!app->start(game))
     {
-        ERI_LOG_FATAL("Eri could not create this game");
-        return -1;
-    }
-
-    if ( !game_instance.init || !game_instance.update || !game_instance.render || !game_instance.on_resize )
-    {
-        ERI_LOG_FATAL("One or more missing game function pointers. Make sure all function pointers exist");
-        return -2;
-    }
-
-    if ( !app_create(&game_instance) )
-    {
-        ERI_LOG_INFO("Eri failed to create game instance");
+        log.log_warn() << "Eri failed to start";
         return 1;
     }
 
-    // The Game Loop is app_run
-    if( !app_run() )
+    if (!app->run())
     {
-        ERI_LOG_INFO("Eri failed to shutdown gracefully ");
-        return 2;
+        log.log_warn() << "Eri failed to shutdown gracefully";
+        return 1;
     }
 
     return 0;
