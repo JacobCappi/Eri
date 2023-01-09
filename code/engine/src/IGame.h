@@ -1,7 +1,7 @@
 #pragma once
 #include "defines.h"
+#include "core/DataStructs/Strings.h"
 
-#include <string>
 
 namespace ERI
 {
@@ -13,7 +13,7 @@ namespace ERI
         virtual i16 get_init_y(void) = 0;
         virtual i16 get_init_w(void) = 0;
         virtual i16 get_init_h(void) = 0;
-        virtual b8 get_init_name(char *buff, u16 size) = 0;
+        virtual String get_init_name() = 0;
 
         virtual b8 init(void) = 0;
         virtual b8 update(f32 delta_time) = 0;

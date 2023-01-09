@@ -28,14 +28,12 @@ namespace ERI
     {
         platform.init(&log);
         game_instance = game;
-        char buff[100] = {0};
 
         game_instance->init();
-        game_instance->get_init_name(buff, 100);
 
 
         platform.init_windowing(
-            buff,
+            game_instance->get_init_name().toCharPointer(),
             game_instance->get_init_x(),
             game_instance->get_init_y(),
             game_instance->get_init_w(),
@@ -54,6 +52,7 @@ namespace ERI
         app_configs.set_is_suspended(FALSE);
 
         log.log_debug() << "Testing Logging";
+        log.log_debug() << "Testing String: " << platform.get_name();
 
         return TRUE;
     }

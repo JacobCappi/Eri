@@ -1,13 +1,12 @@
 #include <IGame.h>
-#include <string>
+#include <core/DataStructs/Strings.h>
 
 
 class testGame : public ERI::IGame
 {
 
 private:
-//TODO: string lib refactor
-    char *game_name = "Test Eri Engine";
+    ERI::String *game_name;
     i16 starting_x;
     i16 starting_y;
     i16 starting_w;
@@ -15,14 +14,14 @@ private:
 
 public:
     testGame() = default;
-    ~testGame() = default;
+    ~testGame();
 
 public:
     i16 get_init_x(void);
     i16 get_init_y(void);
     i16 get_init_w(void);
     i16 get_init_h(void);
-    b8 get_init_name(char *buff, u16 size);
+    ERI::String get_init_name(void);
 
     b8 init_size(i16 x, i16 y, i16 w, i16 h);
 

@@ -21,6 +21,7 @@ using namespace ERI
 
     b8 Platform::init(Logger *logger)
     {
+        subsystem_name = "Windows Platform";
         log = logger;
         return (log == nullptr) ? FALSE : TRUE;
     }
@@ -33,11 +34,16 @@ using namespace ERI
             DestroyWindow(state->wnd);
             state->wnd = nullptr;
         }
+
+        if (subsystem_name)
+        {
+            delete subsystem_name;
+        }
     }
 
-    void Platform::print_name(std::ostream& str) const
+    String get_name(void)
     {
-        str << "Windows Platform";
+        str << *subsystem_name;
     }
 
 

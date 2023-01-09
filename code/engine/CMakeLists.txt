@@ -4,6 +4,8 @@ add_library(engine SHARED
     src/core/Application.cpp
     src/core/Logger/Logger.cpp
     src/core/Logger/LogStream.cpp
+    src/core/DataStructs/Strings.cpp
+    src/core/Subsystems/Memory.cpp
     src/core/Subsystems/Platform_Windows.cpp
     src/core/Subsystems/Platform_Linux.cpp
 )
