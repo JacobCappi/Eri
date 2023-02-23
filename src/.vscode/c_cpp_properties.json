@@ -3,7 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/engine/src/**",
+                "${workspaceFolder}/engine/**",
                 "${VULKAN_SDK}/include"
             ],
             "defines": [
@@ -21,7 +21,7 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/engine/src/**",
+                "${workspaceFolder}/engine/**",
                 "${VULKAN_SDK}/include"
             ],
             "defines": [
@@ -34,7 +34,8 @@
             "compilerPath": "C:\\Program Files\\LLVM\\bin\\clang.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "clang-x64"
+            "intelliSenseMode": "clang-x64",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4
