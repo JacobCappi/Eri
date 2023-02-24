@@ -8,23 +8,20 @@
             "name": "(Windows) Run",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${command:cmake.launchTargetPath}",
+            "program": "${workspaceRoot}/build/Eri-tester.exe",
             "cwd": "${workspaceFolder}",
 
             "stopAtEntry": true,
-            "externalConsole": true,
-
-            "linux": {
-              "MIMode": "gdb",
-              "miDebuggerPath": "/usr/bin/gdb"
-            },
-            "osx": {
-              "MIMode": "lldb"
-            },
-            "windows": {
-              "MIMode": "gdb",
-              "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe"
-            }
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+            "launchCompleteCommand": "exec-run",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }

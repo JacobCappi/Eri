@@ -1,6 +1,9 @@
-#include <App.h>
+#include "GameWorld.h"
 
-int main(void)
+int main(int argc, char **argv)
 {
-    ERI::print(5);
+    auto engine = new GameWorld();
+    engine->MainLoop();
+    delete engine;
 }
+

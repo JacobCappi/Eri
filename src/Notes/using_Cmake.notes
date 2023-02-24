@@ -19,3 +19,10 @@ json settings to allow it to work
       "CMT_MINGW_PATH": "C:/msys64/mingw64/bin/"
     }
   },
+
+Requirements:
+  Private : Builds
+  Interface : Usage
+  Public : Both
+
+TODO: Upgrade into this thing, this seemed promising: https://www.youtube.com/watch?v=5i6uLMP5VcY&t=960s
