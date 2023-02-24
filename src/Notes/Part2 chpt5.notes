@@ -1,0 +1,26 @@
+
+# Construction and Destruction order
+    as these are not controllable, the book suggests that creating a 'startup' and 'shutdown' function is the accepted standard
+
+Honestly, these points seems a bit too 'optimized', but worth noting:
+
+# heap allocation is slow
+    due to context-switching, and the general overhead, use static whenever possible
+    -> that being said, 'new' and 'malloc' are the slow part of it, so if you create your own stack in the heap and manage it yourself, it can be a lot faster (pg 210)
+
+# Cache Misses are slow
+    use contigous blocks of memory sequentially, to avoid D-cache misses
+
+# pg 230 STL vs Boost vs Custom DataStructs
+    1. STL is universally used, but has a lot of dynamics, slow, and varies from compiler to compiler
+        -> On PC, not really an issue, and probably good enough
+        -> 'must be used with utmost care' ymmv style arguments in the books though
+    2. STLPort is the multiplatform version portable across multiple compilers
+    3.  Boost and Loki(?) are libs that work with STL to address some of the pitfalls
+        -> I don't know if I would ever take this route though.
+    4. OPTIMIZATION TRICK: You can use darrays during development, and after getting a feel for how big arries tend to get, stack alloc them before release
+
+# String operations are notoriously slow
+    1. avoiding a string class can help address save quite a lot of performance
+    2. string classes are not too useful over C-style, other than in maybe handling classes.
+    3. use at your own risk 

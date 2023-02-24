@@ -17,6 +17,7 @@ printVar(${CMAKE_INSTALL_PREFIX})
 
 add_library(${ENGINE_NAME} SHARED 
     Engine/src/App.cpp
+    Engine/src/Subsystems/Logger/BasicLogger/BasicLogger.cpp
 )
 
 target_include_directories(${ENGINE_NAME} PUBLIC "Engine/src")
@@ -28,7 +29,6 @@ add_executable(${EXE_NAME}
     Game/src/GameWorld.cpp
 )
 target_link_libraries(${EXE_NAME} PRIVATE ${ENGINE_NAME})
-
 
 
 # install(TARGET "${PROJECT_NAME}" DESTINATION ${})

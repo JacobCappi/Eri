@@ -26,3 +26,9 @@
         #define ERI_API
     #endif
 #endif
+
+#ifdef _DEBUG
+    #define ERI_DEBUG 1
+#else
+    #define ERI_RELEASE 1
+#endif
