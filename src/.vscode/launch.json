@@ -11,7 +11,7 @@
             "program": "${command:cmake.launchTargetPath}",
             "cwd": "${workspaceFolder}",
 
-            "stopAtEntry": false,
+            "stopAtEntry": true,
             "externalConsole": true,
 
             "linux": {

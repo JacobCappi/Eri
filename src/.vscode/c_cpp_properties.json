@@ -21,8 +21,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/engine/**",
-                "${VULKAN_SDK}/include"
+                "${VULKAN_SDK}/include",
+                "${workspaceFolder}/build/Eri"
             ],
             "defines": [
                 "_DEBUG",
