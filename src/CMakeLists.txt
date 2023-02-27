@@ -17,7 +17,7 @@ printVar(${CMAKE_INSTALL_PREFIX})
 
 add_library(${ENGINE_NAME} SHARED 
     Engine/src/App.cpp
-    Engine/src/Subsystems/Logger/BasicLogger/BasicLogger.cpp
+    Engine/src/Logger/BasicLogger/BasicLogger.cpp
 )
 
 target_include_directories(${ENGINE_NAME} PUBLIC "Engine/src")

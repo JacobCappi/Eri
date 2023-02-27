@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core.h"
-#include "Subsystems/Logger/ILogger.h"
+#include "Logger/ILogger.h"
 
 namespace ERI
 {
@@ -34,10 +34,6 @@ public:
     BasicLogger() {};
     ~BasicLogger() {};
 
-public: // ISubsystem
-    void Startup() override;
-    void Shutdown() override;
-
 public: // ILogger
     void LogError(const char *, ...) override;
     void LogWarning(const char *, ...) override;
@@ -47,6 +43,8 @@ public: // ILogger
 
     void SetLogLevel(bool isRelease) override;
 
+    void Startup() override;
+    void Shutdown() override;
 };
     
 } // namespace ERI

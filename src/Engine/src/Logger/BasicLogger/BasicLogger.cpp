@@ -1,4 +1,4 @@
-#include "Subsystems/Logger/BasicLogger/BasicLogger.h"
+#include "Logger/BasicLogger/BasicLogger.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -6,7 +6,6 @@
 namespace ERI
 {
 
-// ISubsystem
 void BasicLogger::Startup()
 {
     LogInfo("Logger is starting up");

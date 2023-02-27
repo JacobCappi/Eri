@@ -7,10 +7,11 @@ namespace ERI
 
 class IEventSystem : public ISubsystems
 {
-private:
-    ILogger *_log;
 public:
-    IEventSystem(ILogger *log);
+    IEventSystem();
+    ~IEventSystem() {};
+
+    virtual publishEvent()
 };
     
 } // namespace ERI

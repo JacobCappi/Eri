@@ -1,7 +1,7 @@
 #include "App.h"
 
 // TODO: Temp
-#include "Subsystems/Logger/BasicLogger/BasicLogger.h"
+#include "Logger/BasicLogger/BasicLogger.h"
 
 namespace ERI
 {

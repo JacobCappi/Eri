@@ -1,10 +1,10 @@
-#include "Subsystems/ISubsystems.h"
+#pragma once
 
 namespace ERI
 {
 
 
-class ILogger : public ISubsystems
+class ILogger
 {
 
 public:
@@ -12,7 +12,11 @@ public:
     virtual ~ILogger() {};
 
 public:
-    // TODO: get from Core from compiler flag
+// Similiar interface to subsystem, but subsystem should include logger.
+// thus Logger is not a subsystem, but some loggers (file i/o) need these 2 functions
+    virtual void Startup() = 0;
+    virtual void Shutdown() = 0;
+
 public:
     virtual void LogInfo(const char *, ...) = 0;
     virtual void LogDebug(const char *, ...) = 0;
