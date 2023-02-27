@@ -1,0 +1,28 @@
+
+# TODO, add interface libraries(?) figure out CMAKE better
+
+# Best Website
+https://solarianprogrammer.com/2021/06/11/install-clang-windows-msys2-mingw-w64/
+
+json settings to allow it to work
+    {
+    "name": "ERI MinGW Builds",
+    "compilers": {
+      "C": "C:\\msys64\\ucrt64\\bin\\clang.exe",
+      "CXX": "C:\\msys64\\ucrt64\\bin\\clang++.exe"
+    },
+    "preferredGenerator": {
+      "name": "ERI MinGW Builds",
+      "platform": "x64"
+    },
+    "environmentVariables": {
+      "CMT_MINGW_PATH": "C:/msys64/mingw64/bin/"
+    }
+  },
+
+Requirements:
+  Private : Builds
+  Interface : Usage
+  Public : Both
+
+TODO: Upgrade into this thing, this seemed promising: https://www.youtube.com/watch?v=5i6uLMP5VcY&t=960s
