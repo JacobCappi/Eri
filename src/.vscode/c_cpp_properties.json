@@ -22,7 +22,7 @@
             "name": "Win32",
             "includePath": [
                 "${VULKAN_SDK}/include",
-                "${workspaceFolder}/build/Eri"
+                "${workspaceFolder}/Engine/src/**"
             ],
             "defines": [
                 "_DEBUG",
