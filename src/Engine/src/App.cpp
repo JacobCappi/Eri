@@ -22,6 +22,7 @@ App::~App()
 
 void App::MainLoop()
 {
+    // TODO: remove, here just for debugging
     auto log = new BasicLogger();
     log->SetLogLevel(false);
 

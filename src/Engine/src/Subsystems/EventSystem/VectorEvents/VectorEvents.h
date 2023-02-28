@@ -32,22 +32,22 @@ public:
     ~VectorEvents() {};
 
 public: // ISubsystem
-    void Startup();
-    void Shutdown();
+    bool Startup() override;
+    bool Shutdown() override;
 
 public: // IEventSystem
-    u64 SubscribeKeyPress(enum Keys, void (*callback)(i32, i32));
-    u64 SubscribeMouse(enum Mouse, void (*callback)(i32, i32));
-    u64 SubscribeInternal(enum Internal, void (*callback)(void));
+    u64 SubscribeKeyPress(enum Keys, void (*callback)(i32, i32)) override;
+    u64 SubscribeMouse(enum Mouse, void (*callback)(i32, i32)) override;
+    u64 SubscribeInternal(enum Internal, void (*callback)(void)) override;
 
-    bool UnsubscribeKeyPress(enum Keys, u64 id);
-    bool UnsubscribeMouse(enum Mouse, u64 id);
-    bool UnsubscribeInternal(enum Internal, u64 id);
+    bool UnsubscribeKeyPress(enum Keys, u64 id) override;
+    bool UnsubscribeMouse(enum Mouse, u64 id) override;
+    bool UnsubscribeInternal(enum Internal, u64 id) override;
 
-    bool PublishKeyPress(enum Keys, i32 x, i32 y);
-    bool PublishMouse(enum Mouse, i32 x, i32 y);
-    bool PublishInternal(enum Internal);
+    bool PublishKeyPress(enum Keys, i32 x, i32 y) override;
+    bool PublishMouse(enum Mouse, i32 x, i32 y) override;
+    bool PublishInternal(enum Internal) override;
 
-    void RegisterLogger(ILogger *log);
+    void RegisterLogger(ILogger *log) override;
 };
 } // namespace ERI

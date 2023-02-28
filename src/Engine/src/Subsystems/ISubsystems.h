@@ -10,8 +10,8 @@ public:
     virtual ~ISubsystems() {};
 
 public:
-    virtual void Startup() = 0;
-    virtual void Shutdown() = 0;
+    virtual bool Startup() = 0;
+    virtual bool Shutdown() = 0;
 };
 
 } // namespace ERI

@@ -35,8 +35,8 @@ public:
     ~BasicLogger() {};
 
 public: // ISubsystem
-    void Startup() override;
-    void Shutdown() override;
+    bool Startup() override;
+    bool Shutdown() override;
 
 public: // ILogger
     void LogError(const char *, ...) override;

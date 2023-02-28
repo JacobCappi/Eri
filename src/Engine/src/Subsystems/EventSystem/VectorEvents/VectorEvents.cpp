@@ -2,8 +2,13 @@
 
 namespace ERI
 {
-void VectorEvents::Startup()
+bool VectorEvents::Startup()
 {
+    if (_log == nullptr)
+    {
+        return false;
+    }
+
     std::vector<void (*)(i32, i32)> test;
     _log->LogDebug("Size of Mouse Array %d", sizeof(MouseCallbacks)/sizeof(test));
     _log->LogDebug("Size of Key Array %d", sizeof(KeyPressCallbacks)/sizeof(test));
@@ -25,11 +30,14 @@ void VectorEvents::Startup()
     {
         InternalCallbacks[i].reserve(4);
     }
+
+    return true;
 }
 
-void VectorEvents::Shutdown()
+bool VectorEvents::Shutdown()
 {
     _log->LogInfo("Events System type Vector is shutting down");
+    _log = nullptr;
 
     for (int i = 0; i < static_cast<u32>(Keys::MAX); ++i)
     {
@@ -46,6 +54,7 @@ void VectorEvents::Shutdown()
         InternalCallbacks[i].clear();
     }
 
+    return true;
 }
 
 u64 VectorEvents::SubscribeKeyPress(enum Keys key, void (*callback)(i32, i32))
