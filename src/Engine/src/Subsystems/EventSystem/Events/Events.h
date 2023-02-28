@@ -1,5 +1,0 @@
-
-namespace ERI
-{
-
-} // namespace ERI

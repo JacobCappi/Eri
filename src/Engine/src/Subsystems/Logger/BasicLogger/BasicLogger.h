@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Core.h"
-#include "Logger/ILogger.h"
+#include "Subsystems/Logger/ILogger.h"
 
 namespace ERI
 {
 class ERI_API BasicLogger : public ILogger
 {
 private:
-    const unsigned int _maxMessageSize = 10000;
+    const u32 _maxMessageSize = 10000;
     bool _isRelease;
 
     enum LOG_TYPE
@@ -34,6 +34,10 @@ public:
     BasicLogger() {};
     ~BasicLogger() {};
 
+public: // ISubsystem
+    void Startup() override;
+    void Shutdown() override;
+
 public: // ILogger
     void LogError(const char *, ...) override;
     void LogWarning(const char *, ...) override;
@@ -42,9 +46,6 @@ public: // ILogger
     void LogTrace(const char *, ...) override;
 
     void SetLogLevel(bool isRelease) override;
-
-    void Startup() override;
-    void Shutdown() override;
 };
     
 } // namespace ERI
