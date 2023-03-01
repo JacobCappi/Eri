@@ -1,4 +1,4 @@
-#include "Logger/BasicLogger/BasicLogger.h"
+#include "Subsystems/Logger/BasicLogger/BasicLogger.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -6,14 +6,16 @@
 namespace ERI
 {
 
-void BasicLogger::Startup()
+bool BasicLogger::Startup()
 {
     LogInfo("Logger is starting up");
+    return true;
 }
 
-void BasicLogger::Shutdown()
+bool BasicLogger::Shutdown()
 {
     LogInfo("Logger set for shutdown");
+    return true;
 }
 
 void BasicLogger::LogInfo(const char *buffer, ...)
