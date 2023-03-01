@@ -4,13 +4,13 @@ namespace ERI
 {
     enum class Mouse
     {
+        Move,
+
         LeftDown,
         LeftUp,
-        LeftDrag,
 
         RightDown,
         RightUp,
-        RightDrag,
 
         MiddleDown,
         MiddleUp,

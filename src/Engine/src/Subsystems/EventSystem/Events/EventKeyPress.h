@@ -2,6 +2,13 @@
 
 namespace ERI
 {
+    enum class KeyPress
+    {
+        UP,
+        DOWN,
+        MAX
+    };
+
     enum class Keys
     {
         A,
@@ -66,6 +73,7 @@ namespace ERI
         FuncEleven,
         FuncTwelve,
 
+        Tab,
         Grave,
         Comma,
         Period,
@@ -73,10 +81,11 @@ namespace ERI
         Apostrophe,
         Minus,
         Equals,
-        LeftBrackets,
-        RightBrackets,
+        LeftBracket,
+        RightBracket,
         FrontSlash,
         BackSlash,
+        BackSpace,
 
         ScrollLock,
         NumsLock,
@@ -98,7 +107,20 @@ namespace ERI
         NumEnter,
         NumDot,
 
+        Space,
+        Enter,
+        Shift,
+        Control,
+        Alt,
+        Super,
+        Fn,
         Escape,
+        Context,
+
+        ArrowLeft,
+        ArrowRight,
+        ArrowUp,
+        ArrowDown,
         MAX
     };
 } // namespace ERI

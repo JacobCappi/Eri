@@ -1,5 +1,9 @@
 #include "Subsystems/EventSystem/VectorEvents/VectorEvents.h"
 
+
+// TODO: this *could* waste lots of space if sub/unsub is in a loop
+// Don't do this for now
+
 namespace ERI
 {
 bool VectorEvents::Startup()
@@ -9,28 +13,8 @@ bool VectorEvents::Startup()
         return false;
     }
 
-    std::vector<void (*)(i32, i32)> test;
-    _log->LogDebug("Size of Mouse Array %d", sizeof(MouseCallbacks)/sizeof(test));
-    _log->LogDebug("Size of Key Array %d", sizeof(KeyPressCallbacks)/sizeof(test));
-    _log->LogDebug("Size of Internal Array %d", sizeof(InternalCallbacks)/sizeof(test));
-
     _log->LogInfo("Events System type Vector is starting up");
-
-    for (int i = 0; i < static_cast<u32>(Keys::MAX); ++i)
-    {
-        KeyPressCallbacks[i].reserve(4);
-    }
-
-    for (int i = 0; i < static_cast<u32>(Mouse::MAX); ++i)
-    {
-        MouseCallbacks[i].reserve(4);
-    }
-
-    for (int i = 0; i < static_cast<u32>(Internal::MAX); ++i)
-    {
-        InternalCallbacks[i].reserve(4);
-    }
-
+    // TODO: preallocate for optimization
     return true;
 }
 
@@ -39,138 +23,96 @@ bool VectorEvents::Shutdown()
     _log->LogInfo("Events System type Vector is shutting down");
     _log = nullptr;
 
-    for (int i = 0; i < static_cast<u32>(Keys::MAX); ++i)
-    {
-        KeyPressCallbacks[i].clear();
-    }
-
-    for (int i = 0; i < static_cast<u32>(Mouse::MAX); ++i)
-    {
-        MouseCallbacks[i].clear();
-    }
-
-    for (int i = 0; i < static_cast<u32>(Internal::MAX); ++i)
-    {
-        InternalCallbacks[i].clear();
-    }
-
     return true;
 }
 
-u64 VectorEvents::SubscribeKeyPress(enum Keys key, void (*callback)(i32, i32))
+// left param 0 is keydown, 1 is keyup
+u64 VectorEvents::SubscribeKeyPress(void (*callback)(enum Keys, enum KeyPress))
 {
-    u32 index = static_cast<u32>(key);
-    if (index >= static_cast<u32>(Keys::MAX))
-    {
-        _log->LogError("Failed to subscribe to Key event, Event out of bounds.");
-        return 0;
-    }
+    auto index = _keyPressCallbacks.begin() + _keyPressCount;
+    _keyPressCallbacks.insert(index, callback);
 
-    KeyPressCallbacks[index].push_back(callback);
-    return KeyPressCallbacks[index].size();
+    _log->LogDebug("Subscriber %d added to KeyPress", _keyPressCount);
+    return _keyPressCount++;
 }
 
-u64 VectorEvents::SubscribeMouse(enum Mouse mouse, void (*callback)(i32, i32))
+u64 VectorEvents::SubscribeMouse(void (*callback)(enum Mouse, i32, i32))
 {
-    u32 index = static_cast<u32>(mouse);
-    if (index >= static_cast<u32>(Mouse::MAX))
-    {
-        _log->LogError("Failed to subscribe to Mouse event, Event out of bounds.");
-        return 0;
-    }
+    auto index = _mouseCallbacks.begin() + _mouseCount;
+    _mouseCallbacks.insert(index, callback);
 
-    MouseCallbacks[index].push_back(callback);
-    return MouseCallbacks[index].size();
+    _log->LogDebug("Subscriber %d added to Mouse", _mouseCount);
+    return _mouseCount++;
 }
 
-u64 VectorEvents::SubscribeInternal(enum Internal internal, void (*callback)(void))
+u64 VectorEvents::SubscribeInternal(void (*callback)(enum Internal, i32, i32))
 {
-    u32 index = static_cast<u32>(internal);
-    if (index >= static_cast<u32>(Internal::MAX))
-    {
-        _log->LogError("Failed to subscribe to Internal event, Event out of bounds.");
-    }
+    auto index = _internalCallbacks.begin() + _internalCount;
+    _internalCallbacks.insert(index, callback);
 
-    InternalCallbacks[index].push_back(callback);
-    return InternalCallbacks[index].size();
+    _log->LogDebug("Subscriber %d added to Internal", _internalCount);
+    return _internalCount++;
 }
 
-bool VectorEvents::UnsubscribeKeyPress(enum Keys key, u64 id)
+bool VectorEvents::UnsubscribeKeyPress(u64 id)
 {
-    u32 index = static_cast<u32>(key);
-
-    if (id > KeyPressCallbacks[index].size())
+    auto index = _internalCallbacks.begin() + id;
+    if (index >= _internalCallbacks.end())
     {
-        _log->LogWarning("Keys : Invalid Key, failed to unsubscribe");
+        _log->LogDebug("Subscriber %d not found in Key Press", id);
         return false;
     }
 
-    if (KeyPressCallbacks[index][id-1] == nullptr)
-    {
-        _log->LogWarning("Keys : Callback does not exist!");
-        return false;
-    }
 
-    KeyPressCallbacks[index][id-1] = nullptr;
+    _log->LogDebug("Subscriber %d removed from Key Press", id);
+    // this *is* costly I think... we'll make a map change sometime
+    _internalCallbacks.erase(index);
     return true;
 }
 
-bool VectorEvents::UnsubscribeMouse(enum Mouse mouse, u64 id)
+bool VectorEvents::UnsubscribeMouse(u64 id)
 {
-    u32 index = static_cast<u32>(mouse);
-    if (id > MouseCallbacks[index].size())
+    auto index = _mouseCallbacks.begin() + id;
+    if (index >= _mouseCallbacks.end())
     {
-        _log->LogWarning("Mouse: Invalid Key, failed to unsubscribe");
+        _log->LogDebug("Subscriber %d not found in Mouse", id);
         return false;
     }
 
-    if (MouseCallbacks[index][id-1] == nullptr)
-    {
-        _log->LogWarning("Mouse : Callback does not exist!");
-        return false;
-    }
 
-    MouseCallbacks[index][id-1] = nullptr;
+    _log->LogDebug("Subscriber %d removed from Mouse", id);
+    // this *is* costly I think... we'll make a map change sometime
+    _mouseCallbacks.erase(index);
     return true;
 }
 
-bool VectorEvents::UnsubscribeInternal(enum Internal internal, u64 id)
+bool VectorEvents::UnsubscribeInternal(u64 id)
 {
-    u32 index = static_cast<u32>(internal);
-    if (id > InternalCallbacks[index].size())
+    auto index = _internalCallbacks.begin() + id;
+    if (index >= _internalCallbacks.end())
     {
-        _log->LogWarning("Mouse: Invalid Key, failed to unsubscribe");
+        _log->LogDebug("Subscriber %d not found in Internal", id);
         return false;
     }
 
-    if (InternalCallbacks[index][id-1] == nullptr)
-    {
-        _log->LogWarning("Mouse : Callback does not exist!");
-        return false;
-    }
 
-    InternalCallbacks[index][id-1] = nullptr;
+    _log->LogDebug("Subscriber %d removed from Internal", id);
+    // this *is* costly I think... we'll make a map change sometime
+    _internalCallbacks.erase(index);
     return true;
-
 }
 
-bool VectorEvents::PublishKeyPress(enum Keys key, i32 x, i32 y)
+bool VectorEvents::PublishKeyPress(enum Keys key, enum KeyPress keyPress)
 {
-    u32 index = static_cast<u32>(key);
-    if (KeyPressCallbacks[index].size() == 0)
+    if (_keyPressCallbacks.empty())
     {
         _log->LogInfo("No subscribers to this event");
         return false;
     }
 
-    for (i32 i = 0; i < KeyPressCallbacks[index].size(); ++i)
+    for (auto callbacks : _keyPressCallbacks)
     {
-        if (KeyPressCallbacks[index][i] == nullptr)
-        {
-            continue;
-        }
-
-        KeyPressCallbacks[index][i](x, y);
+        callbacks(key, keyPress);
     }
 
     return true;
@@ -178,43 +120,31 @@ bool VectorEvents::PublishKeyPress(enum Keys key, i32 x, i32 y)
 
 bool VectorEvents::PublishMouse(enum Mouse mouse, i32 x, i32 y)
 {
-    u32 index = static_cast<u32>(mouse);
-    if (MouseCallbacks[index].size() == 0)
+    if (_mouseCallbacks.empty())
     {
         _log->LogInfo("No subscribers to this event");
         return false;
     }
 
-    for (i32 i = 0; i < MouseCallbacks[index].size(); ++i)
+    for (auto callbacks : _mouseCallbacks)
     {
-        if (MouseCallbacks[index][i] == nullptr)
-        {
-            continue;
-        }
-
-        MouseCallbacks[index][i](x, y);
+        callbacks(mouse, x, y);
     }
 
     return true;
 }
 
-bool VectorEvents::PublishInternal(enum Internal internal)
+bool VectorEvents::PublishInternal(enum Internal internal, i32 left, i32 right)
 {
-    u32 index = static_cast<u32>(internal);
-    if (InternalCallbacks[index].size() == 0)
+    if (_internalCallbacks.empty())
     {
         _log->LogInfo("No subscribers to this event");
         return false;
     }
 
-    for (i32 i = 0; i < InternalCallbacks[index].size(); ++i)
+    for (auto callbacks : _internalCallbacks)
     {
-        if (InternalCallbacks[index][i] == nullptr)
-        {
-            continue;
-        }
-
-        InternalCallbacks[index][i]();
+        callbacks(internal, left, right);
     }
 
     return true;
