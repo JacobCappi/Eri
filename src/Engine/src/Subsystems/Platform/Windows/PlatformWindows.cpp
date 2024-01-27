@@ -40,6 +40,8 @@ bool PlatformWindows::Shutdown()
         _log->LogInfo("Window was never created.");
         return true;
     }
+
+	CloseHandle(_timer);
     delete _wndKeys;
     return DestroyWindow(_window);
 }
@@ -58,6 +60,11 @@ bool PlatformWindows::getPlatformMessage()
     MSG message;
     while (PeekMessageA(&message, NULL, 0, 0, PM_REMOVE))
     {
+        if (WM_QUIT == message.message)
+        {
+            _log->LogDebug("Eri received message to shut down");
+            return false;
+        }
         TranslateMessage(&message);
         DispatchMessage(&message);
     }
@@ -144,6 +151,27 @@ bool PlatformWindows::StartupWindow(const char *windowName)
         }
         return false;
     }
+
+    // Clock stuff
+    // https://learn.microsoft.com/en-us/windows/win32/api/profileapi/nf-profileapi-queryperformancefrequency
+    if (!QueryPerformanceFrequency(&_lpPerformanceCounter))
+    {
+        _log->LogError("Systems earlier than Windows XP not supported");
+        return false;
+    }
+
+    // https://stackoverflow.com/questions/13397571/precise-thread-sleep-needed-max-1ms-error
+	if(!(_timer = CreateWaitableTimer(NULL, TRUE, NULL)))
+    {
+        _log->LogError("Unknown error, unable to create accurate timer");
+        _timer = NULL;
+    }
+    _timer = NULL;
+
+    // https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-large_integer-r1
+    _clock_frequency = static_cast<f64>(_lpPerformanceCounter.QuadPart);
+    _clock_frequency /= 1000.0;
+    _log->LogDebug("Clock frequency is set to %d/s or %f/ms", _lpPerformanceCounter.QuadPart, _clock_frequency);
 
     // When we get INI files, then this can be based on fullscreen or not
     ShowWindow(_window, SW_SHOW);
@@ -258,6 +286,35 @@ LRESULT CALLBACK PlatformWindows::MessageCallback(HWND hWnd, u32 uMsg, WPARAM wP
         return ourInstance->ProcessWindowsMessage(hWnd, uMsg, wParam, lParam);
     }
     return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+}
+
+void PlatformWindows::clock_start()
+{
+    QueryPerformanceCounter(&_lpPerformanceCounter);
+    _current_clock = _lpPerformanceCounter.QuadPart;
+}
+
+f64 PlatformWindows::clock_delta()
+{
+    QueryPerformanceCounter(&_lpPerformanceCounter);
+    f64 delta = static_cast<f64>(_lpPerformanceCounter.QuadPart - _current_clock);
+
+    // in ms
+    return delta / (f64)_clock_frequency;
+}
+
+void PlatformWindows::sleep(u64 ms)
+{
+    if (!_timer)
+    {
+        return Sleep(ms);
+    }
+
+    // https://gist.github.com/Youka/4153f12cf2e17a77314c#file-windows_nanosleep-c-L10
+    // ms -> ns is 1000*1000*ms, this is in units of 100ns, so 10,000*ms
+	_clock_ns.QuadPart = -(ms*10000);
+	SetWaitableTimer(_timer, &_clock_ns, 0, NULL, NULL, FALSE);
+	WaitForSingleObject(_timer, INFINITE);
 }
 
 } // namespace ERI

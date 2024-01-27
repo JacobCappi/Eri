@@ -30,6 +30,7 @@ App::~App()
 
 void App::MainLoop()
 {
+    _isRunning = true;
     Factory factory = Factory();
     factory.Startup();
 
@@ -39,11 +40,28 @@ void App::MainLoop()
     platform->SetWindowSize(800, 800);
     platform->StartupWindow("Eri Engine");
 
-    auto events = factory.getEventSystem();
+    // auto events = factory.getEventSystem();
     // events->SubscribeKeyPress(test);
     // events->SubscribeMouse(testMouse);
 
-    while (platform->getPlatformMessage());
+    while (_isRunning)
+    {
+        platform->clock_start();
+
+        if (!platform->getPlatformMessage())
+        {
+            _isRunning = false;
+        }
+
+        _frame_time = platform->clock_delta();
+        if (_frame_time < _time_per_frame)
+        {
+            platform->sleep(_time_per_frame - _frame_time);
+        }
+
+        _log->LogDebug("Time per frame %f real %f", _time_per_frame, platform->clock_delta());
+
+    }
 }
     
 } // namespace ERI

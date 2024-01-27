@@ -21,6 +21,14 @@ private:
     i32 _windowHeight;
 
 private:
+    LARGE_INTEGER _lpPerformanceCounter;
+    LARGE_INTEGER _clock_ns;
+
+    HANDLE _timer;
+    f64 _clock_frequency; // clock ticks / ms
+    i64 _current_clock; // ticks
+
+private:
     ILogger *_log;
     IEventSystem *_events;
 
@@ -47,6 +55,10 @@ public: // IPlatform
 
     void registerLogger(ILogger *log) override;
     void registerEvents(IEventSystem *events) override;
+
+    void clock_start() override;
+    f64 clock_delta() override;
+    void sleep(u64) override;
 
     LRESULT ProcessWindowsMessage(HWND hWnd, u32 uMsg, WPARAM wParam, LPARAM lParam);
 };

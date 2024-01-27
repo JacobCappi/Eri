@@ -106,7 +106,6 @@ bool VectorEvents::PublishKeyPress(enum Keys key, enum KeyPress keyPress)
 {
     if (_keyPressCallbacks.empty())
     {
-        _log->LogInfo("No subscribers to this event");
         return false;
     }
 
@@ -122,7 +121,6 @@ bool VectorEvents::PublishMouse(enum Mouse mouse, i32 x, i32 y)
 {
     if (_mouseCallbacks.empty())
     {
-        _log->LogInfo("No subscribers to this event");
         return false;
     }
 
@@ -138,7 +136,6 @@ bool VectorEvents::PublishInternal(enum Internal internal, i32 left, i32 right)
 {
     if (_internalCallbacks.empty())
     {
-        _log->LogInfo("No subscribers to this event");
         return false;
     }
 
