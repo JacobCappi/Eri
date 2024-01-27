@@ -33,3 +33,7 @@ C Development
 
 # Youtube Migration - Restarting this project with Youtube
 23.02.17 Start on redoing the logger.
+
+23.02.28 Finished up Event and Logger subsystems. Need platform and factory for video 2
+
+24.01.27 Finished up the Windows Platform subsystem. Factory is also complete

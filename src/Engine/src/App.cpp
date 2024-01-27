@@ -1,18 +1,26 @@
 #include "App.h"
 
-// TODO: Temp
-#include "Subsystems/Logger/BasicLogger/BasicLogger.h"
-
-#include "Subsystems/EventSystem/VectorEvents/VectorEvents.h"
-#include "Subsystems/EventSystem/Events/EventKeyPress.h"
+#include "Subsystems/Factory.h"
+#include "Subsystems/Subsystems.h"
 
 namespace ERI
 {
 
-void test(int x, int y)
+ILogger *_log;
+
+void test(enum Keys key, enum KeyPress press)
 {
-    return;
+    if (press == KeyPress::DOWN)
+    {
+        _log->LogInfo("%d was passed in", key);
+    }
 }
+
+void testMouse(enum Mouse button, i32 x, i32 y)
+{
+    _log->LogInfo("Mouse with %d at: (%d, %d)", button, x, y);
+}
+
 App::App()
 {
 }
@@ -22,27 +30,38 @@ App::~App()
 
 void App::MainLoop()
 {
-    // TODO: remove, here just for debugging
-    auto log = new BasicLogger();
-    log->SetLogLevel(false);
+    _isRunning = true;
+    Factory factory = Factory();
+    factory.Startup();
 
-    log->LogInfo("Hello World");
-    log->LogDebug("Hello World");
-    log->LogError("Hello World");
-    log->LogWarning("Hello World");
-    log->LogTrace("Hello World");
+    auto platform = factory.getPlatform();
+    _log = factory.getLogger();
+    platform->SetWindowPosition(100, 100);
+    platform->SetWindowSize(800, 800);
+    platform->StartupWindow("Eri Engine");
 
-    auto events = new VectorEvents();
-    events->RegisterLogger(log);
-    events->Startup();
+    // auto events = factory.getEventSystem();
+    // events->SubscribeKeyPress(test);
+    // events->SubscribeMouse(testMouse);
 
-    u64 key = events->SubscribeKeyPress(Keys::A, test);
-    events->PublishKeyPress(Keys::A, 1, 1);
+    while (_isRunning)
+    {
+        platform->clock_start();
 
-    events->UnsubscribeKeyPress(Keys::A, key);
-    bool test = events->PublishKeyPress(Keys::A, 1, 1);
+        if (!platform->getPlatformMessage())
+        {
+            _isRunning = false;
+        }
 
-    log->LogDebug("%d", test);
+        _frame_time = platform->clock_delta();
+        if (_frame_time < _time_per_frame)
+        {
+            platform->sleep(_time_per_frame - _frame_time);
+        }
+
+        _log->LogDebug("Time per frame %f real %f", _time_per_frame, platform->clock_delta());
+
+    }
 }
     
 } // namespace ERI

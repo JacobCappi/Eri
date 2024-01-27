@@ -1,0 +1,16 @@
+
+
+Should also be a subsystem:
+    I think the interface is just nice, but I probably won't call it by one
+    'not for abstraction, just for predictability?
+
+Startup:
+    should instance all subsystems
+
+Shutdown:
+    Not sure how to keep track of them, but these should kill all pointers here
+
+get() for every subsystem
+    -> How does that work in terms of thread safety?
+    -> can two use the same logger simultaneously?
+

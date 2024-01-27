@@ -21,11 +21,14 @@ private:
     ILogger *_log;
 
 private:
-    // TODO:
-    // These parameters are based on window x,y.... in glut, they go from 0,0 -> windowsize, is this the case in Vulkan
-    std::vector<void (*)(i32, i32)> KeyPressCallbacks[static_cast<u32>(Keys::MAX)];
-    std::vector<void (*)(i32, i32)> MouseCallbacks[static_cast<u32>(Mouse::MAX)];
-    std::vector<void (*)()> InternalCallbacks[static_cast<u32>(Internal::MAX)];
+    u32 _keyPressCount = 0;
+    u32 _mouseCount = 0;
+    u32 _internalCount = 0;
+
+private:
+    std::vector<void (*)(enum Keys, enum KeyPress)> _keyPressCallbacks;
+    std::vector<void (*)(enum Mouse, i32, i32)> _mouseCallbacks;
+    std::vector<void (*)(enum Internal, i32, i32)> _internalCallbacks;
 
 public:
     VectorEvents() {};
@@ -36,17 +39,17 @@ public: // ISubsystem
     bool Shutdown() override;
 
 public: // IEventSystem
-    u64 SubscribeKeyPress(enum Keys, void (*callback)(i32, i32)) override;
-    u64 SubscribeMouse(enum Mouse, void (*callback)(i32, i32)) override;
-    u64 SubscribeInternal(enum Internal, void (*callback)(void)) override;
+    u64 SubscribeKeyPress(void (*callback)(enum Keys, enum KeyPress)) override;
+    u64 SubscribeMouse(void (*callback)(enum Mouse, i32, i32)) override;
+    u64 SubscribeInternal(void (*callback)(enum Internal, i32, i32)) override;
 
-    bool UnsubscribeKeyPress(enum Keys, u64 id) override;
-    bool UnsubscribeMouse(enum Mouse, u64 id) override;
-    bool UnsubscribeInternal(enum Internal, u64 id) override;
+    bool UnsubscribeKeyPress(u64 id) override;
+    bool UnsubscribeMouse(u64 id) override;
+    bool UnsubscribeInternal(u64 id) override;
 
-    bool PublishKeyPress(enum Keys, i32 x, i32 y) override;
+    bool PublishKeyPress(enum Keys, enum KeyPress) override;
     bool PublishMouse(enum Mouse, i32 x, i32 y) override;
-    bool PublishInternal(enum Internal) override;
+    bool PublishInternal(enum Internal, i32 l, i32 r) override;
 
     void RegisterLogger(ILogger *log) override;
 };

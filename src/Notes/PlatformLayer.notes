@@ -1,0 +1,32 @@
+# Big Question:
+    What in the world does the Vulkan context need to get access to the Window...
+        -> and how do I interface that out so I can have multiple platform support
+
+# Windows peekmessage stack
+https://stackoverflow.com/questions/34962000/understanding-different-strategies-for-message-handling-in-the-windows-api
+
+/*
+uint32_t glfwExtensionCount = 0;
+const char** glfwExtensions;
+
+glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+createInfo.enabledExtensionCount = glfwExtensionCount;
+createInfo.ppEnabledExtensionNames = glfwExtensions;
+*/
+Tutorial says this for glfw, maybe the struct has a void pointer somewhere?
+
+What should the OS layer do?
+
+    - Needs to have Coms with OS, some OSMessage (keyboard, windowstate, etc)
+        
+
+    - Needs to make a window context for me to give to renderer
+        x, y, width, height
+
+    - Delete the window context
+
+// Honestly these two could be their own thing
+- Get Time for timer
+- Platform based sleep function?
+
