@@ -3,6 +3,8 @@
 #include "Subsystems/Factory.h"
 #include "Subsystems/Subsystems.h"
 
+#include <vulkan/vulkan.h>
+
 namespace ERI
 {
 
