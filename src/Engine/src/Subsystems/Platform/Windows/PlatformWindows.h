@@ -3,7 +3,7 @@
 #include "Core.h"
 #include "Subsystems/Platform/IPlatform.h"
 #include "Subsystems/Logger/ILogger.h"
-#include "Subsystems/EventSystem/IEventSystem.h"
+#include "Subsystems/Events/IEvents.h"
 #include "Subsystems/Platform/Windows/WindowKeys.h"
 
 #include <windows.h>
@@ -30,10 +30,7 @@ private:
 
 private:
     ILogger *_log;
-    IEventSystem *_events;
-
-private:
-    WindowKeys *_wndKeys;
+    IEvents *_events;
 
 private:
     HWND _window; // This is a handle to the window. Typedef hides the pointer
@@ -54,7 +51,7 @@ public: // IPlatform
     bool StartupWindow(const char *windowName) override;
 
     void registerLogger(ILogger *log) override;
-    void registerEvents(IEventSystem *events) override;
+    void registerEvents(IEvents *events) override;
 
     void clock_start() override;
     f64 clock_delta() override;

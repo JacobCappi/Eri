@@ -8,19 +8,24 @@
 namespace ERI
 {
 
-ILogger *_log;
-
-void test(enum Keys key, enum KeyPress press)
+void App::onKeyEvent(enum KeyPress press, enum Keys key)
 {
     if (press == KeyPress::DOWN)
-    {
-        _log->LogInfo("%d was passed in", key);
-    }
+        _log->LogDebug("Key press down %d", key);
 }
 
-void testMouse(enum Mouse button, i32 x, i32 y)
+void App::onMouseEvent(enum Mouse mouse, i32 x, i32 y)
 {
-    _log->LogInfo("Mouse with %d at: (%d, %d)", button, x, y);
+    if (mouse != Mouse::Move)
+        _log->LogDebug("Mouse %d at (%d, %d)", mouse, x, y);
+}
+
+void App::onWindowStateEvent(enum WindowState state, i32 x, i32 y)
+{
+    if (state == WindowState::WindowResize)
+    {
+        _log->LogDebug("New width %d, height %d", x, y);
+    }
 }
 
 App::App()
@@ -42,9 +47,10 @@ void App::MainLoop()
     platform->SetWindowSize(800, 800);
     platform->StartupWindow("Eri Engine");
 
-    // auto events = factory.getEventSystem();
-    // events->SubscribeKeyPress(test);
-    // events->SubscribeMouse(testMouse);
+    auto events = factory.getEventSystem();
+    events->SubscribeKeyPress(this);
+    events->SubscribeMouse(this);
+    events->SubscribeWindowState(this);
 
     while (_isRunning)
     {
@@ -61,7 +67,7 @@ void App::MainLoop()
             platform->sleep(_time_per_frame - _frame_time);
         }
 
-        _log->LogDebug("Time per frame %f real %f", _time_per_frame, platform->clock_delta());
+        //_log->LogDebug("Time per frame %f real %f", _time_per_frame, platform->clock_delta());
 
     }
 }

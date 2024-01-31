@@ -9,7 +9,7 @@ class Factory : public ISubsystems
 private:
     ILogger *_log;
     IPlatform *_platform;
-    IEventSystem *_events;
+    IEvents *_events;
 
     std::vector<ISubsystems *> _subsystems;
 
@@ -28,7 +28,7 @@ public: // ISubsystem
 
 public:
     ILogger *getLogger();
-    IEventSystem *getEventSystem();
+    IEvents *getEventSystem();
     IPlatform *getPlatform();
 };
 } // namespace ERI
