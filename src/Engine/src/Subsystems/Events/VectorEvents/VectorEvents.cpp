@@ -1,4 +1,4 @@
-#include "Subsystems/EventSystem/VectorEvents/VectorEvents.h"
+#include "Subsystems/Events/VectorEvents/VectorEvents.h"
 
 
 // TODO: this *could* waste lots of space if sub/unsub is in a loop
@@ -26,29 +26,28 @@ bool VectorEvents::Shutdown()
     return true;
 }
 
-// left param 0 is keydown, 1 is keyup
-u64 VectorEvents::SubscribeKeyPress(void (*callback)(enum Keys, enum KeyPress))
+u64 VectorEvents::SubscribeKeyPress(IKeyEventSubscriber *sub)
 {
-    auto index = _keyPressCallbacks.begin() + _keyPressCount;
-    _keyPressCallbacks.insert(index, callback);
+    auto index = _keyPressSubscribers.begin() + _keyPressCount;
+    _keyPressSubscribers.insert(index, sub);
 
     _log->LogDebug("Subscriber %d added to KeyPress", _keyPressCount);
     return _keyPressCount++;
 }
 
-u64 VectorEvents::SubscribeMouse(void (*callback)(enum Mouse, i32, i32))
+u64 VectorEvents::SubscribeMouse(IMouseEventSubscriber *sub)
 {
-    auto index = _mouseCallbacks.begin() + _mouseCount;
-    _mouseCallbacks.insert(index, callback);
+    auto index = _mouseSubscribers.begin() + _mouseCount;
+    _mouseSubscribers.insert(index, sub);
 
     _log->LogDebug("Subscriber %d added to Mouse", _mouseCount);
     return _mouseCount++;
 }
 
-u64 VectorEvents::SubscribeInternal(void (*callback)(enum Internal, i32, i32))
+u64 VectorEvents::SubscribeWindowState(IWindowStateSubscriber *sub)
 {
-    auto index = _internalCallbacks.begin() + _internalCount;
-    _internalCallbacks.insert(index, callback);
+    auto index = _windowStateSubscribers.begin() + _internalCount;
+    _windowStateSubscribers.insert(index, sub);
 
     _log->LogDebug("Subscriber %d added to Internal", _internalCount);
     return _internalCount++;
@@ -56,8 +55,8 @@ u64 VectorEvents::SubscribeInternal(void (*callback)(enum Internal, i32, i32))
 
 bool VectorEvents::UnsubscribeKeyPress(u64 id)
 {
-    auto index = _internalCallbacks.begin() + id;
-    if (index >= _internalCallbacks.end())
+    auto index = _windowStateSubscribers.begin() + id;
+    if (index >= _windowStateSubscribers.end())
     {
         _log->LogDebug("Subscriber %d not found in Key Press", id);
         return false;
@@ -66,14 +65,14 @@ bool VectorEvents::UnsubscribeKeyPress(u64 id)
 
     _log->LogDebug("Subscriber %d removed from Key Press", id);
     // this *is* costly I think... we'll make a map change sometime
-    _internalCallbacks.erase(index);
+    _windowStateSubscribers.erase(index);
     return true;
 }
 
 bool VectorEvents::UnsubscribeMouse(u64 id)
 {
-    auto index = _mouseCallbacks.begin() + id;
-    if (index >= _mouseCallbacks.end())
+    auto index = _mouseSubscribers.begin() + id;
+    if (index >= _mouseSubscribers.end())
     {
         _log->LogDebug("Subscriber %d not found in Mouse", id);
         return false;
@@ -82,14 +81,14 @@ bool VectorEvents::UnsubscribeMouse(u64 id)
 
     _log->LogDebug("Subscriber %d removed from Mouse", id);
     // this *is* costly I think... we'll make a map change sometime
-    _mouseCallbacks.erase(index);
+    _mouseSubscribers.erase(index);
     return true;
 }
 
-bool VectorEvents::UnsubscribeInternal(u64 id)
+bool VectorEvents::UnsubscribeWindowState(u64 id)
 {
-    auto index = _internalCallbacks.begin() + id;
-    if (index >= _internalCallbacks.end())
+    auto index = _windowStateSubscribers.begin() + id;
+    if (index >= _windowStateSubscribers.end())
     {
         _log->LogDebug("Subscriber %d not found in Internal", id);
         return false;
@@ -98,20 +97,20 @@ bool VectorEvents::UnsubscribeInternal(u64 id)
 
     _log->LogDebug("Subscriber %d removed from Internal", id);
     // this *is* costly I think... we'll make a map change sometime
-    _internalCallbacks.erase(index);
+    _windowStateSubscribers.erase(index);
     return true;
 }
 
 bool VectorEvents::PublishKeyPress(enum Keys key, enum KeyPress keyPress)
 {
-    if (_keyPressCallbacks.empty())
+    if (_keyPressSubscribers.empty())
     {
         return false;
     }
 
-    for (auto callbacks : _keyPressCallbacks)
+    for (auto subscribers : _keyPressSubscribers)
     {
-        callbacks(key, keyPress);
+        subscribers->onKeyEvent(keyPress, key);
     }
 
     return true;
@@ -119,29 +118,29 @@ bool VectorEvents::PublishKeyPress(enum Keys key, enum KeyPress keyPress)
 
 bool VectorEvents::PublishMouse(enum Mouse mouse, i32 x, i32 y)
 {
-    if (_mouseCallbacks.empty())
+    if (_mouseSubscribers.empty())
     {
         return false;
     }
 
-    for (auto callbacks : _mouseCallbacks)
+    for (auto subscribers : _mouseSubscribers)
     {
-        callbacks(mouse, x, y);
+        subscribers->onMouseEvent(mouse, x, y);
     }
 
     return true;
 }
 
-bool VectorEvents::PublishInternal(enum Internal internal, i32 left, i32 right)
+bool VectorEvents::PublishWindowState(enum WindowState state, i32 left, i32 right)
 {
-    if (_internalCallbacks.empty())
+    if (_windowStateSubscribers.empty())
     {
         return false;
     }
 
-    for (auto callbacks : _internalCallbacks)
+    for (auto subscribers : _windowStateSubscribers)
     {
-        callbacks(internal, left, right);
+        subscribers->onWindowStateEvent(state, left, right);
     }
 
     return true;

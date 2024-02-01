@@ -14,7 +14,7 @@ add_library(${ENGINE_NAME} SHARED
     Engine/src/App.cpp
     Engine/src/Subsystems/Logger/BasicLogger/BasicLogger.cpp
     Engine/src/Subsystems/Logger/QuietLogger/QuietLogger.cpp
-    Engine/src/Subsystems/EventSystem/VectorEvents/VectorEvents.cpp
+    Engine/src/Subsystems/Events/VectorEvents/VectorEvents.cpp
     Engine/src/Subsystems/Platform/Windows/PlatformWindows.cpp
     Engine/src/Subsystems/Platform/Windows/WindowKeys.cpp
     Engine/src/Subsystems/Factory.cpp

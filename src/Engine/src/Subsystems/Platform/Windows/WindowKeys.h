@@ -1,6 +1,6 @@
 #pragma once
 #include "Core.h"
-#include "Subsystems/EventSystem/Events/EventKeyPress.h"
+#include "Subsystems/Events/KeyEvents/EventKeyPress.h"
 #include "Subsystems/Logger/ILogger.h"
 
 namespace ERI
@@ -8,12 +8,7 @@ namespace ERI
 class WindowKeys
 {
 public:
-    WindowKeys() {}
-    ~WindowKeys() {}
-
-public:
-    enum Keys translateKey(u16 winKey);
-
+    static enum Keys translateKey(u16 winKey);
 };
 } // namespace ERI
 

@@ -1,8 +1,8 @@
 #include <windows.h>
 
-#include "Subsystems/EventSystem/Events/EventKeyPress.h"
+#include "Core.h"
+#include "Subsystems/Events/KeyEvents/EventKeyPress.h"
 #include "Subsystems/Platform/Windows/WindowKeys.h"
-#include "Subsystems/Logger/QuietLogger/QuietLogger.h"
 
 // https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 namespace ERI

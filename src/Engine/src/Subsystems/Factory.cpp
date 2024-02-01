@@ -4,7 +4,7 @@
 
 #include "Subsystems/Logger/BasicLogger/BasicLogger.h"
 #include "Subsystems/Platform/Windows/PlatformWindows.h"
-#include "Subsystems/EventSystem/VectorEvents/VectorEvents.h"
+#include "Subsystems/Events/VectorEvents/VectorEvents.h"
 
 namespace ERI
 {
@@ -101,7 +101,7 @@ ILogger* Factory::getLogger()
     return _log;
 }
 
-IEventSystem* Factory::getEventSystem()
+IEvents* Factory::getEventSystem()
 {
     return _events;
 
