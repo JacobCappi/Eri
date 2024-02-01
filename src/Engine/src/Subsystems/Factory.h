@@ -9,17 +9,23 @@ class Factory : public ISubsystems
 private:
     ILogger *_log;
     IPlatform *_platform;
-    IEventSystem *_events;
+    IEvents *_events;
+    IRenderer *_renderer;
 
     std::vector<ISubsystems *> _subsystems;
+
+private:
+    i32 _x, _y, _width, _height;
+    const char *_app_name;
 
 private:
     bool BuildLogger();
     bool BuildEventSystem();
     bool BuildPlatform();
+    bool BuildRenderer();
 
 public:
-    Factory() {};
+    Factory(i32 x, i32 y, i32 w, i32 h, const char *name);
     ~Factory() {};
 
 public: // ISubsystem
@@ -28,7 +34,8 @@ public: // ISubsystem
 
 public:
     ILogger *getLogger();
-    IEventSystem *getEventSystem();
+    IEvents *getEventSystem();
     IPlatform *getPlatform();
+    IRenderer *getRenderer();
 };
 } // namespace ERI

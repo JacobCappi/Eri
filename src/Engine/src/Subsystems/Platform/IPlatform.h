@@ -4,7 +4,7 @@
 
 #include "Subsystems/ISubsystems.h"
 #include "Subsystems/Logger/ILogger.h"
-#include "Subsystems/EventSystem/IEventSystem.h"
+#include "Subsystems/Events/IEvents.h"
 
 // TODO: figure out the windowing part of this interface after vulkan or linux part
 namespace ERI
@@ -19,7 +19,7 @@ public:
 
 public:
     virtual void registerLogger(ILogger *log) = 0;
-    virtual void registerEvents(IEventSystem *events) = 0;
+    virtual void registerEvents(IEvents *events) = 0;
 
 public:
 // Based it off glut(?)
@@ -37,5 +37,5 @@ public:
 
     virtual void sleep(u64) = 0;
 };
-    
+
 } // namespace ERI

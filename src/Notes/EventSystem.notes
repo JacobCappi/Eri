@@ -1,4 +1,24 @@
 
+I need a main 'hub' that stores publishers and subscribers
+This thing can probably be interfaced a bit
+
+IEvents:
+    the class 
+
+VectorEventSystem:
+    SubscribeMouse(IMouseSubscriber)
+    publishMouse()
+
+
+_event_system.publishMouse(x, y)
+
+vector<IMouseSubscriber>()
+SubscribeMouse(IMouseSubscriber)
+
+IEvents.h
+
+#1.30.24 I now know the stuff below does not work for classes
+
 Subscription:
     Needs to return a 'key' to be able to unsubscribe with (maybe a local int?)
     Needs to have a parameter (maybe enum) to select 'topic'

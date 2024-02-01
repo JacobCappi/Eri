@@ -4,10 +4,21 @@
 
 #include "Subsystems/Logger/BasicLogger/BasicLogger.h"
 #include "Subsystems/Platform/Windows/PlatformWindows.h"
-#include "Subsystems/EventSystem/VectorEvents/VectorEvents.h"
+#include "Subsystems/Events/VectorEvents/VectorEvents.h"
+#include "Subsystems/Renderer/Vulkan/VulkanRenderer.h"
 
 namespace ERI
 {
+
+Factory::Factory(i32 x, i32 y, i32 w, i32 h, const char *name)
+{
+    _x = x;
+    _y = y;
+    _width = w;
+    _height = h;
+
+    _app_name = name;
+}
 
 bool Factory::BuildLogger()
 {
@@ -53,6 +64,22 @@ bool Factory::BuildPlatform()
     return true;
 }
 
+bool Factory::BuildRenderer()
+{
+    if (_log == nullptr || _events == nullptr || _platform == nullptr)
+    {
+        return false;
+    }
+
+    _renderer = new VulkanRenderer();
+    _renderer->registerLogger(_log);
+    _renderer->registerEvents(_events);
+    _renderer->registerPlatform(_platform);
+
+    _subsystems.push_back(_renderer);
+    return true;
+
+}
 
 bool Factory::Startup()
 {
@@ -66,13 +93,20 @@ bool Factory::Startup()
     bool isLog = BuildLogger();
     bool isEvents = BuildEventSystem();
     bool isPlatform = BuildPlatform();
+    bool isRenderer = BuildRenderer();
 
     for (auto system : _subsystems)
     {
         retVal = retVal && system->Startup();
     }
 
-    return isLog && isEvents && isPlatform && retVal;
+    _platform->SetWindowPosition(_x, _y);
+    _platform->SetWindowSize(_width, _height);
+    _platform->StartupWindow(_app_name);
+
+    _renderer->setAppName(_app_name);
+
+    return isLog && isEvents && isPlatform && isRenderer && retVal;
 }
 
 bool Factory::Shutdown()
@@ -101,7 +135,7 @@ ILogger* Factory::getLogger()
     return _log;
 }
 
-IEventSystem* Factory::getEventSystem()
+IEvents* Factory::getEventSystem()
 {
     return _events;
 
@@ -112,7 +146,11 @@ IPlatform* Factory::getPlatform()
     return _platform;
 }
 
-    
+IRenderer* Factory::getRenderer()
+{
+    return _renderer;
+}
+
 } // namespace ERI
 
 

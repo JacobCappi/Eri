@@ -1,5 +1,7 @@
 #pragma once
 
+#define ENGINE_NAME "ERI_ENGINE"
+
 /* Unsigned int types */
 typedef unsigned long long int u64;
 typedef unsigned int u32;

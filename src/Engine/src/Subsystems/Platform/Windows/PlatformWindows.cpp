@@ -1,5 +1,5 @@
 #include "Subsystems/Platform/Windows/PlatformWindows.h"
-#include "Subsystems/EventSystem/IEventSystem.h"
+#include "Subsystems/Events/IEvents.h"
 
 #include <windows.h>
 #include <windowsx.h>
@@ -28,8 +28,6 @@ bool PlatformWindows::Startup()
     _window = nullptr;
     _log->LogInfo("Platform System type Window Setup");
 
-    _wndKeys = new WindowKeys();
-
     return true;
 }
 
@@ -42,7 +40,6 @@ bool PlatformWindows::Shutdown()
     }
 
 	CloseHandle(_timer);
-    delete _wndKeys;
     return DestroyWindow(_window);
 }
 
@@ -99,7 +96,7 @@ bool PlatformWindows::StartupWindow(const char *windowName)
     wndClass.hIconSm = LoadIconA(NULL, IDI_APPLICATION);
     wndClass.hInstance = moduleHandle;
     wndClass.lpfnWndProc = MessageCallback;
-    wndClass.lpszClassName = "EriWindow";
+    wndClass.lpszClassName = windowName;
     wndClass.lpszMenuName = NULL;
     wndClass.style = CS_DBLCLKS;
 
@@ -185,7 +182,7 @@ LRESULT PlatformWindows::ProcessWindowsMessage(HWND hWnd, u32 uMsg, WPARAM wPara
     switch (uMsg)
     {
         case WM_CLOSE:
-            _events->PublishInternal(Internal::AppQuit, 0, 0);
+            _events->PublishWindowState(WindowState::AppQuit, 0, 0);
             // TODO: Handle it myself
             return DefWindowProcA(hWnd, uMsg, wParam, lParam);
         case WM_DESTROY:
@@ -236,16 +233,16 @@ LRESULT PlatformWindows::ProcessWindowsMessage(HWND hWnd, u32 uMsg, WPARAM wPara
             // (0,0) -> *(lparam, lparam)
             // TODO: wparam has the 'max/min information... do I need that for fullscreen stuff?
             _log->LogDebug("Resize from Windows, new sizes (width: %d, height: %d)", LOWORD(lParam), HIWORD(lParam));
-            _events->PublishInternal(Internal::WindowResize, LOWORD(lParam), HIWORD(lParam));
+            _events->PublishWindowState(WindowState::WindowResize, LOWORD(lParam), HIWORD(lParam));
             break;
         //https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-keydown
         case WM_KEYDOWN:
         case WM_SYSKEYDOWN:
-            _events->PublishKeyPress(_wndKeys->translateKey(static_cast<u16>(wParam)), KeyPress::DOWN);
+            _events->PublishKeyPress(WindowKeys::translateKey(static_cast<u16>(wParam)), KeyPress::DOWN);
             break;
         case WM_KEYUP:
         case WM_SYSKEYUP:
-            _events->PublishKeyPress(_wndKeys->translateKey(static_cast<u16>(wParam)), KeyPress::UP);
+            _events->PublishKeyPress(WindowKeys::translateKey(static_cast<u16>(wParam)), KeyPress::UP);
             break;
     }
 
@@ -258,7 +255,7 @@ void PlatformWindows::registerLogger(ILogger *log)
 
 }
 
-void PlatformWindows::registerEvents(IEventSystem *events)
+void PlatformWindows::registerEvents(IEvents *events)
 {
     _events = events;
 }

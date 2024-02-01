@@ -10,18 +10,19 @@ set(CMAKE_CXX_EXTENSIONS False)
 
 message("${CMAKE_INSTALL_PREFIX}")
 
-add_library(${ENGINE_NAME} SHARED 
+add_library(${ENGINE_NAME} SHARED
     Engine/src/App.cpp
     Engine/src/Subsystems/Logger/BasicLogger/BasicLogger.cpp
     Engine/src/Subsystems/Logger/QuietLogger/QuietLogger.cpp
-    Engine/src/Subsystems/EventSystem/VectorEvents/VectorEvents.cpp
+    Engine/src/Subsystems/Events/VectorEvents/VectorEvents.cpp
     Engine/src/Subsystems/Platform/Windows/PlatformWindows.cpp
     Engine/src/Subsystems/Platform/Windows/WindowKeys.cpp
+    Engine/src/Subsystems/Renderer/Vulkan/VulkanRenderer.cpp
     Engine/src/Subsystems/Factory.cpp
 )
 
 find_package(Vulkan REQUIRED)
-target_link_libraries(${ENGINE_NAME} PRIVATE Vulkan::Vulkan) 
+target_link_libraries(${ENGINE_NAME} PRIVATE Vulkan::Vulkan)
 
 target_include_directories(${ENGINE_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/Engine/src")
 target_compile_options(${ENGINE_NAME} PRIVATE -g -Wall -Werror)

@@ -8,24 +8,35 @@
 namespace ERI
 {
 
-ILogger *_log;
-
-void test(enum Keys key, enum KeyPress press)
+void App::onKeyEvent(enum KeyPress press, enum Keys key)
 {
     if (press == KeyPress::DOWN)
+        _log->LogDebug("Key press down %d", key);
+}
+
+void App::onMouseEvent(enum Mouse mouse, i32 x, i32 y)
+{
+    if (mouse != Mouse::Move)
+        _log->LogDebug("Mouse %d at (%d, %d)", mouse, x, y);
+}
+
+void App::onWindowStateEvent(enum WindowState state, i32 x, i32 y)
+{
+    if (state == WindowState::WindowResize)
     {
-        _log->LogInfo("%d was passed in", key);
+        _log->LogDebug("New width %d, height %d", x, y);
     }
 }
 
-void testMouse(enum Mouse button, i32 x, i32 y)
+App::App(i32 x, i32 y, i32 width, i32 height, const char *app_name)
 {
-    _log->LogInfo("Mouse with %d at: (%d, %d)", button, x, y);
+    _x_pos = x;
+    _y_pos = y;
+    _width = width;
+    _height = height;
+    _app_name = app_name;
 }
 
-App::App()
-{
-}
 App::~App()
 {
 }
@@ -33,18 +44,16 @@ App::~App()
 void App::MainLoop()
 {
     _isRunning = true;
-    Factory factory = Factory();
+    Factory factory = Factory(_x_pos, _y_pos, _width, _height, _app_name);
     factory.Startup();
 
     auto platform = factory.getPlatform();
     _log = factory.getLogger();
-    platform->SetWindowPosition(100, 100);
-    platform->SetWindowSize(800, 800);
-    platform->StartupWindow("Eri Engine");
 
-    // auto events = factory.getEventSystem();
-    // events->SubscribeKeyPress(test);
-    // events->SubscribeMouse(testMouse);
+    auto events = factory.getEventSystem();
+    events->SubscribeKeyPress(this);
+    events->SubscribeMouse(this);
+    events->SubscribeWindowState(this);
 
     while (_isRunning)
     {
@@ -61,9 +70,9 @@ void App::MainLoop()
             platform->sleep(_time_per_frame - _frame_time);
         }
 
-        _log->LogDebug("Time per frame %f real %f", _time_per_frame, platform->clock_delta());
+        //_log->LogDebug("Time per frame %f real %f", _time_per_frame, platform->clock_delta());
 
     }
 }
-    
+
 } // namespace ERI
