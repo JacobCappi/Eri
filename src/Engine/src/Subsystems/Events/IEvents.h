@@ -41,5 +41,5 @@ public:
     virtual bool PublishWindowState(enum WindowState, i32 l, i32 r) = 0;
 
 };
-    
+
 } // namespace ERI

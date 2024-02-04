@@ -151,5 +151,5 @@ void VectorEvents::RegisterLogger(ILogger *log)
     _log = log;
 }
 
-    
+
 } // namespace ERI

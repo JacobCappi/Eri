@@ -2,7 +2,7 @@
 
 namespace ERI
 {
-    
+
 class ISubsystems
 {
 public:

@@ -10,5 +10,5 @@ class IKeyEventSubscriber
 public:
    virtual void onKeyEvent(enum KeyPress, enum Keys) = 0;
 };
-   
+
 } // namespace ERI

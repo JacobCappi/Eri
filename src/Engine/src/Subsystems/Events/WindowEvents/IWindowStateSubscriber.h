@@ -10,6 +10,6 @@ class IWindowStateSubscriber
 public:
    virtual void onWindowStateEvent(enum WindowState, i32 x, i32 y) = 0;
 };
-   
+
 } // namespace ERI
 
