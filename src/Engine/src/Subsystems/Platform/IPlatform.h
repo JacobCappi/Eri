@@ -10,6 +10,10 @@
 namespace ERI
 {
 
+/**
+ * @brief Interface that defines all properties of a supported ERI Platform
+ * @note The platform requires both an ILogger and an IEvents to startup
+ */
 class IPlatform : public ISubsystems
 {
 

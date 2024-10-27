@@ -12,6 +12,16 @@
 namespace ERI
 {
 
+/**
+ * @brief The Windows Platform layer
+ *
+ * Utilizes the Windows SDK to enable all OS related tasks
+ * (i.e. Handling Keypress, Mouses, and Windowing)
+ *
+ * Currently, I'm unsure how to handle Linux attempting to
+ * compile this file. I assume there is some cmake setting I can
+ * come up with
+ */
 class PlatformWindows : public IPlatform
 {
 private:

@@ -1,6 +1,6 @@
 #include "App.h"
 
-#include "Subsystems/Factory.h"
+#include "Subsystems/SubsystemFactory.h"
 #include "Subsystems/Subsystems.h"
 
 #include <vulkan/vulkan.h>
@@ -44,7 +44,7 @@ App::~App()
 void App::MainLoop()
 {
     _isRunning = true;
-    Factory factory = Factory(_x_pos, _y_pos, _width, _height, _app_name);
+    SubsystemFactory factory = SubsystemFactory();
     factory.Startup();
 
     auto platform = factory.getPlatform();

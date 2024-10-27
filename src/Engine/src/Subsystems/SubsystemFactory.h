@@ -4,7 +4,11 @@
 
 namespace ERI
 {
-class Factory : public ISubsystems
+/**
+ * @brief Constructs all of the subsystems within ERI
+ *
+ */
+class SubsystemFactory : public ISubsystems
 {
 private:
     ILogger *_log;
@@ -15,18 +19,14 @@ private:
     std::vector<ISubsystems *> _subsystems;
 
 private:
-    i32 _x, _y, _width, _height;
-    const char *_app_name;
-
-private:
     bool BuildLogger();
     bool BuildEventSystem();
     bool BuildPlatform();
     bool BuildRenderer();
 
 public:
-    Factory(i32 x, i32 y, i32 w, i32 h, const char *name);
-    ~Factory() {};
+    SubsystemFactory() {};
+    ~SubsystemFactory() {};
 
 public: // ISubsystem
     bool Startup() override;

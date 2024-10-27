@@ -5,6 +5,9 @@ namespace ERI
 {
 
 
+/**
+ * @brief Interface that defines all properties of a supported ERI Logger
+ */
 class ILogger : public ISubsystems
 {
 
@@ -19,7 +22,12 @@ public:
     virtual void LogWarning(const char *, ...) = 0;
     virtual void LogError(const char *, ...) = 0;
 
+    /**
+     * @brief Sets whether the logger is in release mode
+     *
+     * @param isRelease true if release, false otherwise
+     */
     virtual void SetLogLevel(bool isRelease) = 0;
 };
-    
+
 } // namespace ERI

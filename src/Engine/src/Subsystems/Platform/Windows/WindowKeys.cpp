@@ -4,7 +4,6 @@
 #include "Subsystems/Events/KeyEvents/EventKeyPress.h"
 #include "Subsystems/Platform/Windows/WindowKeys.h"
 
-// https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 namespace ERI
 {
 
@@ -159,6 +158,30 @@ enum Keys WindowKeys::translateKey(u16 winKey)
             return Keys::NumDivide;
         case VK_NUMLOCK:
             return Keys::NumsLock;
+        case VK_F1:
+            return Keys::FuncOne;
+        case VK_F2:
+            return Keys::FuncTwo;
+        case VK_F3:
+            return Keys::FuncThree;
+        case VK_F4:
+            return Keys::FuncFour;
+        case VK_F5:
+            return Keys::FuncFive;
+        case VK_F6:
+            return Keys::FuncSix;
+        case VK_F7:
+            return Keys::FuncSeven;
+        case VK_F8:
+            return Keys::FuncEight;
+        case VK_F9:
+            return Keys::FuncNine;
+        case VK_F10:
+            return Keys::FuncTen;
+        case VK_F11:
+            return Keys::FuncEleven;
+        case VK_F12:
+            return Keys::FuncTwelve;
         // These are keyboard specific? I think I have a normal american keyboard ~_~
         // http://www.kbdedit.com/manual/low_level_vk_list.html
         case VK_OEM_1:

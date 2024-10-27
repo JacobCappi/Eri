@@ -18,7 +18,7 @@ add_library(${ENGINE_NAME} SHARED
     Engine/src/Subsystems/Platform/Windows/PlatformWindows.cpp
     Engine/src/Subsystems/Platform/Windows/WindowKeys.cpp
     Engine/src/Subsystems/Renderer/Vulkan/VulkanRenderer.cpp
-    Engine/src/Subsystems/Factory.cpp
+    Engine/src/Subsystems/SubsystemFactory.cpp
 )
 
 find_package(Vulkan REQUIRED)

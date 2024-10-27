@@ -9,6 +9,12 @@
 
 namespace ERI
 {
+    /**
+     * @brief Main Tester App for ERI
+     * @implements
+     * @implements
+     * @implements
+     */
     class ERI_API App :
         public IKeyEventSubscriber,
         public IMouseEventSubscriber,

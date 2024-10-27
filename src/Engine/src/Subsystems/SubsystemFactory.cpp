@@ -1,6 +1,6 @@
 #include "Subsystems/ISubsystems.h"
 #include "Subsystems/Subsystems.h"
-#include "Subsystems/Factory.h"
+#include "Subsystems/SubsystemFactory.h"
 
 #include "Subsystems/Logger/BasicLogger/BasicLogger.h"
 #include "Subsystems/Platform/Windows/PlatformWindows.h"
@@ -10,27 +10,16 @@
 namespace ERI
 {
 
-Factory::Factory(i32 x, i32 y, i32 w, i32 h, const char *name)
-{
-    _x = x;
-    _y = y;
-    _width = w;
-    _height = h;
-
-    _app_name = name;
-}
-
-bool Factory::BuildLogger()
+bool SubsystemFactory::BuildLogger()
 {
     _log = new BasicLogger();
     _log->SetLogLevel(false);
-
 
     _subsystems.push_back(_log);
     return true;
 }
 
-bool Factory::BuildEventSystem()
+bool SubsystemFactory::BuildEventSystem()
 {
     if (_log == nullptr)
     {
@@ -42,7 +31,7 @@ bool Factory::BuildEventSystem()
     return true;
 }
 
-bool Factory::BuildPlatform()
+bool SubsystemFactory::BuildPlatform()
 {
     if (_log == nullptr || _events == nullptr)
     {
@@ -64,7 +53,7 @@ bool Factory::BuildPlatform()
     return true;
 }
 
-bool Factory::BuildRenderer()
+bool SubsystemFactory::BuildRenderer()
 {
     if (_log == nullptr || _events == nullptr || _platform == nullptr)
     {
@@ -81,7 +70,7 @@ bool Factory::BuildRenderer()
 
 }
 
-bool Factory::Startup()
+bool SubsystemFactory::Startup()
 {
     bool retVal = true;
 
@@ -90,26 +79,39 @@ bool Factory::Startup()
     _platform = nullptr;
     _subsystems.clear();
 
-    bool isLog = BuildLogger();
-    bool isEvents = BuildEventSystem();
-    bool isPlatform = BuildPlatform();
-    bool isRenderer = BuildRenderer();
+    if (!BuildLogger())
+    {
+        return false;
+    }
+
+    if (!BuildEventSystem())
+    {
+        return false;
+    }
+
+    if (!BuildPlatform())
+    {
+        return false;
+    }
+
+    if (!BuildRenderer())
+    {
+        return false;
+    }
 
     for (auto system : _subsystems)
     {
-        retVal = retVal && system->Startup();
+        retVal &= system->Startup();
     }
 
-    _platform->SetWindowPosition(_x, _y);
-    _platform->SetWindowSize(_width, _height);
-    _platform->StartupWindow(_app_name);
+    _platform->SetWindowPosition(50, 50);
+    _platform->SetWindowSize(800, 600);
+    _platform->StartupWindow("ERI Game Engine - Windows");
 
-    _renderer->setAppName(_app_name);
-
-    return isLog && isEvents && isPlatform && isRenderer && retVal;
+    return retVal;
 }
 
-bool Factory::Shutdown()
+bool SubsystemFactory::Shutdown()
 {
     bool retVal = true;
     for (auto system : _subsystems)
@@ -130,23 +132,23 @@ bool Factory::Shutdown()
 }
 
 
-ILogger* Factory::getLogger()
+ILogger* SubsystemFactory::getLogger()
 {
     return _log;
 }
 
-IEvents* Factory::getEventSystem()
+IEvents* SubsystemFactory::getEventSystem()
 {
     return _events;
 
 }
 
-IPlatform* Factory::getPlatform()
+IPlatform* SubsystemFactory::getPlatform()
 {
     return _platform;
 }
 
-IRenderer* Factory::getRenderer()
+IRenderer* SubsystemFactory::getRenderer()
 {
     return _renderer;
 }

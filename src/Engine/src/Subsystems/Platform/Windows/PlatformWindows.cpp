@@ -130,7 +130,7 @@ bool PlatformWindows::StartupWindow(const char *windowName)
     i32 width = _windowWidth + (box->right - box->left); // essentially extending the width to include the border
     i32 height = _windowHeight + (box->bottom - box->top);
 
-    _window = CreateWindowExA(WS_EX_APPWINDOW, "EriWindow", windowName,
+    _window = CreateWindowExA(WS_EX_APPWINDOW, windowName, windowName,
             WS_OVERLAPPEDWINDOW, x, y, width, height, NULL, NULL, moduleHandle, this);
 
     if (_window == NULL)
@@ -168,7 +168,7 @@ bool PlatformWindows::StartupWindow(const char *windowName)
     // https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-large_integer-r1
     _clock_frequency = static_cast<f64>(_lpPerformanceCounter.QuadPart);
     _clock_frequency /= 1000.0;
-    _log->LogDebug("Clock frequency is set to %d/s or %f/ms", _lpPerformanceCounter.QuadPart, _clock_frequency);
+    _log->LogDebug("Clock frequency is set to %d/s or %0.2f/ms", _lpPerformanceCounter.QuadPart, _clock_frequency);
 
     // When we get INI files, then this can be based on fullscreen or not
     ShowWindow(_window, SW_SHOW);

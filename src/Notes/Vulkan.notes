@@ -1,88 +1,30 @@
-#ideas from the Overview
+# Overview <https://vulkan-tutorial.com/en/Overview> Notes
+
+! Vulkan is designed to be a cross-platform abstraction over the GPU
+Near the beginning, many API's were designed with that generation of GPU in mind
+and as capabilities and advancements came pouring in, less-than-ideal abstractions
+were created. Vulkan, on the otherhand, was built recently, from the ground up, with
+programmer specificity in mind, and does not suffer from these issues.
+
+## To draw a circle
+
+1: Instance and Physical device selection
+
+   The application is described using the `VkInstance`
+   Supported hardware is selected using the `VkPhysicalDevice`
+
+2: Logical device and queue families
+
+   A `VkDevice` which allows the user to specify `VkPhysicalDeviceFeatures`
+   There are many options, but picking the `VkQueue` is the most important.
+   Most operations interact with a queue asynchronously. Queue families are
+   created for specific sets of interactions (i.e. graphics, memory transfers)
 
 
-# Basics from the Overview
-
-a `VkInstance` is the basic starting point
-"vkPhysical Device" is used to query supported hardware
-"VkDevice" is then used to more specifically describe what "VKPhysicalDeviceFeatures" I should use along
-   with what queue family(?)
-
-Commands to draw are given to the "VkQueue"
-Families can include
-   - graphics
-   - compute
-   - memory
-
-These are optional but probably helps?
-
-To Render:
-
-# 3. Window Surface
-To render, two things are needed
-   1. a window surface (VkSurfaceKHR)
-   2. a swap chain (VkSwapchainKHR)
-
-(KHR suffix means they are part of the vukan extension)?
--> the vukan api is platform agnostic, but for windows, we need a standardized #WSI extension
-I guess this is where I'll be loose coupling?
-
-#To pass in a window, a handle to the windows instance (HWND) should be all that is needed
-the swap chain is like a swap buffer? I think it allows for the draw frame to be different than
-the render frame (like the glutswapdoublebuffer?) [double buffering is vsync, triple]
--> he said will be discussed in the swap buffer chpt
 
 
-# 4. Image views
-to draw images, a VkImageView and VkFrameBuffer must be used to wrap it.
-
-# 5. Render Pass
-Types of images rendered, how they will be used, how their contents should be treated...
-
-# 6. Graphics pipelines
-creating VkPipeline (viewport sz, depth buffer, and shaders). "VkShaderModule"
-
--> Biggest difference between the vulkan and the rest are that all graphics pipeline
-   stuff must be set up beforehand...
-
-aka, building different piplines with different configs(?) I think
-
-# 7. Command pools
-Commands to the queue are submitted via a "VKCommandBuffer" allocated from the "VkCommandPool" assocaited with
-   the queue families
 
 
-Hello Worlding:
-   1. Begin render pass,
-   2. Bind graphics piplines
-   3. Draw 3 verts
-   4. end render pass
-
-
-# Main Loop
-acquire image from swap chain via "vkAcquireNextIamgeKHR". select buffer for image and submit to queue,
-swap the buffer with "VkQueuePresetKHR"
-
-
-Summary from the tutorial:
-   - Create a VkInstance
-   - Select a supported graphics card (VkPhysicalDevice)
-   - Create a VkDevice and VkQueue for drawing and presentation
-   - Create a window, window surface and swap chain
-   - Wrap the swap chain images into VkImageView
-   - Create a render pass that specifies the render targets and usage
-   - Create framebuffers for the render pass
-   - Set up the graphics pipeline
-   - Allocate and record a command buffer with the draw commands for every possible swap chain image
-   - Draw frames by acquiring images, submitting the right draw command buffer and returning the images back to the swap chain
-
-API style guide:
-Functions have a lower case vk prefix, 
-types like enumerations and structs have a Vk prefix,
-enumeration values have a VK_ prefix, 
-
-Debugging:
-The validation layers can be put between API and driver to check things (makes it much easier to debug graphics code)
 
 
 
