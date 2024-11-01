@@ -1,0 +1,15 @@
+const always refers to left, unless nothing left, then right
+
+``` foo(const int *bar) ``` // Pointer to Const
+Points to a const int, aka, can't modify the int
+Pointer is not const, so can change what it points to
+
+``` foo(int *const bar) ``` // Const pointer
+const pointers, aka can't modify the pointer
+whatever is inside can change
+
+``` const foo bar(void) ```
+done somewhere, but probably is more harm than good
+
+``` foo bar(void) const ```
+guarentees the internals of the class are not changed
