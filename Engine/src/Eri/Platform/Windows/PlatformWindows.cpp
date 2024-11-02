@@ -29,7 +29,7 @@ bool PlatformWindows::Startup()
   }
 
   _window = nullptr;
-  _log->LogInfo("Platform System type Window Setup");
+  _log->LogInfo("Created Platform System type Windows");
 
   return true;
 }
@@ -89,6 +89,12 @@ void PlatformWindows::SetWindowPosition(i32 x, i32 y)
 //https://learn.microsoft.com/en-us/windows/win32/learnwin32/creating-a-window
 bool PlatformWindows::StartupWindow(const char *windowName)
 {
+  if (_windowHeight == 0 || _windowWidth == 0)
+  {
+    _log->LogError("Window sizes not set before window creation");
+    return false;
+  }
+
   // Used to get icon/mouse from window libs
   auto moduleHandle = GetModuleHandleA(NULL);
   WNDCLASSEXA wndClass;
