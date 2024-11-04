@@ -101,7 +101,7 @@ bool VectorEvents::UnsubscribeWindowState(u64 id)
   return true;
 }
 
-bool VectorEvents::PublishKeyPress(enum Keys key, enum KeyPress keyPress) const
+bool VectorEvents::PublishKeyPress(enum Keys key, enum KeyPressType keyPressType) const
 {
   if (_keyPressSubscribers.empty())
   {
@@ -110,7 +110,7 @@ bool VectorEvents::PublishKeyPress(enum Keys key, enum KeyPress keyPress) const
 
   for (auto subscribers : _keyPressSubscribers)
   {
-    subscribers->onKeyEvent(keyPress, key);
+    subscribers->onKeyEvent(keyPressType, key);
   }
 
   return true;

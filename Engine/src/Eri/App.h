@@ -44,7 +44,7 @@ namespace ERI
     void MainLoop();
 
   public: // IKeyEventSubscriber
-    void onKeyEvent(enum KeyPress, enum Keys) override;
+    void onKeyEvent(enum KeyPressType, enum Keys) override;
 
   public: // IMouseEventSubscriber,
     void onMouseEvent(enum Mouse, i32 x, i32 y) override;

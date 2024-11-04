@@ -8,7 +8,8 @@ namespace ERI
 class ERI_API BasicLogger : public ILogger
 {
 private:
-    const u32 _maxMessageSize = 10000;
+    static const u16 _maxMessageSize = 1000;
+
     bool _isRelease;
 
     enum LOG_TYPE

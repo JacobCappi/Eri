@@ -1,8 +1,9 @@
 #pragma once
+#include "Eri/Core.h"
 
 namespace ERI
 {
-  enum class KeyPress
+  enum class KeyPressType
   {
     UP,
     DOWN,

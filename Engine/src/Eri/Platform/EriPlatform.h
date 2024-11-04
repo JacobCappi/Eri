@@ -16,9 +16,20 @@ enum class Platforms
 
 class EriPlatform 
 {
+private:
+  IPlatform *_platform;
+
 public:
-  static IPlatform *getEriPlatform();
-  static Platforms platformType();
+  EriPlatform() {};
+  ~EriPlatform() {};
+
+public:
+  IPlatform *getEriPlatform();
+  Platforms platformType();
+
+public:
+  bool Startup();
+  bool Shutdown();
 };
 
 }

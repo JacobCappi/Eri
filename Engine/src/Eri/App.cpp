@@ -10,9 +10,9 @@
 namespace ERI
 {
 
-void App::onKeyEvent(enum KeyPress press, enum Keys key)
+void App::onKeyEvent(enum KeyPressType press, enum Keys key)
 {
-  if (press == KeyPress::DOWN)
+  if (press == KeyPressType::DOWN)
     _log->LogDebug("Key press down %d", key);
 }
 
@@ -49,13 +49,28 @@ void App::MainLoop()
   EriUtils utils = EriUtils();
   utils.Startup();
 
-  auto platform = EriPlatform::getEriPlatform();
   _log = utils.getLogger();
 
   auto events = utils.getEventSystem();
   events->SubscribeKeyPress(this);
   events->SubscribeMouse(this);
   events->SubscribeWindowState(this);
+
+  EriPlatform platform_manager = EriPlatform();
+  platform_manager.Startup();
+
+  if (platform_manager.platformType() == Platforms::UNSUPPORTED)
+  {
+    _log->LogError("Unsupported Platform Type");
+  }
+
+  IPlatform *platform = platform_manager.getEriPlatform();
+
+  platform->Startup();
+  platform->SetWindowSize(_width, _height);
+  platform->SetWindowPosition(_x_pos, _y_pos);
+
+  platform->StartupWindow(_app_name);
 
   while (_isRunning)
   {

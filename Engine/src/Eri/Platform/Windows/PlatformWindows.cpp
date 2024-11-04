@@ -250,11 +250,11 @@ LRESULT PlatformWindows::ProcessWindowsMessage(HWND hWnd, u32 uMsg, WPARAM wPara
     //https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-keydown
     case WM_KEYDOWN:
     case WM_SYSKEYDOWN:
-      _events->PublishKeyPress(WindowKeys::translateKey(static_cast<u16>(wParam)), KeyPress::DOWN);
+      _events->PublishKeyPress(WindowKeys::translateKey(static_cast<u16>(wParam)), KeyPressTypeType::DOWN);
       break;
     case WM_KEYUP:
     case WM_SYSKEYUP:
-      _events->PublishKeyPress(WindowKeys::translateKey(static_cast<u16>(wParam)), KeyPress::UP);
+      _events->PublishKeyPress(WindowKeys::translateKey(static_cast<u16>(wParam)), KeyPressTypeType::UP);
       break;
   }
 

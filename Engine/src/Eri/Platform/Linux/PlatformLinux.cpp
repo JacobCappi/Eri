@@ -4,7 +4,6 @@
 
 namespace ERI
 {
-
 void PlatformLinux::registerUtils(EriUtils *const utils)
 {
   _log = utils->getLogger();
@@ -24,6 +23,7 @@ bool PlatformLinux::Startup()
   _windowHeight = 0;
 
   _log->LogInfo("Created Platform System type Linux");
+  return true;
 }
 
 bool PlatformLinux::Shutdown()
@@ -38,6 +38,7 @@ bool PlatformLinux::Shutdown()
 
 bool PlatformLinux::getPlatformMessage()
 {
+  return false;
 
 }
 
@@ -88,21 +89,25 @@ bool PlatformLinux::StartupWindow(const char *windowName)
   );
 
 
-
+  return true;
 }
 
 void PlatformLinux::clock_start()
 {
 
+return;
 }
 
 f64 PlatformLinux::clock_delta()
 {
+  return -1;
+
 
 }
 
 void PlatformLinux::sleep(u64)
 {
+  return;
 
 }
 

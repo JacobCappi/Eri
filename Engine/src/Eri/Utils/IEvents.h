@@ -32,7 +32,7 @@ public:
   virtual bool UnsubscribeMouse(u64 id) = 0;
   virtual bool UnsubscribeWindowState(u64 id) = 0;
 
-  virtual bool PublishKeyPress(enum Keys, enum KeyPress) const = 0;
+  virtual bool PublishKeyPress(enum Keys, enum KeyPressType) const = 0;
   virtual bool PublishMouse(enum Mouse, i32 x, i32 y) const = 0;
   virtual bool PublishWindowState(enum WindowState, i32 l, i32 r) const = 0;
 

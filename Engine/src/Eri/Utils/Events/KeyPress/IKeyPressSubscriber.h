@@ -9,7 +9,7 @@ namespace ERI
 class IKeyPressSubscriber
 {
 public:
-  virtual void onKeyEvent(enum KeyPress, enum Keys) = 0;
+  virtual void onKeyEvent(enum KeyPressType, enum Keys) = 0;
 };
 
 } // namespace ERI
