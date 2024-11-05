@@ -66,7 +66,13 @@ void App::MainLoop()
 
   IPlatform *platform = platform_manager.getEriPlatform();
 
-  platform->Startup();
+  platform->registerUtils(&utils);
+  if (!platform->Startup())
+  {
+    _log->LogError("Platform unable to startup");
+    return;
+  }
+
   platform->SetWindowSize(_width, _height);
   platform->SetWindowPosition(_x_pos, _y_pos);
 

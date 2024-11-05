@@ -1,4 +1,5 @@
 #include "Eri/Platform/Linux/PlatformLinux.h"
+#include <time.h>
 
 // https://www.tronche.com/gui/x/xlib-tutorial/2nd-program-anatomy.html
 
@@ -38,8 +39,16 @@ bool PlatformLinux::Shutdown()
 
 bool PlatformLinux::getPlatformMessage()
 {
-  return false;
+  XEvent e; 
+  // When this returns false, the output buffer will
+  // be flushed according to this:
+  // https://tronche.com/gui/x/xlib/event-handling/manipulating-event-queue/XCheckMaskEvent.html
+  while (XCheckMaskEvent(_display, _event_mask, &e))
+  {
+    _log->LogDebug("Event found: %d", e.type);
+  }
 
+  return true;
 }
 
 void PlatformLinux::SetWindowSize(i32 width, i32 height)
@@ -88,16 +97,13 @@ bool PlatformLinux::StartupWindow(const char *windowName)
     2, color_white, color_black
   );
 
-  i32 event_mask = 
-    KeyPressMask  
-    | KeyReleaseMask
-    | ButtonPressMask
-    | ButtonReleaseMask
-    | PointerMotionMask
-    | StructureNotifyMask;
+  _event_mask = 
+    KeyPressMask | KeyReleaseMask |
+    ButtonPressMask | ButtonReleaseMask |
+    PointerMotionMask | StructureNotifyMask;
 
 
-  XSelectInput(_display, _window, event_mask);
+  XSelectInput(_display, _window, _event_mask);
 
   XMapWindow(_display, _window);
 
@@ -120,19 +126,28 @@ bool PlatformLinux::StartupWindow(const char *windowName)
 
 void PlatformLinux::clock_start()
 {
-
-return;
+  struct timespec current_time;
+  clock_gettime(CLOCK_MONOTONIC, &current_time);
+  _current_clock = current_time.tv_sec + 
+      current_time.tv_nsec * 0.000000001;
 }
 
 f64 PlatformLinux::clock_delta()
 {
-  return -1;
+  struct timespec current_time;
+  clock_gettime(CLOCK_MONOTONIC, &current_time);
+  f64 _now = current_time.tv_sec + 
+      current_time.tv_nsec * 0.000000001;
 
-
+  return _current_clock - _now;
 }
 
-void PlatformLinux::sleep(u64)
+void PlatformLinux::sleep(u64 ms)
 {
+  struct timespec ts;
+  ts.tv_sec = ms / 1000;
+  ts.tv_nsec = (ms % 1000) * 1000 * 1000;
+  nanosleep(&ts, 0);
   return;
 
 }

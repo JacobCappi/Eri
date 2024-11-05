@@ -17,6 +17,8 @@ private:
   i32 _windowWidth;
   i32 _windowHeight;
 
+  f64 _current_clock; // ticks
+
 private:
   ILogger *_log;
   IEvents *_events;
@@ -24,6 +26,7 @@ private:
 private:
   Display *_display;
   Window _window;
+  i32 _event_mask;
 
 public:
   PlatformLinux() {};
