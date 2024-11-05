@@ -88,7 +88,33 @@ bool PlatformLinux::StartupWindow(const char *windowName)
     2, color_white, color_black
   );
 
+  i32 event_mask = 
+    KeyPressMask  
+    | KeyReleaseMask
+    | ButtonPressMask
+    | ButtonReleaseMask
+    | PointerMotionMask
+    | StructureNotifyMask;
 
+
+  XSelectInput(_display, _window, event_mask);
+
+  XMapWindow(_display, _window);
+
+  // Wait for the MapNotify event that tells us
+  // the window has been bound to our display
+  while (true)
+  {
+    XEvent e;
+    XNextEvent(_display, &e);
+    if (e.type == MapNotify)
+    {
+      _log->LogInfo("X11 Window successfully bound to display");
+      break;
+    }
+  }
+
+  XFlush(_display);
   return true;
 }
 
