@@ -1,5 +1,10 @@
 #include "Eri/Platform/Linux/PlatformLinux.h"
+
 #include <time.h>
+#include <X11/Xlib.h>
+
+#include "Eri/Utils/Events/Mouse/EventMouse.h"
+#include "Eri/Platform/Linux/LinuxMouse.h"
 
 // https://www.tronche.com/gui/x/xlib-tutorial/2nd-program-anatomy.html
 
@@ -45,7 +50,38 @@ bool PlatformLinux::getPlatformMessage()
   // https://tronche.com/gui/x/xlib/event-handling/manipulating-event-queue/XCheckMaskEvent.html
   while (XCheckMaskEvent(_display, _event_mask, &e))
   {
-    _log->LogDebug("Event found: %d", e.type);
+
+  // https://tronche.com/gui/x/xlib/events/keyboard-pointer/keyboard-pointer.html
+    switch (e.type)
+    {
+      case DestroyNotify:
+        _events->PublishWindowState(WindowState::AppQuit, 0, 0);
+        return false;
+      case ButtonPress:
+      case ButtonRelease:
+        _events->PublishMouse(
+          LinuxMouse::translateMouse(e.type, e.xbutton.button),
+          e.xbutton.x,
+          e.xbutton.y
+        );
+        break;
+      case MotionNotify:
+        _events->PublishMouse(Mouse::Move, e.xmotion.x, e.xmotion.y);
+        break;
+      case KeyPress:
+        _log->LogDebug("Event found: Key Press");
+        break;
+      case KeyRelease:
+        _log->LogDebug("Event found: Key Release");
+        break;
+      case Expose:
+        _log->LogDebug("Event found: Expose");
+        break;
+      case ResizeRequest:
+        _events->PublishWindowState(WindowState::WindowResize, e.xresizerequest.width, e.xresizerequest.height);
+      default:
+        break;
+    }
   }
 
   return true;
@@ -99,8 +135,8 @@ bool PlatformLinux::StartupWindow(const char *windowName)
 
   _event_mask = 
     KeyPressMask | KeyReleaseMask |
-    ButtonPressMask | ButtonReleaseMask |
-    PointerMotionMask | StructureNotifyMask;
+    ButtonPressMask | ButtonReleaseMask | PointerMotionMask | 
+    ExposureMask | StructureNotifyMask;
 
 
   XSelectInput(_display, _window, _event_mask);
@@ -136,10 +172,10 @@ f64 PlatformLinux::clock_delta()
 {
   struct timespec current_time;
   clock_gettime(CLOCK_MONOTONIC, &current_time);
-  f64 _now = current_time.tv_sec + 
+  f64 now = current_time.tv_sec + 
       current_time.tv_nsec * 0.000000001;
 
-  return _current_clock - _now;
+  return now - _current_clock;
 }
 
 void PlatformLinux::sleep(u64 ms)

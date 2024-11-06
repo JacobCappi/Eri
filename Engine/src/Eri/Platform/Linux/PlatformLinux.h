@@ -32,6 +32,7 @@ public:
   PlatformLinux() {};
   ~PlatformLinux() {};
 
+private:
 
 public: // IPlatform
   bool getPlatformMessage() override;

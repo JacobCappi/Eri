@@ -16,6 +16,7 @@ if (WIN32)
 elseif (UNIX AND NOT APPLE)
   list (APPEND ERI_SRC_FILES
     src/Eri/Platform/Linux/PlatformLinux.cpp
+    src/Eri/Platform/Linux/LinuxMouse.cpp
   )
 endif()
 
