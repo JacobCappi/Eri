@@ -2,6 +2,7 @@
 #include "Eri/Core.h"
 
 #include "Eri/Utils/ILogger.h"
+#include "Eri/Utils/IEvents.h"
 #include "Eri/Utils/Events/KeyPress/IKeyPressSubscriber.h"
 #include "Eri/Utils/Events/Mouse/IMouseSubscriber.h"
 #include "Eri/Utils/Events/WindowState/IWindowStateSubscriber.h"
@@ -35,6 +36,9 @@ namespace ERI
     i32 _width;
     i32 _height;
     const char *_app_name;
+
+  private:
+    IEvents *_events;
 
   public:
     App(i32 x, i32 y, i32 width, i32 height, const char *app_name);

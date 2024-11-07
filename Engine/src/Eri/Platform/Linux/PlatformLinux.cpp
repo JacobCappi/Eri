@@ -5,6 +5,7 @@
 
 #include "Eri/Utils/Events/Mouse/EventMouse.h"
 #include "Eri/Platform/Linux/LinuxMouse.h"
+#include "Eri/Platform/Linux/LinuxKeys.h"
 
 // https://www.tronche.com/gui/x/xlib-tutorial/2nd-program-anatomy.html
 
@@ -69,11 +70,22 @@ bool PlatformLinux::getPlatformMessage()
         _events->PublishMouse(Mouse::Move, e.xmotion.x, e.xmotion.y);
         break;
       case KeyPress:
+        _events->PublishKeyPress(
+          LinuxKeys::translateKey(e.xkey.keycode),
+          KeyPressType::DOWN
+        );
         _log->LogDebug("Event found: Key Press");
         break;
-      case KeyRelease:
+      case KeyRelease
+      {
+        // TODO: here
+        _events->PublishKeyPress(
+          LinuxKeys::translateKey(e.xkey.),
+          KeyPressType::UP
+        );
         _log->LogDebug("Event found: Key Release");
         break;
+      }
       case Expose:
         _log->LogDebug("Event found: Expose");
         break;

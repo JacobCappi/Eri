@@ -12,22 +12,17 @@ namespace ERI
 
 void App::onKeyEvent(enum KeyPressType press, enum Keys key)
 {
-  if (press == KeyPressType::DOWN)
-    _log->LogDebug("Key press down %d", key);
+  _events->LogPress(key);
 }
 
 void App::onMouseEvent(enum Mouse mouse, i32 x, i32 y)
 {
-  if (mouse != Mouse::Move)
-    _log->LogDebug("Mouse %d at (%d, %d)", mouse, x, y);
+  _events->LogMouse(mouse, x, y);
 }
 
 void App::onWindowStateEvent(enum WindowState state, i32 x, i32 y)
 {
-  if (state == WindowState::WindowResize)
-  {
-    _log->LogDebug("New width %d, height %d", x, y);
-  }
+  _events->LogWindowState(state, x, y);
 }
 
 App::App(i32 x, i32 y, i32 width, i32 height, const char *app_name)
@@ -51,10 +46,10 @@ void App::MainLoop()
 
   _log = utils.getLogger();
 
-  auto events = utils.getEventSystem();
-  events->SubscribeKeyPress(this);
-  events->SubscribeMouse(this);
-  events->SubscribeWindowState(this);
+  _events = utils.getEventSystem();
+  _events->SubscribeKeyPress(this);
+  _events->SubscribeMouse(this);
+  _events->SubscribeWindowState(this);
 
   EriPlatform platform_manager = EriPlatform();
   platform_manager.Startup();

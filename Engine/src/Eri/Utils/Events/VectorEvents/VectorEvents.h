@@ -54,5 +54,11 @@ public: // IEvents
   bool PublishWindowState(enum WindowState, i32 l, i32 r) const override;
 
   void RegisterLogger(ILogger *log) override;
+
+// TOOD: should I find a better place for this?
+public:
+  void LogPress(enum Keys) const override;
+  void LogMouse(enum Mouse, i32 x, i32 y) const override;
+  void LogWindowState(enum WindowState, i32 l, i32 r) const override;
 };
 } // namespace ERI
