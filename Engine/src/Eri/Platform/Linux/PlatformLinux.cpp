@@ -70,19 +70,39 @@ bool PlatformLinux::getPlatformMessage()
         _events->PublishMouse(Mouse::Move, e.xmotion.x, e.xmotion.y);
         break;
       case KeyPress:
+      {
+        KeySym *keysym;
+        int count = 0;
+        keysym = XGetKeyboardMapping(
+          _display,
+          e.xkey.keycode,
+          1,
+          &count
+        );
         _events->PublishKeyPress(
-          LinuxKeys::translateKey(e.xkey.keycode),
+          LinuxKeys::translateKey(keysym[0]),
           KeyPressType::DOWN
         );
+        XFree(keysym);
         _log->LogDebug("Event found: Key Press");
         break;
-      case KeyRelease
+      }
+      case KeyRelease:
       {
-        // TODO: here
+        KeySym *keysym;
+        int count = 0;
+        keysym = XGetKeyboardMapping(
+          _display,
+          e.xkey.keycode,
+          1,
+          &count
+        );
+
         _events->PublishKeyPress(
-          LinuxKeys::translateKey(e.xkey.),
+          LinuxKeys::translateKey(keysym[0]),
           KeyPressType::UP
         );
+        XFree(keysym);
         _log->LogDebug("Event found: Key Release");
         break;
       }

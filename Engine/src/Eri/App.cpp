@@ -12,12 +12,16 @@ namespace ERI
 
 void App::onKeyEvent(enum KeyPressType press, enum Keys key)
 {
-  _events->LogPress(key);
+  if (press == KeyPressType::DOWN)
+  {
+    _events->LogPress(key);
+  }
 }
 
 void App::onMouseEvent(enum Mouse mouse, i32 x, i32 y)
 {
-  _events->LogMouse(mouse, x, y);
+  if (mouse != Mouse::Move)
+    _events->LogMouse(mouse, x, y);
 }
 
 void App::onWindowStateEvent(enum WindowState state, i32 x, i32 y)
