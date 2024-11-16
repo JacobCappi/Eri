@@ -16,7 +16,7 @@ bool EriUtils::BuildLogger()
   _log = new BasicLogger();
   _log->SetLogLevel(false);
 
-  _subsystems.push_back(_log);
+  _utils.push_back(_log);
   return true;
 }
 
@@ -28,7 +28,7 @@ bool EriUtils::BuildEventSystem()
   }
   _events = new VectorEvents();
   _events->RegisterLogger(_log);
-  _subsystems.push_back(_events);
+  _utils.push_back(_events);
   return true;
 }
 
@@ -39,7 +39,7 @@ bool EriUtils::Startup()
 
   _log = nullptr;
   _events = nullptr;
-  _subsystems.clear();
+  _utils.clear();
 
   if (!BuildLogger())
   {
@@ -51,14 +51,10 @@ bool EriUtils::Startup()
       return false;
   }
 
-  for (auto system : _subsystems)
+  for (auto system : _utils)
   {
       retVal &= system->Startup();
   }
-
-  // _platform->SetWindowPosition(50, 50);
-  // _platform->SetWindowSize(800, 600);
-  // _platform->StartupWindow("ERI Game Engine - Windows");
 
   return retVal;
 }
@@ -66,11 +62,11 @@ bool EriUtils::Startup()
 bool EriUtils::Shutdown()
 {
   bool retVal = true;
-  for (auto system : _subsystems)
+  for (auto system : _utils)
   {
       retVal = retVal && system->Shutdown();
   }
-  _subsystems.clear();
+  _utils.clear();
 
   delete _log;
   delete _events;

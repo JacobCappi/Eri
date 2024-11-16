@@ -18,7 +18,7 @@ private:
   ILogger *_log;
   IEvents *_events;
 
-  std::vector<IUtil *> _subsystems;
+  std::vector<IUtil *> _utils;
 
 private:
   bool BuildLogger();

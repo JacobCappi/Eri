@@ -51,7 +51,7 @@ public: // IEvents
 
   bool PublishKeyPress(enum Keys, enum KeyPressType) const override;
   bool PublishMouse(enum Mouse, i32 x, i32 y) const override;
-  bool PublishWindowState(enum WindowState, i32 l, i32 r) const override;
+  bool PublishWindowState(enum WindowState, i32 x, i32 y) const override;
 
   void RegisterLogger(ILogger *log) override;
 

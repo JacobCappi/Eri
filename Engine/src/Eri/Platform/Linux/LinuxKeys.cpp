@@ -154,25 +154,26 @@ enum Keys LinuxKeys::translateKey(u32 x11_key)
     case XK_Super_L:
     case XK_Super_R:
       return Keys::Super;
-    case XK_KP_0:
+    // This got tricky due to keysyms
+    case XK_KP_Insert:
       return Keys::NumZero;
-    case XK_KP_1:
+    case XK_KP_End:
       return Keys::NumOne;
-    case XK_KP_2:
+    case XK_KP_Down:
       return Keys::NumTwo;
-    case XK_KP_3:
+    case XK_KP_Page_Down:
       return Keys::NumThree;
-    case XK_KP_4:
+    case XK_KP_Left:
       return Keys::NumFour;
-    case XK_KP_5:
+    case XK_KP_Begin:
       return Keys::NumFive;
-    case XK_KP_6:
+    case XK_KP_Right:
       return Keys::NumSix;
-    case XK_KP_7:
+    case XK_KP_Home:
       return Keys::NumSeven;
-    case XK_KP_8:
+    case XK_KP_Up:
       return Keys::NumEight;
-    case XK_KP_9:
+    case XK_KP_Page_Up:
       return Keys::NumNine;
     case XK_KP_Multiply:
       return Keys::NumMultiply;
@@ -180,7 +181,7 @@ enum Keys LinuxKeys::translateKey(u32 x11_key)
       return Keys::NumAdd;
     case XK_KP_Subtract:
       return Keys::NumMinus;
-    case XK_KP_Decimal:
+    case XK_KP_Delete:
       return Keys::NumDot;
     case XK_KP_Divide:
       return Keys::NumDivide;

@@ -34,11 +34,11 @@ public:
 
   virtual bool PublishKeyPress(enum Keys, enum KeyPressType) const = 0;
   virtual bool PublishMouse(enum Mouse, i32 x, i32 y) const = 0;
-  virtual bool PublishWindowState(enum WindowState, i32 l, i32 r) const = 0;
+  virtual bool PublishWindowState(enum WindowState, i32 x, i32 y) const = 0;
 
   virtual void LogPress(enum Keys) const = 0;
   virtual void LogMouse(enum Mouse, i32 x, i32 y) const = 0;
-  virtual void LogWindowState(enum WindowState, i32 l, i32 r) const = 0;
+  virtual void LogWindowState(enum WindowState, i32 x, i32 y) const = 0;
 };
 
 } // namespace ERI
