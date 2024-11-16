@@ -1,0 +1,35 @@
+# Overview <https://vulkan-tutorial.com/en/Overview> Notes
+
+! Vulkan is designed to be a cross-platform abstraction over the GPU
+Near the beginning, many API's were designed with that generation of GPU in mind
+and as capabilities and advancements came pouring in, less-than-ideal abstractions
+were created. Vulkan, on the otherhand, was built recently, from the ground up, with
+programmer specificity in mind, and does not suffer from these issues.
+
+## To draw a circle
+
+1: Instance and Physical device selection
+
+   The application is described using the `VkInstance`
+   Supported hardware is selected using the `VkPhysicalDevice`
+
+2: Logical device and queue families
+
+   A `VkDevice` which allows the user to specify `VkPhysicalDeviceFeatures`
+   There are many options, but picking the `VkQueue` is the most important.
+   Most operations interact with a queue asynchronously. Queue families are
+   created for specific sets of interactions (i.e. graphics, memory transfers)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

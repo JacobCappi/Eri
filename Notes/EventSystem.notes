@@ -1,0 +1,48 @@
+
+I need a main 'hub' that stores publishers and subscribers
+This thing can probably be interfaced a bit
+
+IEvents:
+    the class 
+
+VectorEventSystem:
+    SubscribeMouse(IMouseSubscriber)
+    publishMouse()
+
+
+_event_system.publishMouse(x, y)
+
+vector<IMouseSubscriber>()
+SubscribeMouse(IMouseSubscriber)
+
+IEvents.h
+
+#1.30.24 I now know the stuff below does not work for classes
+
+Subscription:
+    Needs to return a 'key' to be able to unsubscribe with (maybe a local int?)
+    Needs to have a parameter (maybe enum) to select 'topic'
+
+ideally:
+    int key = subscribe(enum, callback)
+
+Unsubscribe:
+    Needs to take in that key to unsubscribe with.
+    Also that param
+
+ideally:
+    bool success = unsubscribe(enum, key)
+    or if (unsubscribe(enum, key))
+
+Publish:
+    take param, internall call all registered callbacks
+    publish(enum)
+
+Callbacks:
+    
+Vector of Vectors
+RAM not an issue, so counter could be max size of enum, int[max_enum], and just ++ as I go?
+ARRAY 1:
+    Index : enum
+Vector 2:
+    Index : Key : callback

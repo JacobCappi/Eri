@@ -1,0 +1,127 @@
+#pragma once
+#include "Eri/Core.h"
+
+namespace ERI
+{
+  enum class KeyPressType
+  {
+    UP,
+    DOWN,
+    MAX
+  };
+
+  enum class Keys
+  {
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
+    I,
+    J,
+    K,
+    L,
+    M,
+    N,
+    O,
+    P,
+    Q,
+    R,
+    S,
+    T,
+    U,
+    V,
+    W,
+    X,
+    Y,
+    Z,
+
+    Zero,
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
+    Six,
+    Seven,
+    Eight,
+    Nine,
+
+    NumZero,
+    NumOne,
+    NumTwo,
+    NumThree,
+    NumFour,
+    NumFive,
+    NumSix,
+    NumSeven,
+    NumEight,
+    NumNine,
+
+    FuncOne,
+    FuncTwo,
+    FuncThree,
+    FuncFour,
+    FuncFive,
+    FuncSix,
+    FuncSeven,
+    FuncEight,
+    FuncNine,
+    FuncTen,
+    FuncEleven,
+    FuncTwelve,
+
+    Tab,
+    Grave,
+    Comma,
+    Period,
+    SemiColon,
+    Apostrophe,
+    Minus,
+    Equals,
+    LeftBracket,
+    RightBracket,
+    FrontSlash,
+    BackSlash,
+    BackSpace,
+
+    ScrollLock,
+    NumsLock,
+    CapsLock,
+
+    PrintScreen,
+    Pause,
+    Insert,
+    Delete,
+    Home,
+    End,
+    PageUp,
+    PageDown,
+
+    NumDivide,
+    NumMultiply,
+    NumMinus,
+    NumAdd,
+    NumEnter,
+    NumDot,
+
+    Space,
+    Enter,
+    Shift,
+    Control,
+    Alt,
+    Super,
+    Fn,
+    Escape,
+    Context,
+
+    ArrowLeft,
+    ArrowRight,
+    ArrowUp,
+    ArrowDown,
+    MAX
+  };
+} // namespace ERI
