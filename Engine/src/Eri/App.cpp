@@ -4,6 +4,8 @@
 #include "Eri/Utils/IEvents.h"
 
 #include "Eri/Platform/EriPlatform.h"
+#include "Eri/Renderer/IRenderer.h"
+#include "Eri/Renderer/Vulkan/VulkanRenderer.h"
 
 #include <vulkan/vulkan.h>
 
@@ -77,6 +79,13 @@ void App::MainLoop()
 
   platform->StartupWindow(_app_name);
 
+  IRenderer *renderer = new VulkanRenderer();
+  renderer->setAppName(_app_name);
+  renderer->registerUtils(&utils);
+  renderer->registerPlatform(&platform_manager);
+  renderer->Startup();
+
+
   while (_isRunning)
   {
     platform->clock_start();
@@ -92,10 +101,11 @@ void App::MainLoop()
       platform->sleep(_time_per_frame - _frame_time);
     }
 
-    // _log->LogDebug("Time per frame %f real %f", _time_per_frame, platform->clock_delta());
+    _log->LogDebug("Time per frame %f real %f", _time_per_frame, platform->clock_delta());
 
   }
 
+  renderer->Shutdown();
   platform->Shutdown();
   utils.Shutdown();
 }
