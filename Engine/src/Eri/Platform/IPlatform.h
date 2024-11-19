@@ -28,6 +28,10 @@ public:
   virtual bool StartupWindow(const char *windowName) = 0;
 
 public:
+  virtual bool getWindowPointers(const void *window, const void **display) = 0;
+  virtual bool getWindowExtention(const char **VKExtention) = 0;
+
+public:
   // sets the current time
   virtual void clock_start() = 0;
 

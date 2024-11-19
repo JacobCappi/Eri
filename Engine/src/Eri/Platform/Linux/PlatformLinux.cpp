@@ -220,5 +220,24 @@ void PlatformLinux::sleep(u64 ms)
 
 }
 
+bool PlatformLinux::getWindowPointers(const void *window, const void **display)
+{
+  if (_window == 0 || _display == nullptr)
+  {
+    return false;
+  }
+
+  window = static_cast<void *>(&_window);
+  *display = static_cast<void *>(_display);
+
+  return true;
+}
+
+bool PlatformLinux::getWindowExtention(const char **VKExtention)
+{
+  *VKExtention = "VK_KHR_xlib_surface";
+  return true;
+}
+
 } // namespace ERI
 
