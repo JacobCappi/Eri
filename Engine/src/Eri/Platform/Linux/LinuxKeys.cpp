@@ -240,7 +240,7 @@ enum Keys LinuxKeys::translateKey(u32 x11_key)
 
   }
 }
-  
+
 } // namespace ERI
 
 

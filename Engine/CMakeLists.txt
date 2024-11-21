@@ -30,7 +30,7 @@ add_library(${ENGINE_NAME} SHARED ${ERI_SRC_FILES})
 
 find_package(Vulkan REQUIRED)
 find_package(X11 REQUIRED)
-target_link_libraries(${ENGINE_NAME} PRIVATE 
+target_link_libraries(${ENGINE_NAME} PRIVATE
   Vulkan::Vulkan
   X11)
 

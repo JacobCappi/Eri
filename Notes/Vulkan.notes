@@ -59,7 +59,7 @@ programmer specificity in mind, and does not suffer from these issues.
       2. Bind the Graphics Pipeline
       3. Draw 3 vertices
       4. End render pass
-   
+
    (?) Because we are not sure which image the swapchain will give us, a new command buffer needs to
    be created for each possible image.
 

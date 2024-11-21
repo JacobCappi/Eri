@@ -19,7 +19,7 @@ Tutorial says this for glfw, maybe the struct has a void pointer somewhere?
 What should the OS layer do?
 
     - Needs to have Coms with OS, some OSMessage (keyboard, windowstate, etc)
-        
+
 
     - Needs to make a window context for me to give to renderer
         x, y, width, height

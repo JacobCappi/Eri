@@ -17,7 +17,7 @@ bool EriPlatform::Shutdown()
   delete(_platform);
   return true;
 }
-  
+
 } // namespace ERI
 
 
@@ -84,5 +84,5 @@ Platforms EriPlatform::platformType()
 } // namespace ERI
 
 #endif
-  
+
 

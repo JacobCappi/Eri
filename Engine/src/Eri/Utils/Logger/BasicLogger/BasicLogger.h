@@ -22,7 +22,7 @@ private:
     };
     const char *_colorStrings[5] = {"1;31", "1;33", "1;32", "1;34", "1;30"};
 
-    const char *_types[5] = 
+    const char *_types[5] =
     {
         "[ ERR ] : ",
         "[ WRN ] : ",
@@ -48,6 +48,6 @@ public: // ILogger
 
     void SetLogLevel(bool isRelease) override;
 };
-    
+
 } // namespace ERI
 

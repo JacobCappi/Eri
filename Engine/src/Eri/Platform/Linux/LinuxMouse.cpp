@@ -56,5 +56,5 @@ Mouse LinuxMouse::translateMouse(i32 type, u32 x11_button)
     return Mouse::MAX;
   }
 }
-  
+
 } // namespace ERI

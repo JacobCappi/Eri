@@ -14,6 +14,11 @@ namespace ERI
 
 void App::onKeyEvent(enum KeyPressType press, enum Keys key)
 {
+  if (key == Keys::Escape)
+  {
+    _isRunning = false;
+  }
+
   if (press == KeyPressType::DOWN)
   {
     _events->LogPress(key);
@@ -101,7 +106,7 @@ void App::MainLoop()
       platform->sleep(_time_per_frame - _frame_time);
     }
 
-    _log->LogDebug("Time per frame %f real %f", _time_per_frame, platform->clock_delta());
+    //_log->LogDebug("Time per frame %f real %f", _time_per_frame, platform->clock_delta());
 
   }
 

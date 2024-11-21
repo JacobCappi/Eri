@@ -54,5 +54,5 @@ public:
   bool Shutdown() override;
 
 };
-  
+
 } // namespace ERI

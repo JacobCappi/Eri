@@ -45,7 +45,7 @@ bool PlatformLinux::Shutdown()
 
 bool PlatformLinux::getPlatformMessage()
 {
-  XEvent e; 
+  XEvent e;
   // When this returns false, the output buffer will
   // be flushed according to this:
   // https://tronche.com/gui/x/xlib/event-handling/manipulating-event-queue/XCheckMaskEvent.html
@@ -152,7 +152,7 @@ bool PlatformLinux::StartupWindow(const char *windowName)
   int color_white = WhitePixel(_display, DefaultScreen(_display));
 
   /**
-   * 
+   *
   Window XCreateSimpleWindow(Display *display, Window parent, int  x,  int  y,
         unsigned  int  width, unsigned int height, unsigned int border_width,
         unsigned long border, unsigned long background);
@@ -165,9 +165,9 @@ bool PlatformLinux::StartupWindow(const char *windowName)
     2, color_white, color_black
   );
 
-  _event_mask = 
+  _event_mask =
     KeyPressMask | KeyReleaseMask |
-    ButtonPressMask | ButtonReleaseMask | PointerMotionMask | 
+    ButtonPressMask | ButtonReleaseMask | PointerMotionMask |
     ExposureMask | StructureNotifyMask;
 
 
@@ -196,7 +196,7 @@ void PlatformLinux::clock_start()
 {
   struct timespec current_time;
   clock_gettime(CLOCK_MONOTONIC, &current_time);
-  _current_clock = current_time.tv_sec + 
+  _current_clock = current_time.tv_sec +
       current_time.tv_nsec * 0.000000001;
 }
 
@@ -204,7 +204,7 @@ f64 PlatformLinux::clock_delta()
 {
   struct timespec current_time;
   clock_gettime(CLOCK_MONOTONIC, &current_time);
-  f64 now = current_time.tv_sec + 
+  f64 now = current_time.tv_sec +
       current_time.tv_nsec * 0.000000001;
 
   return now - _current_clock;
