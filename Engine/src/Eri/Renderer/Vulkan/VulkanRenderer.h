@@ -26,6 +26,18 @@ private:
 
   const char *_app_name = nullptr;
 
+#ifdef ERI_DEBUG
+  const bool _enableValidationLayers = true;
+#else
+  const bool enableValidationLayers = false;
+#endif
+
+  static const u32 _maxLayers = 1;
+  const char *_validationLayer = "VK_LAYER_KHRONOS_validation";
+
+  static const u32 _maxExtensions = 2;
+  const char *_extensions[_maxExtensions];
+
 private:
   VkInstance _vulkan_instance;
 
@@ -40,6 +52,10 @@ public: // IRenderer
 
   bool Startup() override;
   bool Shutdown() override;
+
+private:
+  bool enableExtentionSupport(VkInstanceCreateInfo &createInfo);
+  bool enableLayerSupport(VkInstanceCreateInfo &createInfo);
 
 
 };

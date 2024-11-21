@@ -2,6 +2,10 @@
 
 #include <vulkan/vulkan_core.h>
 
+/* The goal is to do everything myself, makes these libs myself in util*/
+#include <vector>
+#include <cstring>
+
 #include "Eri/Utils/EriUtils.h"
 #include "Eri/Platform/EriPlatform.h"
 
@@ -30,30 +34,26 @@ bool VulkanRenderer::Startup()
   VkInstanceCreateInfo createInfo = {};
   createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
   createInfo.pApplicationInfo = &appInfo;
-  // TODO:
 
-  void *window = 0;
-  const void *display = nullptr;
-  _platform->getWindowPointers(window, &display);
+  if (!enableExtentionSupport(createInfo))
+  {
+    return false;
+  }
 
-  const u32 max_ext = 2;
-  const char *extensions[max_ext];
-  _platform->getWindowExtention(extensions);
-  extensions[1] = VK_KHR_SURFACE_EXTENSION_NAME;
-
-  createInfo.enabledExtensionCount = max_ext;
-  createInfo.ppEnabledExtensionNames = extensions;
-
-  createInfo.enabledLayerCount = 0;
+  enableLayerSupport(createInfo);
 
   VkResult res = vkCreateInstance(&createInfo, nullptr, &_vulkan_instance);
 
   if (res != VkResult::VK_SUCCESS)
   {
+    // TODO: If we ever support MAC, the tutorial talks bout a potential
+    // missing driver to address
     _log->LogError("Vulkan failed to create instance with error code %zu", res);
     return false;
   }
 
+
+  _log->LogInfo("Vulkan successfully created an instance");
   return true;
 }
 
@@ -80,6 +80,77 @@ void VulkanRenderer::setAppName(const char *app_name)
   _app_name = app_name;
 }
 
+bool VulkanRenderer::enableExtentionSupport(VkInstanceCreateInfo &createInfo)
+{
+  _platform->getWindowExtention(_extensions);
+  _extensions[1] = VK_KHR_SURFACE_EXTENSION_NAME;
+
+  u32 extCount = 0;
+  vkEnumerateInstanceExtensionProperties(nullptr, &extCount, nullptr);
+
+  std::vector<VkExtensionProperties> supportedExts(extCount);
+  vkEnumerateInstanceExtensionProperties(nullptr, &extCount, supportedExts.data());
+
+  for (const auto &exts : _extensions)
+  {
+    bool is_extensions_supported = false;
+    for (const auto &supported : supportedExts)
+    {
+      if (strcmp(exts, supported.extensionName) == 0)
+      {
+        is_extensions_supported = true;
+        break;
+      }
+    }
+
+    if (!is_extensions_supported)
+    {
+      _log->LogError("Unable to find %s vulkan extension, creation failed", exts);
+      return false;
+    }
+  }
+
+  createInfo.enabledExtensionCount = _maxExtensions;
+  createInfo.ppEnabledExtensionNames = _extensions;
+
+  return true;
+}
+
+bool VulkanRenderer::enableLayerSupport(VkInstanceCreateInfo &createInfo)
+{
+  if (!_enableValidationLayers)
+  {
+    return false;
+  }
+
+  const u32 max_layers = 1;
+
+  u32 layerCount;
+  vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+
+  std::vector<VkLayerProperties> layersAvailable(layerCount);
+  vkEnumerateInstanceLayerProperties(&layerCount, layersAvailable.data());
+
+  bool is_validation_layer_supported = false;
+  for (const auto &layerProps : layersAvailable)
+  {
+    if (strcmp(_validationLayer, layerProps.layerName) == 0)
+    {
+      is_validation_layer_supported = true;
+      break;
+    }
+  }
+
+  if (!is_validation_layer_supported)
+  {
+    _log->LogDebug("Unable to support Vulkan validation layers, they are disables");
+    return false;
+  }
+
+  createInfo.enabledLayerCount = max_layers;
+  createInfo.ppEnabledLayerNames = &_validationLayer;
+  return true;
+}
+
 
 } // namespace ERI
-
