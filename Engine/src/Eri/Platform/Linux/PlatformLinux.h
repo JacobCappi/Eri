@@ -41,6 +41,8 @@ public: // IPlatform
   bool StartupWindow(const char *windowName) override;
 
   void registerUtils(EriUtils *const utils) override;
+  bool getWindowPointers(const void *window, const void **display) override;
+  bool getWindowExtention(const char **VKExtention) override;
 
 public:
   void clock_start() override;
@@ -52,5 +54,5 @@ public:
   bool Shutdown() override;
 
 };
-  
+
 } // namespace ERI

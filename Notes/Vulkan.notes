@@ -3,7 +3,7 @@
 ! Vulkan is designed to be a cross-platform abstraction over the GPU
 Near the beginning, many API's were designed with that generation of GPU in mind
 and as capabilities and advancements came pouring in, less-than-ideal abstractions
-were created. Vulkan, on the otherhand, was built recently, from the ground up, with
+were created. Vulkan, on the other hand, was built recently, from the ground up, with
 programmer specificity in mind, and does not suffer from these issues.
 
 ## To draw a circle
@@ -16,15 +16,61 @@ programmer specificity in mind, and does not suffer from these issues.
 2: Logical device and queue families
 
    A `VkDevice` which allows the user to specify `VkPhysicalDeviceFeatures`
-   There are many options, but picking the `VkQueue` is the most important.
+   Next, picking the right `VkQueue` family is most important.
    Most operations interact with a queue asynchronously. Queue families are
    created for specific sets of interactions (i.e. graphics, memory transfers)
 
+3: Window Surface and Swap Chain
 
+   Two components are needed for rendering to a window: `VkSurfaceKHR` <the window surface>
+   and a `VkSwapchainKHR` <the swap chain>. The `KHR` suffix means that it is part of the
+   extended Vulkan as Vulkan is platform agnostic. To render, we ask the swap chain for an
+   image, render it, then give it back to the swap chain to be presented. (double buffering,
+   triple buffering are possible).
 
+   Also to note, if you do not have a windowing manager (and your platform supports it), you
+   might be able to use a `VK_KHR_display` and swapchain to represent the entire screen.
 
+4: Image views and framebuffers
 
+   The image from the swap chain is wrapped with a `VkImageView` and `VkFrameBuffer`.
+   (I'm a bit unsure about this one, come back later)
 
+5: Render Pass
+
+   A Render Pass describes the type of image, how they're used, and how their contents are treated.
+
+6: Graphics Pipeline
+
+   The `VkPipeline` is a configurable state of the graphics card <viewport size, depth buffering, etc>.
+   A `VkShaderModule` is used for this.
+
+   (?) Vulkan is unique in that all configurations must be set in advance. A change in shaders will
+   require a whole new pipeline. What this means is that many `VkPipeline` will be needed to be
+   created in advance.
+
+7: Command pools and command buffers
+
+   Many Vulkan operations are sent to the queue using `VkCommandBuffer` allocated from the `VkCommandPool`
+   associated with that queue family.
+
+   A set of command operations for a triangle would include:
+      1. Begin render pass
+      2. Bind the Graphics Pipeline
+      3. Draw 3 vertices
+      4. End render pass
+
+   (?) Because we are not sure which image the swapchain will give us, a new command buffer needs to
+   be created for each possible image.
+
+8: Main Loop
+
+   To put it all together:
+   1. Get Image from Swapchain `vkAcquireNextImageKHR`
+   2. Select appropriate command and `vkQueueSubmit`
+   3. Return image to Swapchain `vkQueuePresentKHR`
+
+   Because the command calls are async, semaphores are needed
 
 
 

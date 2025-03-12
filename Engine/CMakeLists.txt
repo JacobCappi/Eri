@@ -6,6 +6,7 @@ set (ERI_SRC_FILES
   src/Eri/Utils/Events/VectorEvents/VectorEvents.cpp
   src/Eri/Platform/EriPlatform.cpp
   src/Eri/Utils/EriUtils.cpp
+  src/Eri/Renderer/Vulkan/VulkanRenderer.cpp
 )
 
 if (WIN32)
@@ -13,7 +14,9 @@ if (WIN32)
     src/Eri/Platform/Windows/PlatformWindows.cpp
     src/Eri/Platform/Windows/WindowKeys.cpp
   )
+  add_compile_definitions(VK_USE_PLATFORM_WIN32_KHR=1)
 elseif (UNIX AND NOT APPLE)
+  add_compile_definitions(VK_USE_PLATFORM_XLIB_KHR=1)
   list (APPEND ERI_SRC_FILES
     src/Eri/Platform/Linux/PlatformLinux.cpp
     src/Eri/Platform/Linux/LinuxMouse.cpp
@@ -27,10 +30,11 @@ add_library(${ENGINE_NAME} SHARED ${ERI_SRC_FILES})
 
 find_package(Vulkan REQUIRED)
 find_package(X11 REQUIRED)
-target_link_libraries(${ENGINE_NAME} PRIVATE 
+target_link_libraries(${ENGINE_NAME} PRIVATE
   Vulkan::Vulkan
   X11)
 
 target_include_directories(${ENGINE_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/Engine/src")
 target_compile_options(${ENGINE_NAME} PRIVATE -g -Wall -Werror)
+target_link_options(${ENGINE_NAME} PRIVATE -lvulkan)
 target_compile_definitions(${ENGINE_NAME} PRIVATE ERI_EXPORT _DEBUG)

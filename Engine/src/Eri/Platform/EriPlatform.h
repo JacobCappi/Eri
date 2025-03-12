@@ -14,7 +14,7 @@ enum class Platforms
   UNSUPPORTED
 };
 
-class EriPlatform 
+class EriPlatform
 {
 private:
   IPlatform *_platform;

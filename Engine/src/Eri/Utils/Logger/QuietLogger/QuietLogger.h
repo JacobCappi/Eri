@@ -24,6 +24,6 @@ public: // ILogger
 
     void SetLogLevel(bool isRelease) override;
 };
-    
+
 } // namespace ERI
 

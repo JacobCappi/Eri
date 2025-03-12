@@ -9,12 +9,11 @@ Plan:
   New factory for Platform called EriPlatform
     -> He will do all the dirty work
     -> His whole purpose will be to provide a nice `IPlatform`
-  
+
   This will be done easily with EriPlatform.cpp having one function,
     -> if (ERI_WIN) { #include "PlatformWindows" // function body}
     -> if (ERI_X11) { #include "PlatformX11" // function body}
-  
+
   Util factory
     -> This will be main dependency injector for all utils
 
-  

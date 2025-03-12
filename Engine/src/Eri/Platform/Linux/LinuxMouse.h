@@ -10,5 +10,5 @@ class LinuxMouse
 public:
   static Mouse translateMouse(i32 type, u32 x11_button);
 };
-  
+
 } // namespace ERI

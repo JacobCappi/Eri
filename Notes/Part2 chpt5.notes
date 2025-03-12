@@ -23,4 +23,4 @@ Honestly, these points seems a bit too 'optimized', but worth noting:
 # String operations are notoriously slow
     1. avoiding a string class can help address save quite a lot of performance
     2. string classes are not too useful over C-style, other than in maybe handling classes.
-    3. use at your own risk 
+    3. use at your own risk

@@ -3,7 +3,7 @@ I need a main 'hub' that stores publishers and subscribers
 This thing can probably be interfaced a bit
 
 IEvents:
-    the class 
+    the class
 
 VectorEventSystem:
     SubscribeMouse(IMouseSubscriber)
@@ -39,7 +39,7 @@ Publish:
     publish(enum)
 
 Callbacks:
-    
+
 Vector of Vectors
 RAM not an issue, so counter could be max size of enum, int[max_enum], and just ++ as I go?
 ARRAY 1:
